@@ -2,22 +2,22 @@ import React from 'react'
 import { AppState, Mode, Action } from "../Types";
 import { X } from "../Translation";
 
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button, Drawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { Dialog, DialogContent, DialogActions } from '@mui/material';
 import { Grid, Container } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { CmllTrainerView, OllcpTrainerView } from './CmllTrainerView';
 import BlockTrainerView from './BlockTrainerView';
 import PanoramaView from './PanoramaView';
 
-
 import FavListView from './FavListView';
+import SettingsDrawer from './SettingsDrawer';
 import TopBarView from './TopBarView';
 import AnalyzerView from './AnalyzerView';
 
 import Markdown from 'markdown-to-jsx';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 
 import { theme } from '../theme';
 
@@ -44,35 +44,37 @@ function TabPanel(props: TabPanelProps ) {
   );
 }
 const useStyles = makeStyles(theme => ({
-  page: {
-    backgroundColor: theme.palette.background.default
+  root: {
+    minHeight: '100dvh',
+    display: 'flex',
+    flexDirection: 'column',
+    backgroundColor: theme.palette.background.default,
+    overflowX: 'hidden',
+  },
+  content: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
+  scrollArea: {
+    paddingRight: 4,
+    '&::-webkit-scrollbar': {
+      width: 4,
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+      borderRadius: 2,
+    },
   },
   container: {
     display: "flex"
   },
-  icon: {
-    minWidth: 0
-  },
-  root: {
-    display: "flex"
-  },
-  bar: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.background.paper,
-  },
-  select: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.background.paper,
-    borderRadius: 4,
-    border: "1px solid " + theme.palette.background.default,
-  }
 }))
 
 export const getTabModes = (): [Mode, string, string][] => [
   ["fb", X.MODES.FB.full, X.MODES.FB.short],
-  ["analyzer", X.MODES.ANALYZER.full, X.MODES.ANALYZER.short],
   ["fs", X.MODES.FS.full, X.MODES.FS.short],
   ["fsdr", X.MODES.FSDR.full, X.MODES.FSDR.short],
+  ["analyzer", X.MODES.ANALYZER.full, X.MODES.ANALYZER.short],
   ["fbdr", X.MODES.FBDR.full, X.MODES.FBDR.short],
   ["fbss", X.MODES.FBSS.full, X.MODES.FBSS.short],
   ["ss", X.MODES.SS.full, X.MODES.SS.short],
@@ -101,11 +103,10 @@ function Intro() {
   return <Markdown>{X.INTRO.MARKDOWN}</Markdown>
 }
 
-// TODO: Write getter and setter for config items, and also write handlers that map to setters
 function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) {
-  //const [locations, setLocations] = React.useState([])
   let { state, dispatch } = props
   let classes = useStyles()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleChange = React.useCallback( (newValue:number) => {
     if (newValue < getTabModes().length) {
@@ -141,84 +142,144 @@ function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) 
       theme: state.config.theme.setFlags(theme_flag)
     }})
   }
-  const toggleFav = () => {
-    setFav(!showFav)
-  }
+  const toggleFav = () => { setFav(!showFav); if (showSettings) setSettings(false); }
+  const toggleSettings = () => { setSettings(!showSettings); if (showFav) setFav(false); }
 
   const [ showFav, setFav ] = React.useState(false)
+  const [ showSettings, setSettings ] = React.useState(true)
+
+  const sidebarOpen = showFav || showSettings;
+
   const createTabPanels = (elements: any[]) => {
     return <React.Fragment>
     {
-      elements.map( (el, i) => <TabPanel key={i} value={value} index={i} className={classes.page}>{el}</TabPanel>)
+      elements.map( (el, i) => <TabPanel key={i} value={value} index={i}>{el}</TabPanel>)
     }
     </React.Fragment>
   }
+
+  const tabPanelsContent = createTabPanels([
+    <BlockTrainerView {...{state, dispatch}} />, // fb
+    <AnalyzerView {...{state, dispatch}} />,
+    <BlockTrainerView {...{state, dispatch}} />, // fs
+    <BlockTrainerView {...{state, dispatch}} />, // fsdr
+    <BlockTrainerView {...{state, dispatch}} />, // fbdr
+    <BlockTrainerView {...{state, dispatch}} />, // fbss
+    <BlockTrainerView {...{state, dispatch}} />, // ss
+    <CmllTrainerView {...{state, dispatch}} />,
+    <BlockTrainerView {...{state, dispatch}} />,
+    <BlockTrainerView {...{state, dispatch}} />,
+  ]);
+
+  const mainContent = (
+    value === -1 ? (
+      <Grid container className={classes.container} spacing={3}>
+        <Grid item md={12} sm={12} xs={12}>
+          <TabPanel value={value} index={4}>
+            <PanoramaView {...{state, dispatch}} />
+          </TabPanel>
+        </Grid>
+      </Grid>
+    ) : (
+      <Grid container className={classes.container} spacing={2}>
+        <Grid item md={sidebarOpen && !isMobile ? 8 : 12} sm={sidebarOpen && !isMobile ? 7 : 12} xs={12}>
+          <Box className={classes.scrollArea}>
+          {tabPanelsContent}
+          </Box>
+        </Grid>
+
+        {!isMobile && (
+          <Grid item hidden={!sidebarOpen} md={4} sm={5} xs={12}>
+            <Box className={classes.scrollArea}>
+              {showFav && <FavListView {...{state, dispatch}} />}
+              {showSettings && <SettingsDrawer {...{state, dispatch}} />}
+            </Box>
+          </Grid>
+        )}
+      </Grid>
+    )
+  );
+
   return (
-    <main>
+    <Box className={classes.root}>
       <Dialog open={open} onClose={handleInfoClose}
-        PaperProps={{sx: {borderRadius: 5, padding: 1}}}>
-      <DialogContent dividers>
+        PaperProps={{sx: {borderRadius: 8, padding: 2, maxWidth: 520}}}>
+      <DialogContent>
         <Intro></Intro>
       </DialogContent>
       <DialogActions>
         <Button color="primary" onClick={handleInfoClose}
-          sx={{borderRadius: 10, textTransform: 'none'}}>
+          sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500}}>
           {X.NAV.GOT_IT}
         </Button>
       </DialogActions>
       </Dialog>
 
-      <TopBarView onChange={handleChange} value={value}
-        handleInfoOpen={handleInfoOpen} toggleBright={toggleBright} toggleFav={toggleFav}
+      <TopBarView value={value}
+        handleInfoOpen={handleInfoOpen} toggleBright={toggleBright}
+        toggleFav={toggleFav} toggleSettings={toggleSettings}
         toggleLanguage={() => dispatch({ type: "language", content: state.language === "zh" ? "en" : "zh" })}
         language={state.language}
       />
 
-      <Box paddingY={2.5} paddingX={0}>
-      <Container maxWidth={showFav ? "lg" : "md" }>
+      <Box className={classes.content}>
+        <Container maxWidth={sidebarOpen && !isMobile ? "lg" : "md"}>
+          {mainContent}
+        </Container>
+      </Box>
 
-      {
-      value === -1?
-      (
-      <Grid container className={classes.container} spacing={3}>
-        <Grid item md={12} sm={12} xs={12}>
-        <TabPanel value={value} index={4} className={classes.page}>
-          <PanoramaView {...{state, dispatch}} />
-        </TabPanel>
-        </Grid>
-      </Grid>
-      )
-      :
-      (
-      <Grid container className={classes.container} spacing={3}>
-        <Grid item hidden={!showFav} md={4} sm={4} xs={12} >
-        <FavListView {...{state, dispatch}} />
-        </Grid>
+      {isMobile && showSettings && (
+        <Drawer
+          anchor="bottom"
+          open={showSettings}
+          onClose={() => setSettings(false)}
+          PaperProps={{
+            sx: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              maxHeight: '85dvh',
+              pb: 3,
+            }
+          }}
+        >
+          <Box sx={{
+            display: 'flex', justifyContent: 'center', pt: 1.5, pb: 0.5,
+          }}>
+            <Box sx={{
+              width: 36, height: 4, borderRadius: 2,
+              bgcolor: 'text.disabled', opacity: 0.3,
+            }} />
+          </Box>
+          <SettingsDrawer {...{state, dispatch}} />
+        </Drawer>
+      )}
 
-        <Grid item md={showFav ? 8 : 12} sm={showFav ? 8 : 12} xs={12}>
-        {
-          createTabPanels([
-            <BlockTrainerView {...{state, dispatch}} />, // fb
-            <AnalyzerView {...{state, dispatch}} />,
-            <BlockTrainerView {...{state, dispatch}} />, // fs
-            <BlockTrainerView {...{state, dispatch}} />, // fsdr
-            <BlockTrainerView {...{state, dispatch}} />, // fbdr
-            <BlockTrainerView {...{state, dispatch}} />, // fbss
-            <BlockTrainerView {...{state, dispatch}} />, // ss
-            <CmllTrainerView {...{state, dispatch}} />,
-            // <OllcpTrainerView {...{state, dispatch}} />,
-            <BlockTrainerView {...{state, dispatch}} />,
-            <BlockTrainerView {...{state, dispatch}} />,
-            /*<TrackerView {...{state, dispatch}} /> */
-          ])
-        }
-
-        </Grid>
-      </Grid>
-      )
-      }
-      </Container></Box>
-    </main>
+      {isMobile && showFav && (
+        <Drawer
+          anchor="bottom"
+          open={showFav}
+          onClose={() => setFav(false)}
+          PaperProps={{
+            sx: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              maxHeight: '85dvh',
+              pb: 3,
+            }
+          }}
+        >
+          <Box sx={{
+            display: 'flex', justifyContent: 'center', pt: 1.5, pb: 0.5,
+          }}>
+            <Box sx={{
+              width: 36, height: 4, borderRadius: 2,
+              bgcolor: 'text.disabled', opacity: 0.3,
+            }} />
+          </Box>
+          <FavListView {...{state, dispatch}} />
+        </Drawer>
+      )}
+    </Box>
   )
 }
 export default AppView

@@ -72,6 +72,16 @@ export type BatchState = {
     index: number
 }
 
+export type AnalyzerConfig = {
+    orientation: string;
+    pre_orientation: string;
+    show_mode: string;
+    num_solution: number;
+    fb_stage: string;
+    hide_solutions: boolean;
+    cube_scale: number;
+}
+
 export type AppState = {
     name: StateT,
     mode: Mode,
@@ -85,4 +95,5 @@ export type AppState = {
     favList: FavCase[],
     colorScheme: ColorScheme,
     language: Language,
+    analyzerConfig: AnalyzerConfig,
 }

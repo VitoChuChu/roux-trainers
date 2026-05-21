@@ -39,7 +39,7 @@ export function ColorSetter(props: {state: AppState, dispatch: React.Dispatch<Ac
 
         <Box>
         <Button variant="outlined" size="medium" color="primary" onClick={handleClick}
-          sx={{borderRadius: 10, textTransform: 'none'}} >
+          sx={{borderRadius: 4, textTransform: 'none'}} >
             {X.ANALYZER.SET_COLOR}
         </Button>
         </Box>
@@ -63,30 +63,30 @@ export function ColorPanel(props: {state: AppState, dispatch: React.Dispatch<Act
 
     return (
         <div className="color-panel">
-        <FormLabel component="legend" sx={{ color: '#86868b', fontSize: '0.8125rem', fontWeight: 500 }}>{X.ANALYZER.ORI_AND_COLOR_SCHEME}</FormLabel>
-        <Box height={8}/>
-        <Button color="primary" variant="outlined"
-          sx={{borderRadius: 10, textTransform: 'none', borderWidth: 1.5, '&:hover': {borderWidth: 1.5}}}
+        <FormLabel component="legend" sx={{ color: 'text.disabled', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{X.ANALYZER.ORI_AND_COLOR_SCHEME}</FormLabel>
+        <Box height={6}/>
+        <Button color="primary" variant="outlined" size="small"
+          sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, borderWidth: 1, '&:hover': {borderWidth: 1}}}
           onClick={handleClickOpen}>
-        <SettingsIcon fontSize="small" color="primary" style={{marginLeft: -6, marginRight: 3}}></SettingsIcon>
+        <SettingsIcon fontSize="small" color="primary" style={{marginRight: 4}}></SettingsIcon>
           {X.COMMON.EDIT}
         </Button>
         <Box height={8}/>
         <Dialog disableEscapeKeyDown open={open} onClose={handleClose}
-          maxWidth="md" fullWidth
-          PaperProps={{sx: {borderRadius: 5, padding: 2, maxWidth: '100%', boxSizing: 'border-box'}}}>
-          <DialogTitle> {X.ANALYZER.FB_ORI_DIALOG_TITLE}  </DialogTitle>
-          <DialogContent>
+          maxWidth="sm" fullWidth
+          PaperProps={{sx: {borderRadius: 8, padding: 2, boxSizing: 'border-box'}}}>
+          <DialogTitle sx={{fontSize: '0.95rem', fontWeight: 600, pb: 0.5}}> {X.ANALYZER.FB_ORI_DIALOG_TITLE}  </DialogTitle>
+          <DialogContent sx={{pt: 1}}>
             {content}
-            <Box height={16}/>
+            <Box height={12}/>
                 <Divider />
-            <Box height={16}/>
+            <Box height={12}/>
             <ColorSetter {...{state, dispatch}}/>
 
           </DialogContent>
-          <DialogActions>
+          <DialogActions sx={{pt: 0}}>
               <Button onClick={() => setOpen(false)} color="primary"
-                sx={{borderRadius: 10, textTransform: 'none'}}>
+                sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, fontSize: '0.85rem'}}>
                   {X.COMMON.CLOSE}
               </Button>
           </DialogActions>

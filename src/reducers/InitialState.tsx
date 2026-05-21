@@ -50,5 +50,14 @@ export const getInitialState = (mode?: Mode): AppState => {
         keyMapping: (mode === "4c" || mode === "eopair") ? new LSEKeyMapping() : new DefaultKeyMapping(),
         colorScheme: new ColorScheme(),
         language: getLanguage(),
+        analyzerConfig: {
+            orientation: "x2y",
+            pre_orientation: "",
+            show_mode: "foreach",
+            num_solution: 5,
+            fb_stage: "fb",
+            hide_solutions: false,
+            cube_scale: 0.6,
+        },
     };
 };

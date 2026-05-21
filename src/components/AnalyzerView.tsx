@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
       overflow: 'auto',
       flexDirection: 'column',
       marginBottom: 3,
-      borderRadius: 0
+      borderRadius: 6
     },
     paper2: {
       paddingLeft: theme.spacing(3),
@@ -66,7 +66,7 @@ const useStyles = makeStyles(theme => ({
       overflow: 'auto',
       flexDirection: 'column',
       marginBottom: 3,
-      borderRadius: 0
+      borderRadius: 6
     },
     canvasPaper: {
       padding: theme.spacing(0),
@@ -88,11 +88,14 @@ const useStyles = makeStyles(theme => ({
     },
     setup: {
       whiteSpace: 'pre-line',
-      fontSize: "1.4rem",
-      fontWeight:500,
+      fontSize: "1.35rem",
+      fontWeight: 400,
+      letterSpacing: '-0.01em',
+      lineHeight: 1.55,
+      color: theme.palette.text.primary,
       [theme.breakpoints.down('sm')]: {
       fontSize: "1.0rem",
-      fontWeight: 500
+      fontWeight: 400
       },
   },
     condGap: {
@@ -110,7 +113,10 @@ const useStyles = makeStyles(theme => ({
     title : {
         color: theme.palette.text.disabled,
         fontWeight: 500,
-        borderBottom: "3px solid",
+        fontSize: '0.7rem',
+        letterSpacing: '0.04em',
+        textTransform: 'uppercase',
+        paddingBottom: 4,
     },
     title1 : {
       fontWeight: 500,
@@ -170,58 +176,100 @@ const resetState = (state: AnalyzerState) => {
     stage: "fb"
   }
 }
-function ScrambleView(props: { state: AnalyzerState, setState: (newState: AnalyzerState) => void }) {
-    let { state, setState } = props
+function ScrambleView(props: { state: AnalyzerState, setState: (newState: AnalyzerState) => void, dispatch: React.Dispatch<Action> }) {
+    let { state, setState, dispatch } = props
     let classes = useStyles()
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
-    // Add event listeners
     let [ value, setValue ] = React.useState(state.scramble)
+    let [ editing, setEditing ] = React.useState(false)
+    let textField = React.useRef<HTMLInputElement | null>(null)
 
     let onScrambleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setValue(event?.target.value)
+      event.stopPropagation()
     }
 
-    let handleBegin = () => {
-
-      setState({...resetState(state), scramble: value})
-    }
     let handleGen = () => {
       let cube = CubeUtil.get_random_with_mask(Mask.empty_mask)
       let scramble = CachedSolver.get("min2phase").solve(cube,0,0,0)[0].inv().toString()
       setState({...resetState(state), scramble})
       setValue(scramble)
     }
+    const onKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+      event.stopPropagation()
+    }
+
+    React.useEffect(() => {
+      setValue(state.scramble)
+    }, [state.scramble])
 
     return (
     <Box style={{display: "flex"}}>
-
-      <Box style={{display: "flex", alignItems: "center", flexGrow: 1}}>
-        <TextField
-          size="medium"
-          fullWidth
-          multiline
-          maxRows={3}
-          label={X.ANALYZER.SCRAMBLE_INPUT}
-          value={value}
-          onChange={onScrambleChange}
-          variant="filled"
-          inputProps={{
-            sx: {fontSize: "1.2rem", fontWeight: 500}
-          }}
-        />
+      <Box style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+        <Box className={classes.title} style={{}}>
+          {X.COMMON.SCRAMBLE}
+        </Box>
+        <Typography className={classes.setup} style={{marginTop: 4}}>
+          {value || ' '}
+        </Typography>
       </Box>
       <Box style={{}} className={classes.fgap} />
-      <Box sx={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', gap: isSmallScreen ? 0.5 : 0.5, alignItems: 'stretch' }}>
-        <Button onFocus={(evt) => evt.target.blur() } onClick={handleGen}
-              size="medium" variant="contained" color="primary" >
+
+      <Box style={{display: "flex", flexWrap: "wrap", padding: 0, gap: 8, alignItems: "center"}}>
+        {isSmallScreen ? null :
+          <Button variant="outlined" color="primary" size="small"
+            onClick={() => setEditing(true)}
+            startIcon={<EditIcon />}
+            sx={{ minHeight: 36 }}>
+            {X.COMMON.INPUT}
+          </Button>
+        }
+        <Button onFocus={(evt) => evt.target.blur()} onClick={handleGen}
+              size="small" variant="outlined" color="primary"
+              sx={{ borderRadius: 1, textTransform: 'none', fontWeight: 500, minHeight: 36 }} >
                 {X.ANALYZER.GEN}
         </Button>
-        <Button onFocus={(evt) => evt.target.blur() } onClick={handleBegin}
-              size="medium" variant="contained" color="primary" >
-                {X.ANALYZER.GO}
-        </Button>
       </Box>
+
+      <Dialog open={editing}
+              onClose={() => setEditing(false)}
+              onKeyPress={onKeyPress}
+              onKeyDown={onKeyPress}
+              onKeyUp={onKeyPress}>
+          <DialogTitle>{X.ANALYZER.INPUT_SCRAMBLE_DIALOG}</DialogTitle>
+          <DialogContent>
+                <TextField
+                    inputRef={textField}
+                    multiline
+                    size="medium"
+                    fullWidth
+                    maxRows={10}
+                    rows={3}
+                    autoFocus
+                    value={value}
+                    onChange={onScrambleChange}
+                    variant="outlined">
+                </TextField>
+          </DialogContent>
+          <DialogActions>
+              <Box padding={1}>
+              <Button onClick={() => {
+                let cube = CubeUtil.get_random_with_mask(Mask.empty_mask)
+                let scramble = CachedSolver.get("min2phase").solve(cube,0,0,0)[0].inv().toString()
+                setValue(scramble)
+              }} color="primary" variant="outlined" fullWidth>
+                  {X.ANALYZER.GEN}
+              </Button>
+              <Button onClick={() => {
+                setEditing(false)
+                setState({...resetState(state), scramble: value})
+              }} color="primary" variant="outlined" fullWidth>
+                  {X.COMMON.OK}
+              </Button>
+              </Box>
+          </DialogActions>
+      </Dialog>
     </Box> )
 }
 
@@ -510,18 +558,23 @@ function StageSolutionView(props: { solution: SolutionDesc, shortestLength?: num
   const shortened_rotation = get_shortened_rotation(orientation + " " + premove)
 
   return (
-    <Box style={{display: "flex", marginBottom: "2px", alignItems: "center"}}>
+    <Box style={{display: "flex", marginBottom: "2px", alignItems: "center", minWidth: 0}}>
       {tags.filter(x=>x).map( (t, i) =>
         <Chip variant="outlined" size="small" color="primary" label={t} key={i}
-          sx={{ '& .MuiChip-label': { fontSize: '0.9rem', fontWeight: 500, padding: '0 8px',
-                                      minWidth: "6ch", textAlign: "center",
+          sx={{ '& .MuiChip-label': { fontSize: '0.75rem', fontWeight: 500, padding: '0 6px',
+                                      minWidth: "5ch", textAlign: "center",
                                       display: "flex",
                                       alignItems: "center", justifyContent: "center" } }} />
       )}
-      {/* add a little space between the tags and the solution */}
       <Box style={{width: ".5ch"}} />
-      <Box style={{marginLeft: 5}}>
-        <Typography sx={{fontSize: "1.3rem"}}>
+      <Box style={{marginLeft: 4, minWidth: 0}}>
+        <Typography sx={{
+          fontSize: "1.0rem",
+          fontFamily: '"Roboto Mono", monospace',
+          overflowWrap: 'break-word',
+          wordBreak: 'break-word',
+          lineHeight: 1.5,
+        }}>
           {shortened_rotation + " " + solution.moves.map(m => m.name).join(" ")}
           {isShortest && " (*)"}
         </Typography>
@@ -661,10 +714,25 @@ function FullSolutionView(props: { state: AnalyzerState, setState: (newState: An
 }
 
 function AnalyzerView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) {
-    let { state: appState } = props
+    let { state: appState, dispatch } = props
 
     const theme = useTheme()
     let [ state, setState ] = React.useState(initialState)
+
+    // Keyboard handler: space generates new scramble
+    React.useEffect(() => {
+      function downHandler(event: KeyboardEvent) {
+        if (event.key !== " ") return
+        const tag = (document.activeElement?.tagName || "").toLowerCase()
+        if (tag === "input" || tag === "textarea") return
+        event.preventDefault()
+        let cube = CubeUtil.get_random_with_mask(Mask.empty_mask)
+        let scramble = CachedSolver.get("min2phase").solve(cube, 0, 0, 0)[0].inv().toString()
+        setState(prev => ({...resetState(prev), scramble}))
+      }
+      window.addEventListener('keydown', downHandler)
+      return () => window.removeEventListener('keydown', downHandler)
+    })
 
     let classes = useStyles()
 
@@ -690,13 +758,8 @@ function AnalyzerView(props: { state: AppState, dispatch: React.Dispatch<Action>
     console.log("isSmallScreen", isSmallScreen, theme.breakpoints)
     const canvas_wh = (gt_md) ? [400, 350] : (gt_sm) ? [400, 350] : [320, 280]
 
-    const configPanel = (
-      <Paper className={classes.paper} elevation={2}>
-        <ConfigView state={state} setState={setState}/>
-      </Paper>
-    );
     const inputSolutionPanel = (
-      <Paper className={classes.paper2} elevation={1}>
+      <Paper className={classes.paper2}>
       <Box display="flex" >
         {
           state.full_solution.length >= 1 ? <>
@@ -715,40 +778,45 @@ function AnalyzerView(props: { state: AppState, dispatch: React.Dispatch<Action>
       </Paper>
     )
 
+    // Sync local state from global analyzer config
+    React.useEffect(() => {
+      const ac = appState.analyzerConfig;
+      setState(prev => ({
+        ...prev,
+        orientation: ac.orientation,
+        pre_orientation: ac.pre_orientation,
+        show_mode: ac.show_mode,
+        num_solution: ac.num_solution,
+        fb_stage: ac.fb_stage as fbStageT,
+        hide_solutions: ac.hide_solutions,
+      }));
+    }, [appState.analyzerConfig]);
+
     return (
     <Box className={classes.container}>
-      <Paper className={classes.paper} elevation={1}>
-        <ScrambleView state={state} setState={setState}/>
+      <Paper className={classes.paper}>
+        <ScrambleView state={state} setState={setState} dispatch={dispatch}/>
       </Paper>
 
-      {!isSmallScreen && configPanel}
       {/* {!isSmallScreen && inputSolutionPanel} */}
 
       <Paper className={ classes.paper}>
       <Grid container>
-        <Grid item md={6} sm={12} xs={12} className={classes.condGap}>
-          <Box style={{display: "flex" }}>
-            <Box display="flex" >
-                <Box style={{display: "flex", flexDirection: "column", alignSelf: "flex-start"}}>
-                  <Box className={classes.title} style={{}}>
-                    {X.COMMON.SOLUTIONS}
-                  </Box>
-                  <Box>
-                  <Button className={classes.title1} size="small" variant="outlined" color="primary">
-                    { state.stage }
-                  </Button>
-                  </Box>
-                </Box>
-            </Box>
-            <Box style={{}} className={classes.fgap} />
-            <Box style={{flexGrow: 1}}>
+        <Grid item md={6} sm={12} xs={12} className={classes.condGap} sx={{ minWidth: 0, overflow: 'hidden' }}>
+          <Box style={{display: "flex", minWidth: 0}}>
+            <Box style={{flexGrow: 1, minWidth: 0, overflowWrap: 'break-word', wordBreak: 'break-word'}}>
               <StageSolutionListView solutions={solutions_to_display} num_to_display={num_solutions_to_display} state={state} setState={setState}/>
             </Box>
           </Box>
         </Grid>
         {/* colorScheme=appState.colorScheme.getColorsForOri(appState.cube.ori)} */}
-        <Grid item md={6} xs={12} style={{display: "flex", justifyContent: "center"}}>
-          <Box style={{backgroundColor: "rgba(0, 0, 0, 0)"}}>
+        <Grid item md={6} xs={12} style={{display: "flex", justifyContent: "center", alignItems: "flex-start", maxWidth: '100%', overflow: 'hidden'}}>
+          <Box style={{
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            transform: `scale(${appState.analyzerConfig.cube_scale})`,
+            transformOrigin: 'top center',
+            maxWidth: '100%',
+          }}>
             <CubeSim
               width={canvas_wh[0]}
               height={canvas_wh[1]}
@@ -767,9 +835,6 @@ function AnalyzerView(props: { state: AppState, dispatch: React.Dispatch<Action>
       <Divider/>
       <Box height={20}/> */}
       </Paper>
-
-      {isSmallScreen && configPanel}
-      {/* <ColorPanel {...{state: appState, dispatch: appDispatch}} /> */}
 
     </Box>
     );

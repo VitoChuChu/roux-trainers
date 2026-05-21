@@ -86,7 +86,7 @@ function CaseSelectContent(props: { state: AppState, dispatch: React.Dispatch<Ac
             </Typography>
             </Box>
             <Box display="flex" alignItems="center">
-              <ButtonGroup color="primary" variant="contained" aria-label="outlined primary button group" style={{height: "3.7rem"}}>
+              <ButtonGroup color="primary" variant="outlined" aria-label="outlined primary button group" style={{height: "3.7rem"}}>
                 <Button onClick={handleSelectGroup(groupname, 1)}
                   startIcon={<CheckCircleIcon/>}></Button>
                 <Button  variant="outlined" onClick={handleSelectGroup(groupname, 0)}

@@ -28,6 +28,29 @@ import Selector from '../lib/Selector';
 import Slider, { SliderThumb } from '@mui/material/Slider';
 import { X } from '../Translation';
 
+const SlimRadio = styled(Radio)(({ theme }) => ({
+  padding: 6,
+  '& .MuiSvgIcon-root': {
+    fontSize: 18,
+  },
+  '&.MuiRadio-root': {
+    color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.23)' : 'rgba(0,0,0,0.23)',
+  },
+  '&.Mui-checked': {
+    color: theme.palette.primary.main,
+  },
+}))
+
+const SlimCheckbox = styled(Checkbox)(({ theme }) => ({
+  padding: 6,
+  '& .MuiSvgIcon-root': {
+    fontSize: 18,
+  },
+  '&.MuiCheckbox-root': {
+    color: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.23)' : 'rgba(0,0,0,0.23)',
+  },
+}))
+
 const useStyles = makeStyles(theme => ({
     container: {
       paddingTop: theme.spacing(0),
@@ -86,12 +109,14 @@ const useStyles = makeStyles(theme => ({
       },
     },
     selectLabel: {
-      color: '#86868b',
-      fontSize: '0.8125rem',
-      fontWeight: 500,
-      marginBottom: 4,
+      color: theme.palette.text.disabled,
+      fontSize: '0.6rem',
+      fontWeight: 600,
+      letterSpacing: '0.07em',
+      textTransform: 'uppercase',
+      marginBottom: 8,
       [theme.breakpoints.down(768)]: {
-        fontSize: '0.95rem',
+        fontSize: '0.7rem',
         marginBottom: 8,
       },
     },
@@ -117,28 +142,28 @@ function SliderThumbComponent(props: any) {
 
 const LevelSlider = styled(Slider)(({ theme }) => ({
   '& .MuiSlider-markLabel': {
-    fontSize: "0.9rem",
+    fontSize: "0.675rem",
     fontWeight: 500,
     color: theme.palette.text.secondary,
   },
   '& .MuiSlider-thumb': {
-    width: 28,
-    height: 28,
+    width: 18,
+    height: 18,
     backgroundColor: '#fff',
-    border: '2.5px solid ' + theme.palette.primary.main,
-    boxShadow: '0 2px 8px rgba(0,0,0,0.12)',
+    border: '1.5px solid ' + theme.palette.primary.main,
+    boxShadow: 'none',
     '&:hover, &.Mui-active': {
-      boxShadow: '0 4px 16px rgba(0,0,0,0.2)',
+      boxShadow: '0 0 0 6px rgba(85,108,214,0.08)',
     },
   },
   '& .MuiSlider-rail': {
-    height: 6,
-    borderRadius: 3,
-    opacity: 0.12,
+    height: 3,
+    borderRadius: 1.5,
+    opacity: 0.14,
   },
   '& .MuiSlider-track': {
-    height: 6,
-    borderRadius: 3,
+    height: 3,
+    borderRadius: 1.5,
     border: 'none',
   },
   '& .MuiSlider-mark': {
@@ -208,29 +233,18 @@ function SingleSelect(props: {state: AppState, dispatch: React.Dispatch<Action>,
   let sel = (config as any)[select] as Selector
   let classes = useStyles()
   const theme = useTheme()
-  const is_mobile = useMediaQuery(theme.breakpoints.down(768))
 
-  const handleChange = (evt: { target: { value: string; }; }) => {
+  const handleChange = (name: string) => {
     let { names } = sel
     let n = names.length
     let new_flags = Array(n).fill(0)
-
     for (let i = 0; i < names.length; i++) {
-      if (names[i] === evt.target.value) {
+      if (names[i] === name) {
         new_flags[i] = 1
       }
     }
     dispatch( { type: "config", content: {[select]: sel.setFlags(new_flags) } } )
   }
-
-  let radioValue = function() {
-    let { names, flags } = sel
-    for (let i = 0; i < flags.length; i++) {
-      if (flags[i] === 1) return names[i]
-    }
-    return ""
-  }()
-
 
   let label = sel.label || props.label || ""
   return (
@@ -238,25 +252,44 @@ function SingleSelect(props: {state: AppState, dispatch: React.Dispatch<Action>,
     <FormLabel component="legend" className={classes.selectLabel} >
       {label}
     </FormLabel>
-    {/* {sel.annotation ? <Box> <CustomTooltip title={sel.annotation}>
-        <IconButton>
-          <HelpOutlineIcon sx={{ fontSize: 30 }}/>
-        </IconButton>
-      </CustomTooltip> </Box> : null} */}
-    <RadioGroup aria-label="position" name="position" value={radioValue} onChange={handleChange} row={!is_mobile}>
-      {
-        sel.names.map((name, i) => (
-          filterNames && filterNames.has(name) ? null :
-          <FormControlLabel
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0 }}>
+      {sel.names.map((name, i) => {
+        if (filterNames && filterNames.has(name)) return null
+        const active = sel.flags[i] === 1
+        const total = sel.names.filter(n => !filterNames || !filterNames.has(n)).length
+        return (
+          <Button
             key={name}
-            value={name}
-            control={<Radio color="primary" />}
-            label={sel.getDisplayName(i)}
-            labelPlacement="end"
-          />
-        ))
-      }
-    </RadioGroup>
+            disableRipple
+            onClick={() => handleChange(name)}
+            onFocus={(evt) => evt.target.blur()}
+            sx={{
+              textTransform: 'none',
+              borderRadius: 0,
+              border: '1px solid',
+              borderColor: active ? 'primary.main' : 'divider',
+              bgcolor: active ? (theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.1)' : 'rgba(85,108,214,0.05)') : 'transparent',
+              color: active ? 'primary.main' : 'text.secondary',
+              fontWeight: active ? 600 : 400,
+              fontSize: '0.72rem',
+              px: 1.2,
+              py: 0.3,
+              minWidth: 0,
+              '&:hover': {
+                bgcolor: active
+                  ? (theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.16)' : 'rgba(85,108,214,0.1)')
+                  : (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'),
+              },
+              '&:first-of-type': { borderTopLeftRadius: 4, borderBottomLeftRadius: 4 },
+              '&:last-of-type': { borderTopRightRadius: 4, borderBottomRightRadius: 4 },
+              '&:not(:first-of-type)': { ml: '-1px' },
+            }}
+          >
+            {sel.getDisplayName(i)}
+          </Button>
+        )
+      })}
+    </Box>
   </FormControl>)
 }
 
@@ -293,11 +326,12 @@ function MultiSelectContent(props: {state: AppState, dispatch: React.Dispatch<Ac
     return (
     <FormControlLabel
         control={
-        <Checkbox color="primary" checked={checked} onChange={handleChange} />
+        <SlimCheckbox color="primary" checked={checked} onChange={handleChange} />
         }
         label={displayName || name}
         key={name}
         value={name}
+        sx={{ mr: 0, '& .MuiFormControlLabel-label': { fontSize: '0.72rem', fontWeight: 400, color: theme.palette.text.secondary } }}
     />)
   }
 
@@ -318,11 +352,12 @@ function MultiSelectContent(props: {state: AppState, dispatch: React.Dispatch<Ac
     return (
       <FormControlLabel
       control={
-      <Checkbox color="primary" checked={manipChecked[name]} onChange={handleChange} />
+      <SlimCheckbox color="primary" checked={manipChecked[name]} onChange={handleChange} />
       }
       label={name}
       key={name}
       value={name}
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.72rem' } }}
       />)
   }
   let manipulator_row = options.manipulators ?
@@ -367,25 +402,25 @@ function MultiSelect(props: {state: AppState, dispatch: React.Dispatch<Action>, 
 
   return (
   <Box className="multi-select">
-    <FormLabel component="legend">{label}</FormLabel>
-    <Box height={8}/>
-    <Button color="primary" variant="outlined"
-      sx={{borderRadius: 10, textTransform: 'none', borderWidth: 1.5, '&:hover': {borderWidth: 1.5}}}
+    <FormLabel component="legend" className={classes.selectLabel}>{label}</FormLabel>
+    <Box height={6}/>
+    <Button color="primary" variant="outlined" size="small"
+      sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, borderWidth: 1, '&:hover': {borderWidth: 1}}}
       onClick={handleClickOpen}>
-    <SettingsIcon fontSize="small" color="primary" style={{marginLeft: -6, marginRight: 3}}></SettingsIcon>
+    <SettingsIcon fontSize="small" color="primary" style={{marginRight: 4}}></SettingsIcon>
       {X.COMMON.EDIT}
     </Button>
     <Box height={8}/>
     <Dialog disableEscapeKeyDown open={open} onClose={handleClose}
-      maxWidth={is_mobile ? 'xs' : 'md'} fullWidth
-      PaperProps={{sx: {borderRadius: 5, padding: 2, maxWidth: '100%', boxSizing: 'border-box'}}}>
-      <DialogTitle> {label} </DialogTitle>
-      <DialogContent>
+      maxWidth="sm" fullWidth
+      PaperProps={{sx: {borderRadius: 8, padding: 2, boxSizing: 'border-box'}}}>
+      <DialogTitle sx={{fontSize: '0.95rem', fontWeight: 600, pb: 0.5}}> {label} </DialogTitle>
+      <DialogContent sx={{pt: 1}}>
         {content}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{pt: 0}}>
           <Button onClick={handleClose} color="primary"
-            sx={{borderRadius: 10, textTransform: 'none'}}>
+            sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, fontSize: '0.85rem'}}>
             {X.COMMON.OK}
           </Button>
       </DialogActions>

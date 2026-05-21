@@ -1,22 +1,41 @@
 import { red } from '@mui/material/colors';
 import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
-const iosShape = {
-  borderRadius: 14,
+const shape = {
+  borderRadius: 6,
 };
 
-const iosShadows = [
+const shadows = [
   'none',
-  '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.06)',
-  '0 2px 8px rgba(0,0,0,0.04), 0 2px 4px rgba(0,0,0,0.06)',
-  '0 4px 16px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.06)',
-  '0 8px 24px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.06)',
-  '0 12px 32px rgba(0,0,0,0.07), 0 6px 16px rgba(0,0,0,0.07)',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
+  'none',
 ];
 
-const iosTypography = {
-  fontFamily: `-apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "Public Sans", "Roboto", sans-serif`,
-  fontSize: 14,
+const typography = {
+  fontFamily: `"Public Sans", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif`,
+  fontSize: 15,
   fontWeightLight: 300,
   fontWeightRegular: 400,
   fontWeightMedium: 500,
@@ -24,84 +43,87 @@ const iosTypography = {
 };
 
 const components = {
-  shape: iosShape,
-  shadows: iosShadows,
-  typography: iosTypography,
+  shape,
+  shadows,
+  typography,
   components: {
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          transition: 'box-shadow 0.3s ease, transform 0.2s ease',
-        },
-        elevation1: {
-          boxShadow: iosShadows[1],
-        },
-        elevation2: {
-          boxShadow: iosShadows[2],
-        },
-        elevation4: {
-          boxShadow: iosShadows[3],
+          borderRadius: 6,
+          backgroundImage: 'none',
+          boxShadow: 'none',
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
+          borderRadius: 6,
           textTransform: 'none',
           fontWeight: 500,
-          letterSpacing: '0.01em',
-          transition: 'all 0.2s ease',
+          letterSpacing: '-0.01em',
+          transition: 'all 0.15s ease',
           '&:active': {
-            transform: 'scale(0.97)',
+            transform: 'scale(0.98)',
           },
         },
         containedPrimary: {
-          boxShadow: '0 2px 8px rgba(85,108,214,0.25)',
+          boxShadow: 'none',
           '&:hover': {
-            boxShadow: '0 4px 16px rgba(85,108,214,0.35)',
+            boxShadow: 'none',
+            backgroundColor: '#4a5fc4',
           },
         },
         outlined: {
-          borderWidth: 1.5,
+          borderWidth: 1,
           '&:hover': {
-            borderWidth: 1.5,
+            borderWidth: 1,
+            backgroundColor: 'rgba(0,0,0,0.03)',
+          },
+        },
+        outlinedPrimary: {
+          borderWidth: 1,
+          '&:hover': {
+            borderWidth: 1,
           },
         },
         sizeLarge: {
-          borderRadius: 14,
-          padding: '12px 24px',
-          fontSize: '1.05rem',
+          borderRadius: 6,
+          padding: '10px 24px',
+          fontSize: '0.95rem',
+          fontWeight: 500,
+        },
+        sizeSmall: {
+          borderRadius: 4,
+          padding: '4px 12px',
+          fontSize: '0.8rem',
         },
       },
     },
     MuiSlider: {
       styleOverrides: {
         root: {
-          height: 6,
+          height: 4,
           padding: '15px 0',
         },
         rail: {
-          height: 6,
-          borderRadius: 3,
-          opacity: 0.15,
+          height: 4,
+          borderRadius: 2,
+          opacity: 0.08,
         },
         track: {
-          height: 6,
-          borderRadius: 3,
+          height: 4,
+          borderRadius: 2,
         },
         thumb: {
-          width: 26,
-          height: 26,
-          boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-          '&:active': {
-            boxShadow: '0 4px 16px rgba(0,0,0,0.25)',
-          },
+          width: 20,
+          height: 20,
+          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
         },
         mark: {
-          width: 4,
-          height: 4,
+          width: 3,
+          height: 3,
           borderRadius: 2,
         },
         markLabel: {
@@ -113,56 +135,54 @@ const components = {
     MuiSelect: {
       styleOverrides: {
         select: {
-          borderRadius: 10,
+          borderRadius: 4,
         },
       },
     },
     MuiDialog: {
       styleOverrides: {
         paper: {
-          borderRadius: 20,
-          padding: 8,
+          borderRadius: 8,
+          padding: 4,
+          boxShadow: '0 4px 24px rgba(0,0,0,0.08)',
         },
       },
     },
     MuiRadio: {
       styleOverrides: {
         root: {
-          '&:active': {
-            transform: 'scale(0.9)',
-          },
+          padding: 8,
         },
       },
     },
     MuiCheckbox: {
       styleOverrides: {
         root: {
-          borderRadius: 6,
-          '&:active': {
-            transform: 'scale(0.9)',
-          },
+          borderRadius: 4,
+          padding: 8,
         },
       },
     },
     MuiDivider: {
       styleOverrides: {
         root: {
-          opacity: 0.4,
+          opacity: 0.2,
         },
       },
     },
     MuiFormControlLabel: {
       styleOverrides: {
         label: {
-          fontSize: '0.95rem',
+          fontSize: '0.9rem',
           fontWeight: 400,
+          lineHeight: 1.6,
         },
       },
     },
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          fontSize: '1.1rem',
+          fontSize: '1rem',
           fontWeight: 600,
           letterSpacing: '-0.01em',
         },
@@ -171,8 +191,10 @@ const components = {
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          fontSize: '0.8rem',
+          fontSize: '0.75rem',
           fontWeight: 500,
+          letterSpacing: '0.02em',
+          lineHeight: 1.6,
         },
       },
     },
@@ -192,13 +214,13 @@ const theme = createTheme(adaptV4Theme({
       main: red.A400,
     },
     background: {
-      default: '#f2f2f7',
-      paper: '#ffffff',
+      default: '#ffffff',
+      paper: '#fafafa',
     },
     text: {
       primary: '#1c1c1e',
       secondary: '#8e8e93',
-      disabled: '#556cd6',
+      disabled: '#aeaeb2',
     },
   },
   ...components,
@@ -208,7 +230,7 @@ const themeDark = createTheme(adaptV4Theme({
   name: "dark",
   palette: {
     primary: {
-      main: '#9FA4C2',
+      main: '#8b9ef0',
     },
     secondary: {
       main: '#ffffff',
@@ -217,13 +239,13 @@ const themeDark = createTheme(adaptV4Theme({
       main: red.A400,
     },
     background: {
-      default: '#000000',
-      paper: '#1c1c1e',
+      default: '#0a0a0b',
+      paper: '#141415',
     },
     text: {
-      primary: '#ffffff',
+      primary: '#f5f5f7',
       secondary: '#aeaeb2',
-      disabled: '#9FA4C2',
+      disabled: '#636366',
     },
   },
   ...components,

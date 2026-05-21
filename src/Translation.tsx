@@ -30,6 +30,7 @@ const zh = {
     INPUT: "输入",
     NO_SOLUTION: "按空格获取新题目",
     CHAIN_PRACTICE: "连贯练习 →",
+    SETTINGS: "设置",
   },
 
   NAV: {
@@ -299,6 +300,7 @@ const en: typeof zh = {
     INPUT: "Input",
     NO_SOLUTION: "Press next for new case",
     CHAIN_PRACTICE: "Chain →",
+    SETTINGS: "Settings",
   },
 
   NAV: {

@@ -33,6 +33,7 @@ export type Config = {
     orientationSelector: Selector;
     fbdrSelector: Selector;
     fsSelector: Selector;
+    fsDrPosSelector: Selector;
     fbdrPosSelector1: Selector;
     fbdrPosSelector2: Selector;
     fbdrPosSelector3: Selector;
@@ -59,6 +60,7 @@ export type Config = {
     obscureStickerWidthSelector: Selector;
     obscureCornerMaskSelector: Selector;
     chainTargetSelector: Selector;
+    blockBatchModeSelector: Selector;
 };
 
 const cmll_alg_names = cmll_algs_raw.map(x => x[0])
@@ -80,7 +82,7 @@ const initialLevels = {
         l: 3, r: 9, label: X.CONFIG.FBSS_LEVEL, value: 2
     }),
     fsLevelSelector: ({
-        l: 1, r: 6, label: X.CONFIG.FS_LEVEL, value: 0
+        l: 1, r: 10, label: X.CONFIG.FS_LEVEL, value: 0
     }),
     fbLevelSelector: ({
         l: 3, r: 8, label: X.CONFIG.FB_LEVEL, value: 2, extend_r: true
@@ -288,6 +290,13 @@ export function createInitialConfig(): Config {
             flags: [0, 0, 1],
             kind: "fs"
         }),
+        fsDrPosSelector: new Selector({
+            label: X.CONFIG.POSITION_OF_DR,
+            names: ["UF", "FU", "UL", "LU", "UB", "BU", "UR", "RU", "DF", "FD", "DB", "BD",
+                    "DR", "RD", "BR", "RB", "FR", "RF"],
+            flags: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            kind: "fs-dr-position"
+        }),
         ssSelector: new Selector({
             label: X.CONFIG.SS_POSITION,
             names: ["Front SS", "Back SS", "Both"],
@@ -418,6 +427,13 @@ export function createInitialConfig(): Config {
             displayNames: [X.CONFIG.CHAIN_TARGET_FBLP_DR, X.CONFIG.CHAIN_TARGET_FBLP_SS],
             flags: [1, 0],
             kind: "chain-target"
+        }),
+        blockBatchModeSelector: new Selector({
+            label: X.CONFIG.BATCH_MODE,
+            names: ["off", "on"],
+            displayNames: [X.COMMON.OFF, X.COMMON.ON],
+            flags: [1, 0],
+            kind: "block-batch-mode"
         }),
         ...initialLevels,
     }

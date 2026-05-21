@@ -1,0 +1,15 @@
+# Roux Trainers - Global UI Rules
+
+## Visual Constraints
+- **Minimalism**: Extreme minimalism. No decorative elements, no heavy shadows.
+- **Border Radius**: ALL components MUST use 4px (small) or 6px (medium) max. NO large rounded corners (8px+ only for dialogs).
+- **Shadows**: Forbidden on cards/papers. Only dialogs may have a subtle shadow.
+- **Depth**: Use negative space and subtle background color differences (#fff vs #fafafa) to distinguish layers, NOT borders or shadows.
+- **Buttons**: Outline style for primary actions. Body-text font size. No heavy filled blocks.
+- **Typography**: Line-height ≥ 1.5 for body text. Generous whitespace.
+
+## Layout Constraints
+- **Single Screen**: The main viewport MUST NOT scroll vertically. Use `height: 100vh; overflow: hidden` on the root container.
+- **Internal Scroll**: If content overflows, only the specific container may scroll internally (`overflow-y: auto`).
+- **TopBar**: Fixed at top, no scrolling.
+- **Settings**: All configuration lives in a left sidebar drawer, NOT below the main content.

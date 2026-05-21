@@ -1,4 +1,4 @@
-import { AppState, FavCase, SliderOpt } from "../Types";
+import { AppState, FavCase, SliderOpt, BatchState, CaseState } from "../Types";
 import { alg_generator_from_group, CaseDesc } from "../lib/Algs";
 import { Face, Typ, FBpairPosBackFS, FBpairPosFrontFS } from "../lib/Defs";
 import { CubieCube, CubeUtil, Mask, FaceletCube, MoveSeq } from '../lib/CubeLib';
@@ -207,9 +207,40 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
             mode: case_.mode
         };
     }
+    _generateBatch(batchSize: number = 6): BatchState {
+        let cases: CaseState[] = [];
+        for (let i = 0; i < batchSize; i++) {
+            let {cube, solvers: solverNames, ssolver: scrambleSolver} = this.getRandom();
+            let state = this._solve(cube, solverNames, {scrambleSolver});
+            cases.push({ state: state.cube.state, desc: state.case.desc });
+        }
+        return { cases, index: 0 };
+    }
     onControl(s: string): AppState {
         let state = this.state;
+        let batchMode = state.config.blockBatchModeSelector.getActiveName() === "on";
         if (s === "#space") {
+            if (batchMode) {
+                if (!state.batch || state.batch.index >= state.batch.cases.length - 1) {
+                    let batch = this._generateBatch();
+                    return {
+                        ...state,
+                        name: "revealed",
+                        batch,
+                        cube: { ...state.cube, state: batch.cases[0].state, levelSuccess: true },
+                        case: batch.cases[0]
+                    };
+                } else {
+                    let nextIndex = state.batch.index + 1;
+                    return {
+                        ...state,
+                        name: "revealed",
+                        batch: { ...state.batch, index: nextIndex },
+                        cube: { ...state.cube, state: state.batch.cases[nextIndex].state, levelSuccess: true },
+                        case: state.batch.cases[nextIndex]
+                    };
+                }
+            }
             if (state.name === "revealed") {
                 return this._updateCase();
             }
@@ -308,21 +339,21 @@ export class FbdrStateM extends BlockTrainerStateM {
         let cube = CubeUtil.get_random_with_mask(Mask.fs_back_mask);
         for (let i = 0; i < 1000; i++) {
             if (this._edge_piece_in_pattern(cube, 7, this.allowed_dr) &&
-                this._edge_piece_in_pattern(cube, 8, this.allowed_pedge)) break;
+                this._edge_piece_in_pattern(cube, 8, this.allowed_pedge) &&
+                this._edge_piece_in_pattern(cube, 9, this.allowed_pedge2)) break;
             cube = CubeUtil.get_random_with_mask(Mask.fs_back_mask);
         }
         return cube;
-        //return CubieCube.apply(cube, rand_choice(m_premove));
     }
     _get_random_fs_front() {
         let cube = CubeUtil.get_random_with_mask(Mask.fs_front_mask);
         for (let i = 0; i < 1000; i++) {
             if (this._edge_piece_in_pattern(cube, 7, this.allowed_dr) &&
-                this._edge_piece_in_pattern(cube, 9, this.allowed_pedge)) break;
+                this._edge_piece_in_pattern(cube, 9, this.allowed_pedge) &&
+                this._edge_piece_in_pattern(cube, 8, this.allowed_pedge2)) break;
             cube = CubeUtil.get_random_with_mask(Mask.fs_front_mask);
         }
         return cube;;
-        //return CubieCube.apply(cube, rand_choice(m_premove));
     }
     edgePositionMap : [number, number][] = [
         [0, 0], [1, 0],
@@ -336,6 +367,7 @@ export class FbdrStateM extends BlockTrainerStateM {
         [0, 11], [1, 11]
     ]
     allowed_pedge : [number, number][] = []
+    allowed_pedge2 : [number, number][] = []
     allowed_dr : [number, number][] = []
     getLevelSelector() {return this.state.config.fbdrLevelSelector}
     getRandomAnyLevel(): RandomCubeT {
@@ -346,8 +378,9 @@ export class FbdrStateM extends BlockTrainerStateM {
         const solvers = [fbOnly ? "fb" : "fbdr"];
         const ssolver = useMin2PhaseScramble ? "min2phase" : solvers[0]
         let active = this.state.config.fbdrSelector.getActiveNames()[0];
-        //console.log("active", active)
         this.allowed_pedge = this.state.config.fbdrPosSelector1.flags.map( (value, i) => [value, i])
+            .filter( ([value, i]) => value ).map( ([value, i]) => this.edgePositionMap[i] )
+        this.allowed_pedge2 = this.state.config.fbdrPosSelector2.flags.map( (value, i) => [value, i])
             .filter( ([value, i]) => value ).map( ([value, i]) => this.edgePositionMap[i] )
         this.allowed_dr = this.state.config.fbdrPosSelector3.flags.map( (value, i) => [value, i])
             .filter( ([value, i]) => value ).map( ([value, i]) => this.edgePositionMap[i] )
@@ -456,8 +489,28 @@ export class FsStateM extends BlockTrainerStateM {
     levelMaxAttempt = 2000;
 
     getLevelSelector() {return this.state.config.fsLevelSelector}
+    edgePositionMap : [number, number][] = [
+        [0, 0], [1, 0],
+        [0, 1], [1, 1],
+        [0, 2], [1, 2],
+        [0, 3], [1, 3],
+        [0, 4], [1, 4],
+        [0, 6], [1, 6],
+        [0, 7], [1, 7],
+        [0, 10], [1, 10],
+        [0, 11], [1, 11]
+    ]
+    allowed_dr: [number, number][] = []
     getRandomAnyLevel() {
-        let cube = CubeUtil.get_random_with_mask(Mask.empty_mask);
+        this.allowed_dr = this.state.config.fsDrPosSelector.flags.map( (value, i) => [value, i])
+            .filter( ([value, i]) => value ).map( ([value, i]) => this.edgePositionMap[i] )
+        let cube: CubieCube = CubeUtil.get_random_with_mask(Mask.empty_mask);
+        for (let i = 0; i < 1000; i++) {
+            cube = CubeUtil.get_random_with_mask(Mask.empty_mask);
+            let dr_ep = cube.ep.indexOf(7);
+            let dr_eo = cube.eo[dr_ep];
+            if (this.allowed_dr.find(([eo, ep]) => eo === dr_eo && ep === dr_ep)) break;
+        }
         let name = this.state.config.fsSelector.getActiveName()
         if (name === "Front FS") {
             return {cube, solvers: ["fs-front"], ssolver: "fb"}
@@ -476,8 +529,22 @@ export class FsDrStateM extends BlockTrainerStateM {
     levelMaxAttempt = 1000;
 
     getLevelSelector() {return this.state.config.fsLevelSelector}
+    edgePositionMap: [number, number][] = [
+        [0, 0], [1, 0], [0, 1], [1, 1], [0, 2], [1, 2],
+        [0, 3], [1, 3], [0, 4], [1, 4], [0, 6], [1, 6],
+        [0, 7], [1, 7], [0, 10], [1, 10], [0, 11], [1, 11]
+    ]
+    allowed_dr: [number, number][] = []
     getRandomAnyLevel() {
-        let cube = CubeUtil.get_random_with_mask(Mask.empty_mask);
+        this.allowed_dr = this.state.config.fsDrPosSelector.flags.map( (value, i) => [value, i])
+            .filter( ([value, i]) => value ).map( ([value, i]) => this.edgePositionMap[i] )
+        let cube: CubieCube = CubeUtil.get_random_with_mask(Mask.empty_mask);
+        for (let i = 0; i < 1000; i++) {
+            cube = CubeUtil.get_random_with_mask(Mask.empty_mask);
+            let dr_ep = cube.ep.indexOf(7);
+            let dr_eo = cube.eo[dr_ep];
+            if (this.allowed_dr.find(([eo, ep]) => eo === dr_eo && ep === dr_ep)) break;
+        }
         let name = this.state.config.fsSelector.getActiveName()
         if (name === "Front FS") {
             return {cube, solvers: ["fsdr-front"], ssolver: "fbdr"}

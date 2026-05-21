@@ -2,16 +2,14 @@ import React from "react";
 
 import makeStyles from '@mui/styles/makeStyles';
 import Toolbar from '@mui/material/Toolbar';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import InfoIcon from '@mui/icons-material/Info';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import Brightness6Icon from '@mui/icons-material/Brightness6';
+import TuneIcon from '@mui/icons-material/Tune';
 import IconButton from "@mui/material/IconButton";
-import { SelectChangeEvent } from '@mui/material/Select';
 import { getTabModes } from "./AppView";
 import { X } from "../Translation";
 
@@ -33,34 +31,35 @@ const useStyles = makeStyles(theme => ({
     },
     bar: {
       backgroundColor: theme.palette.background.paper,
-      backdropFilter: 'blur(20px)',
-      WebkitBackdropFilter: 'blur(20px)',
-      borderBottom: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'),
+      borderBottom: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
       display: "flex",
       flexWrap: "nowrap",
       justifyContent: "space-between",
-      minHeight: 52,
+      minHeight: 50,
     },
     select: {
-      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.04)',
+      backgroundColor: 'transparent',
       color: theme.palette.text.primary,
-      borderRadius: 20,
-      paddingLeft: 18,
-      paddingRight: 8,
-      marginLeft: 12,
-      height: 38,
+      borderRadius: 4,
+      paddingLeft: 12,
+      paddingRight: 4,
+      marginLeft: 8,
+      height: 34,
       fontWeight: 500,
-      fontSize: "0.9rem",
-      lineHeight: '38px',
+      fontSize: "0.875rem",
+      lineHeight: '34px',
+      '&:hover': {
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+      },
       [theme.breakpoints.down('sm')]: {
-        paddingLeft: 14,
+        paddingLeft: 10,
         marginRight: -5,
-        marginLeft: 8,
+        marginLeft: 4,
         fontSize: "0.8rem",
-        height: 34,
+        height: 32,
       },
       [theme.breakpoints.down(400)]: {
-        maxWidth: 150,
+        maxWidth: 140,
       },
       '& .MuiSelect-icon': {
         color: theme.palette.text.secondary,
@@ -68,84 +67,74 @@ const useStyles = makeStyles(theme => ({
     },
     toolbarBtn: {
       color: theme.palette.text.secondary,
-      borderRadius: 18,
-      width: 36,
-      height: 36,
+      borderRadius: 4,
+      width: 34,
+      height: 34,
       transition: 'all 0.15s ease',
-      '&:active': {
-        transform: 'scale(0.92)',
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+      '&:hover': {
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+      },
+      [theme.breakpoints.down('md')]: {
+        width: 44,
+        height: 44,
       },
     },
     langBtn: {
-      fontSize: "0.8rem",
+      fontSize: "0.75rem",
       fontWeight: 600,
-      color: theme.palette.primary.main,
-      borderRadius: 14,
-      minWidth: 32,
-      height: 32,
-      lineHeight: '32px',
+      color: theme.palette.text.secondary,
+      borderRadius: 4,
+      minWidth: 30,
+      height: 30,
+      lineHeight: '30px',
       textAlign: 'center',
-      padding: '0 10px',
-      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(159,164,194,0.12)' : 'rgba(85,108,214,0.08)',
+      padding: '0 8px',
+      backgroundColor: 'transparent',
       cursor: 'pointer',
       border: 'none',
       transition: 'all 0.15s ease',
-      '&:active': {
-        transform: 'scale(0.94)',
+      '&:hover': {
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+        color: theme.palette.primary.main,
+      },
+      [theme.breakpoints.down('md')]: {
+        height: 44,
+        lineHeight: '44px',
+        minWidth: 44,
       },
     }
 }))
 
 
-function TopBarView(props: { value: number, onChange: (x: number) => void,
-    toggleFav: () => void, toggleBright: () => void, handleInfoOpen: () => void,
+function TopBarView(props: { value: number,
+    toggleFav: () => void, toggleSettings: () => void, toggleBright: () => void, handleInfoOpen: () => void,
     toggleLanguage: () => void, language: string } )
 {
     let classes = useStyles()
-    let { value, onChange, toggleFav, toggleBright, handleInfoOpen, toggleLanguage, language } = props
+    let { value, toggleFav, toggleSettings, toggleBright, handleInfoOpen, toggleLanguage, language } = props
     const modes = getTabModes();
-    let value_str = modes[value][1] || ""
-    let handleChange = (event: SelectChangeEvent<String>) =>  {
-        let tab_idx = modes.findIndex(x => x[1] === (event.target.value as string))
-        onChange(tab_idx)
-        //
-    }
+    let currentModeName = modes[value] ? (modes[value][2] || modes[value][1]) : ""
     const is_sm = useMediaQuery(theme.breakpoints.down('sm'));
     return (
         <div>
             <Box boxShadow={0} >
             <Toolbar className={classes.bar} disableGutters>
-            <Box paddingX={is_sm ? 1.5 : 2}>
+            <Box paddingX={is_sm ? 1.5 : 2} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Typography style={{fontSize: "0.85rem", fontWeight: 600, color: theme.palette.text.primary,
                 letterSpacing: '-0.01em', whiteSpace: 'nowrap'}} >
                 {is_sm ? X.NAV.APP_TITLE_SHORT : X.NAV.APP_TITLE}
               </Typography>
-            </Box>
-            <Box>
-                <Select
-                     fullWidth
-                     value={value_str}
-                     className={classes.select}
-                     onChange={handleChange}
-                     onFocus={(e) => e.target.blur()}
-                     variant="standard"
-                     disableUnderline
-                >
-                    { modes.map( (s, i) =>
-                      <MenuItem key={i} value={s[1]} sx={{mx: 1.5}} style={{fontSize: "1.0rem", marginBottom: 4,
-                        borderRadius: 10, margin: '2px 6px', padding: '8px 14px'}}>
-                        {is_sm ? s[2] : s[1]}
-                      </MenuItem>
-                    )}
-                </Select>
+              <Typography style={{fontSize: "0.8rem", fontWeight: 400, color: theme.palette.text.secondary,
+                whiteSpace: 'nowrap'}}>
+                — {currentModeName}
+              </Typography>
             </Box>
             <Box style={{flexGrow: 10}}> </Box>
             <Box sx={{display: 'flex', alignItems: 'center', gap: 0.25, paddingRight: 1}}>
-              <button onClick={toggleLanguage} className={classes.langBtn}
-                  onFocus={(e) => e.target.blur()}>
-                  {language === "zh" ? "EN" : "中"}
-              </button>
+              <IconButton onClick={toggleSettings} size="small" className={classes.toolbarBtn}
+                onFocus={(e) => e.target.blur()}>
+                  <TuneIcon fontSize="small" />
+              </IconButton>
               <IconButton onClick={toggleFav} size="small" className={classes.toolbarBtn}
                 onFocus={(e) => e.target.blur()}>
                   <BookmarkIcon fontSize="small" />
@@ -158,6 +147,10 @@ function TopBarView(props: { value: number, onChange: (x: number) => void,
                 onFocus={(e) => e.target.blur()}>
                   <InfoIcon fontSize="small" />
               </IconButton>
+              <button onClick={toggleLanguage} className={classes.langBtn}
+                  onFocus={(e) => e.target.blur()}>
+                  {language === "zh" ? "EN" : "中"}
+              </button>
             </Box>
             </Toolbar>
             </Box>

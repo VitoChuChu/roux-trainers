@@ -29,24 +29,28 @@ const makeDialog = <P extends object>(
 
   return (
   <Box>
-    <FormLabel component="legend">{props.label}</FormLabel>
-    <Box height={8}/>
-    <Button color="primary" variant="outlined" style={{borderWidth: 2}} onClick={handleClickOpen}>
-      <SettingsIcon fontSize="small" color="primary" style={{marginLeft: -6, marginRight: 3}}></SettingsIcon>
+    <FormLabel component="legend" sx={{ color: 'text.disabled', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{props.label}</FormLabel>
+    <Box height={6}/>
+    <Button color="primary" variant="outlined" size="small"
+      sx={{ borderRadius: 4, textTransform: 'none', fontWeight: 500, borderWidth: 1, '&:hover': { borderWidth: 1 } }}
+      onClick={handleClickOpen}>
+      <SettingsIcon fontSize="small" color="primary" sx={{ mr: 0.5 }} />
         {X.COMMON.SELECT}
     </Button>
     <Box height={8}/>
 
 
-    <Dialog disableEscapeKeyDown open={open} onClose={handleClose} maxWidth="md" style={{marginLeft: 10,marginRight: 10}}>
-      <DialogTitle> {title} </DialogTitle>
-      <DialogContent >
+    <Dialog disableEscapeKeyDown open={open} onClose={handleClose} maxWidth="md"
+      PaperProps={{ sx: { borderRadius: 8, padding: 2 } }}>
+      <DialogTitle sx={{ fontSize: '0.95rem', fontWeight: 600, pb: 0.5 }}> {title} </DialogTitle>
+      <DialogContent sx={{ pt: 1 }}>
         <Box paddingLeft={1}>
           <Component {...props}/>
         </Box>
       </DialogContent>
-      <DialogActions>
-          <Button onClick={handleClose} color="primary" size="large" >
+      <DialogActions sx={{ pt: 0 }}>
+          <Button onClick={handleClose} color="primary"
+            sx={{ borderRadius: 4, textTransform: 'none', fontWeight: 500, fontSize: '0.85rem' }}>
             {X.COMMON.CLOSE}
           </Button>
       </DialogActions>

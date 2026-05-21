@@ -32,10 +32,9 @@ import { BlockTrainerStateM } from '../reducers/BlockTrainerStateM';
 
 const useStyles = makeStyles(theme => ({
     container: {
-      paddingTop: theme.spacing(1),
-      paddingBottom: theme.spacing(4),
+      paddingTop: theme.spacing(0),
+      paddingBottom: theme.spacing(6),
       backgroundColor: theme.palette.background.default,
-      transition: "all .3s ease-in-out",
       [theme.breakpoints.down(768)]: {
         paddingTop: theme.spacing(0.5),
         paddingBottom: theme.spacing(3),
@@ -45,21 +44,18 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
       width: "100%",
-      height: 52,
-      borderRadius: 14,
-      fontSize: '1.05rem',
-      fontWeight: 600,
+      height: 40,
+      borderRadius: 6,
+      fontSize: '0.9rem',
+      fontWeight: 500,
       letterSpacing: '-0.01em',
-      boxShadow: '0 2px 12px rgba(85,108,214,0.25)',
-      transition: 'all 0.2s ease',
-      '&:active': {
-        transform: 'scale(0.98)',
-      },
+      boxShadow: 'none',
+      transition: 'all 0.15s ease',
       [theme.breakpoints.down(768)]: {
-        height: 56,
-        fontSize: '1.15rem',
-        padding: '14px 24px',
-        borderRadius: 16,
+        height: 46,
+        fontSize: '1rem',
+        padding: '12px 24px',
+        borderRadius: 6,
       },
     },
     paper: {
@@ -67,13 +63,37 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
-      marginBottom: 14,
-      borderRadius: 18,
-      border: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'),
-      boxShadow: '0 1px 3px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.04)',
+      marginBottom: 8,
+      borderRadius: 6,
+      border: 'none',
+      boxShadow: 'none',
+      backgroundColor: theme.palette.background.paper,
       [theme.breakpoints.down(768)]: {
         padding: 12,
-        marginBottom: 10,
+        marginBottom: 8,
+      },
+    },
+    solutionPaper: {
+      padding: theme.spacing(2.5),
+      marginBottom: 8,
+      borderRadius: 6,
+      border: 'none',
+      boxShadow: 'none',
+      backgroundColor: theme.palette.background.paper,
+      [theme.breakpoints.down(768)]: {
+        padding: 12,
+        marginBottom: 8,
+      },
+    },
+    buttonPaper: {
+      padding: theme.spacing(2, 2.5),
+      marginBottom: 8,
+      borderRadius: 6,
+      border: 'none',
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
+      [theme.breakpoints.down(768)]: {
+        padding: 12,
       },
     },
     canvasPaper: {
@@ -95,13 +115,13 @@ const useStyles = makeStyles(theme => ({
     },
     setup: {
       whiteSpace: 'pre-line',
-      fontSize: "1.5rem",
-      fontWeight: 500,
+      fontSize: "1.35rem",
+      fontWeight: 400,
       letterSpacing: '-0.01em',
-      lineHeight: 1.3,
+      lineHeight: 1.55,
+      color: theme.palette.text.primary,
       [theme.breakpoints.down('sm')]: {
-      fontSize: "1.25rem",
-      fontWeight: 500
+      fontSize: "1.2rem",
       },
     },
     condGap: {
@@ -117,13 +137,12 @@ const useStyles = makeStyles(theme => ({
       height: 250,
     },
     title : {
-        color: theme.palette.text.secondary,
-        fontWeight: 600,
+        color: theme.palette.text.disabled,
+        fontWeight: 500,
         fontSize: '0.7rem',
-        letterSpacing: '0.05em',
+        letterSpacing: '0.04em',
         textTransform: 'uppercase',
         paddingBottom: 4,
-        borderBottom: 'none',
     },
     sourceIcon : {
         color: theme.palette.text.disabled,
@@ -143,24 +162,23 @@ const useStyles = makeStyles(theme => ({
     configPanel: {
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '24px',
+      gap: '28px 24px',
       [theme.breakpoints.down(768)]: {
         gridTemplateColumns: '1fr',
-        gap: '12px',
+        gap: '14px',
       },
     },
     chainButton: {
       textTransform: 'none',
-      fontSize: '0.75rem',
+      fontSize: '0.725rem',
       fontWeight: 500,
-      padding: '1px 8px',
+      padding: '1px 6px',
       minWidth: 0,
-      lineHeight: 1.6,
-      borderRadius: 8,
-      color: theme.palette.text.disabled,
+      lineHeight: 1.5,
+      borderRadius: 4,
+      color: theme.palette.primary.main,
       '&:hover': {
-        color: theme.palette.primary.main,
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(85,108,214,0.1)' : 'rgba(85,108,214,0.06)',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.08)' : 'rgba(85,108,214,0.06)',
       },
     },
     formControlLabel: {
@@ -181,6 +199,14 @@ const useStyles = makeStyles(theme => ({
           flexDirection: 'column',
         },
       },
+    },
+    sectionLabel: {
+      fontSize: '0.7rem',
+      fontWeight: 500,
+      letterSpacing: '0.05em',
+      textTransform: 'uppercase',
+      color: theme.palette.text.disabled,
+      marginBottom: 2,
     },
   }))
 
@@ -233,15 +259,6 @@ function getMask(state: AppState) : Mask {
     }
     else return Mask.sb_mask
 }
-
-function getHelperTextForMode(mode: Mode) {
-  if (mode === "4c" || mode === "eopair") {
-    return X.LSE.USAGE
-  } else {
-    return null
-  }
-}
-
 
 function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) {
     let { state, dispatch } = props
@@ -340,75 +357,58 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
     const canvas_wh = (gt_sm) ? [400, 350] : [320, 280]
     const ADD_STR = (gt_sm) ? X.COMMON.ADD : "";
 
-    // helper-text
-    let helperText = getHelperTextForMode(state.mode)
-
     let levelSelectionWarning = X.LEVEL_FAIL_WARNING
     let levelSelectionSuccess = state.cube.levelSuccess
 
     const scramblePanel =
-          <Box style={{display: "flex", flexWrap: "wrap", padding: 0}}>
+          <Box style={{display: "flex", flexWrap: "wrap", padding: 0, gap: 8, alignItems: "center"}}>
             <ScrambleInputView display = {setup}
                 dispatch={dispatch} scrambles={state.scrambleInput}/>
 
             <Box>
             {
               gt_sm ?
-              <Button variant={favSelected ? "contained" : "outlined"}
+              <Button variant="outlined"
                   color="primary"
                   size="small"
                   name="fav"
                   onClick={handleFav}
                   startIcon={<FavoriteIcon/>}
+                  sx={{ borderRadius: 4, textTransform: 'none', fontWeight: 500 }}
                   >
                   {favSelected ? "✓" : ADD_STR}
               </Button>
               :
               null
-              // <Button variant={favSelected ? "contained" : "outlined"}
-              //     color="primary"
-              //     size="small"
-              //     name="fav"
-              //     onClick={handleFav}
-              // >
-              //   <Box marginTop={0.5}>
-              //     <FavoriteIcon fontSize="small"/>
-              //   </Box>
-              // </Button>
             }
             </Box>
           </Box>
 
     return (
     <Box className={classes.container}>
-      <Paper className={classes.paper}>
+      <Box className={classes.paper}>
         <Box style={{display: "flex"}}>
-          <Box style={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-            <Box className={classes.title} style={{}}>
+          <Box style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
+            <Box className={classes.title}>
               {X.COMMON.SCRAMBLE}
             </Box>
-          </Box>
-          <Box style={{}} className={classes.fgap} />
-          <Box style={{display: "flex", alignItems: "center", flexGrow: 1}}>
-            <Typography className={classes.setup} >
+            <Typography className={classes.setup} style={{marginTop: 4}}>
                   {setup}
             </Typography>
           </Box>
           <Box style={{}} className={classes.fgap} />
 
           {gt_sm && scramblePanel}
-
-
         </Box>
-      </Paper>
+      </Box>
 
-      <Paper className={ classes.paper}>
+      <Box className={classes.solutionPaper}>
       <Grid container>
 
         <Grid item md={6} sm={12} xs={12} className={classes.condGap}>
           <Box style={{display: "flex" }}>
-            <Box display="flex" >
-                <Box style={{display: "flex", alignSelf: "flex-start"}}> <Box className={classes.title} style={{}}>
+            <Box display="flex">
+                <Box style={{display: "flex", alignSelf: "flex-start"}}> <Box className={classes.title}>
                   {X.COMMON.SOLUTIONS}
                 </Box> </Box>
             </Box>
@@ -416,20 +416,20 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
             <div>
               <Box paddingBottom={2} lineHeight={1}>
                 {(state.name === "hiding") ? (
-                  <Typography style={{whiteSpace: 'pre-line', fontSize: "1.2rem"}}>
+                  <Typography style={{whiteSpace: 'pre-line', fontSize: "1.15rem", fontWeight: 400, lineHeight: 1.6, color: theme.palette.text.secondary}}>
                     {showMoveCountHint ? describe_hide(desc) : ""}
                   </Typography>
                 ) : (state.name === "revealed" || state.name === "revealed_all") ? (
                   desc.map((caseDesc, ci) => (
                     <Box key={ci}>
                       {desc.length > 1 && (
-                        <Typography style={{fontWeight: 600, fontSize: "0.9rem", marginTop: ci > 0 ? 8 : 0}}>
+                        <Typography style={{fontWeight: 600, fontSize: "0.85rem", marginTop: ci > 0 ? 8 : 0, color: theme.palette.text.secondary}}>
                           [{caseDesc.kind}]:
                         </Typography>
                       )}
                       {caseDesc.algs.map((alg, ai) => (
                         <Box key={ai} style={{display: 'flex', alignItems: 'center', marginBottom: 2}}>
-                          <Typography style={{flex: 1, fontSize: "1.2rem"}}>
+                          <Typography style={{flex: 1, fontSize: "1.15rem", fontWeight: 400, lineHeight: 1.6}}>
                             {alg}
                           </Typography>
                           {showChainButtons && alg && (
@@ -468,24 +468,24 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
           </Box>
         </Grid>
       </Grid>
-      </Paper>
+      </Box>
 
-      <Paper className={classes.paper} style={{paddingTop: 22, paddingBottom: 22}}>
+      <Box className={classes.buttonPaper}>
 
       <Grid container spacing={1}>
-        <Grid item xs={12} sm={4} md={3} marginLeft={1}>
+        <Grid item xs={12} sm={4} md={3}>
           <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
-            size="large" variant="contained" color="primary"
+            variant="outlined" color="primary"
             onClick={handleSpace}>
               {spaceButtonText}
           </Button>
         </Grid>
         {
           !levelSelectionSuccess ?
-          <Grid item xs={1} marginLeft={1}>
+          <Grid item xs={1}>
             <CustomTooltip title={levelSelectionWarning}>
               <IconButton>
-                <ErrorOutlineIcon sx={{ fontSize: 30 }}/>
+                <ErrorOutlineIcon sx={{ fontSize: 28 }}/>
               </IconButton>
             </CustomTooltip>
           </Grid> :
@@ -495,240 +495,10 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
 
       </Grid>
 
-      </Paper>
-
-      <Box height={28}/>
-
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <ConfigPanelGroup {...{state, dispatch, classes} } />
       </Box>
 
-      {helperText ?
-      <Fragment>
-        <Box height={28}/>
-        <Box sx={{
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: 16,
-          padding: 3,
-          border: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'),
-        }}>
-        <FormControl component="fieldset" className={classes.prompt}>
-          <FormLabel component="legend">
-            <pre style={{ fontFamily: 'inherit', lineHeight: 1.6 }}>
-              {helperText}
-            </pre>
-          </FormLabel>
-          </FormControl>
-        </Box>
-      </Fragment> : null }
     </Box>
     );
-}
-
-
-
-function ConfigPanelGroup(props: {state: AppState, dispatch: React.Dispatch<Action>, classes: any }) {
-  let { state, dispatch, classes } = props
-  if (state.mode === "ss") {
-    let DRManip = [
-      // names: ["UF", "FU", "UL", "LU", "UB", "BU", "UR", "RU", "DF", "FD", "DB", "BD",
-      // "DR", "RD", "BR", "RB", "FR", "RF"],
-      { name: X.LEVEL_SELECT.TOGGLE_SELECT_ALL, enableIdx: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
-      { name: X.LEVEL_SELECT.TOGGLE_ALL_ORIENTED, enableIdx: [0, 2, 4, 6, 8, 10, 12, 14, 16] },
-    ]
-    return (
-      <Fragment>
-      <SliderSelect {...{state, dispatch, select: "ssLevelSelector"}} />
-
-      <Box className={classes.configPanel}>
-        <SingleSelect {...{state, dispatch, select: "ssSelector"}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: "ssPairOnlySelector"}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: "solutionNumSelector"}}> </SingleSelect>
-        {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-
-        <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: "showCube"}}> </SingleSelect>
-
-        <Box>
-          <SingleSelect {...{state, dispatch, select: "obscureNonLRSelector"}}> </SingleSelect>
-          {state.config.obscureNonLRSelector.getActiveName() === "On" &&
-            <SingleSelect {...{state, dispatch, select: "obscureStickerWidthSelector"}}> </SingleSelect>
-          }
-          {state.config.obscureNonLRSelector.getActiveName() === "On" &&
-            <SingleSelect {...{state, dispatch, select: "obscureCornerMaskSelector"}}> </SingleSelect>
-          }
-        </Box>
-
-        <MultiSelect {...{state, dispatch, select: "ssPosSelector", options: {manipulators: DRManip} }}> </MultiSelect>
-        <ColorPanel {...{state, dispatch}} />
-      </Box>
-
-      </Fragment>
-    )
-  } else if (state.mode === "fbdr") {
-    let select1 = "fbdrSelector"
-    let select2 = "fbOnlySelector"
-    let select3 = "fbPairSolvedSelector"
-    let select4 = "fbdrScrambleSelector"
-    let select5 = "solutionNumSelector"
-
-    let LPEdgeManip = [
-      { name: X.LEVEL_SELECT.TOGGLE_SELECT_ALL, enableIdx: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17] },
-    ]
-    let pos1 = "fbdrPosSelector1"
-    let pos3 = "fbdrPosSelector3"
-
-    return (
-      <Fragment>
-      <SliderSelect {...{state, dispatch, select: "fbdrLevelSelector"}} />
-
-      <Box className={classes.configPanel}>
-        <SingleSelect {...{state, dispatch, select: select2}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: select1}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: select3}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: select4}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: select5}}> </SingleSelect>
-        {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-        <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-        <SingleSelect {...{state, dispatch, select: "showCube"}}> </SingleSelect>
-
-        <MultiSelect {...{state, dispatch, select: pos1, options: {manipulators: LPEdgeManip} }}> </MultiSelect>
-        <MultiSelect {...{state, dispatch, select: pos3, options: {manipulators: LPEdgeManip} }}> </MultiSelect>
-        <ColorPanel {...{state, dispatch}} />
-      </Box>
-
-      </Fragment>
-    )
-  } else if (state.mode === "fb") {
-    return (
-      <Fragment>
-        <SliderSelect {...{state, dispatch, select: "fbLevelSelector"}} />
-        {/* <SingleSelect {...{state, dispatch, select: "fbStratSelector"}} />  */}
-
-        <Box className={classes.configPanel}>
-          <SingleSelect {...{ state, dispatch, select: "fbPieceSolvedSelector" }}> </SingleSelect>
-          {/* <SingleSelect {...{state, dispatch, select: "fbBasisSelector"}} />  */}
-          <SingleSelect {...{ state, dispatch, select: "solutionNumSelector"}}> </SingleSelect>
-        {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-          <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-          <SingleSelect {...{state, dispatch, select: "showCube"}}> </SingleSelect>
-
-          <ColorPanel {...{state, dispatch}} />
-        </Box>
-
-      </Fragment>
-    )
-   } else if (state.mode === "fs") {
-    let select1 = "fsSelector"
-    let select2 = "solutionNumSelector"
-
-    return (
-      <Fragment>
-        <SliderSelect {...{state, dispatch, select: "fsLevelSelector"}} />
-
-        <Box className={classes.configPanel}>
-          <SingleSelect {...{ state, dispatch, select: select1 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select2 }}> </SingleSelect>
-          {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-          <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-          <SingleSelect {...{state, dispatch, select: "showCube" }}> </SingleSelect>
-
-          <SingleSelect {...{state, dispatch, select: "chainTargetSelector"}}> </SingleSelect>
-
-          <ColorPanel {...{state, dispatch}} />
-        </Box>
-
-      </Fragment>
-    )
-   } else if (state.mode === "fsdr") {
-    let select1 = "fsSelector"
-    let select2 = "solutionNumSelector"
-
-    return (
-      <Fragment>
-        <SliderSelect {...{state, dispatch, select: "fsLevelSelector"}} />
-
-        <Box className={classes.configPanel}>
-          <SingleSelect {...{ state, dispatch, select: select1 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select2 }}> </SingleSelect>
-          {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-          <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-          <SingleSelect {...{state, dispatch, select: "showCube" }}> </SingleSelect>
-
-          <SingleSelect {...{state, dispatch, select: "chainTargetSelector"}}> </SingleSelect>
-
-          <ColorPanel {...{state, dispatch}} />
-        </Box>
-
-      </Fragment>
-    )
-   }
-   else if (state.mode === "fbss") {
-    let select1 = "fbssLpSelector"
-    let select2 = "fbssSsSelector"
-    let select3 = "solutionNumSelector"
-
-    return (
-      <Fragment>
-        <SliderSelect {...{state, dispatch, select: "fbssLevelSelector"}} />
-        <Box className={classes.configPanel}>
-          <SingleSelect {...{ state, dispatch, select: select1 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select2 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select3 }}> </SingleSelect>
-          {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-          <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-          <ColorPanel {...{state, dispatch}} />
-        </Box>
-
-      </Fragment>
-    )
-   }
-   else if (state.mode === "4c"){
-    let select1 = "lseStageSelector"
-    let select2 = "lseMCSelector"
-    let select3 = "lseBarSelector"
-    let select4 = "solutionNumSelector"
-
-    return (
-      <Fragment>
-        <Box className={classes.configPanel}>
-          <SingleSelect {...{ state, dispatch, select: select1 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select2 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select3 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select4 }}> </SingleSelect>
-          {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-          <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-          <SingleSelect {...{state, dispatch, select: "showCube"}}> </SingleSelect>
-
-          <ColorPanel {...{state, dispatch}} />
-        </Box>
-      </Fragment>
-    )
-   } else if (state.mode === "eopair"){
-    let select1 = "lseEOSelector"
-    let select2 = "lseEOLRMCSelector"
-    let select3 = "lseBarbieSelector"
-    let select4 = "lseEOLRScrambleSelector"
-    let select5 = "solutionNumSelector"
-
-    return (
-      <Fragment>
-        <Box className={classes.configPanel}>
-          <MultiSelect {...{ state, dispatch, select: select1, options: {noDialog: true}} }> </MultiSelect>
-          <SingleSelect {...{ state, dispatch, select: select2 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select3 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select4 }}> </SingleSelect>
-          <SingleSelect {...{ state, dispatch, select: select5 }}> </SingleSelect>
-          {/* <SingleSelect {...{state, dispatch, select: "evaluator"}}> </SingleSelect> */}
-          <SingleSelect {...{state, dispatch, select: "moveCountHint"}}> </SingleSelect>
-          <SingleSelect {...{state, dispatch, select: "showCube"}}> </SingleSelect>
-
-          <ColorPanel {...{state, dispatch}} />
-        </Box>
-      </Fragment>
-    )
-   }
-   else return <Fragment/>
 }
 
 

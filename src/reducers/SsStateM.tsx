@@ -39,8 +39,15 @@ export class SsStateM extends BlockTrainerStateM {
         ];
         //["UF", "FU", "UL", "LU", "UB", "BU", "UR", "RU", "DF", "FD", "DB", "BD",
         //"DR", "RD", "BR", "RB", "FR", "RF"],
+        const eoFilter = this.state.config.ssEOSelector.getActiveName();
         let allowed_dr_eo_ep_patterns = this.state.config.ssPosSelector.flags.map((value, i) => [value, i])
-            .filter(([value, i]) => value).map(([value, i]) => drOPPositionMap[i]);
+            .filter(([value, i]) => value)
+            .filter(([value, i]) => {
+                if (eoFilter === "Oriented") return i % 2 === 0;
+                if (eoFilter === "Misoriented") return i % 2 === 1;
+                return true;
+            })
+            .map(([value, i]) => drOPPositionMap[i]);
         let cube = this._get_random_fb(allowed_dr_eo_ep_patterns);
         let solvers, ssolver;
         let solverMode = this.state.config.ssPairOnlySelector.getActiveName();

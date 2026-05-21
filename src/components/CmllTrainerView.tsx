@@ -34,10 +34,14 @@ const useStyles = makeStyles(theme => ({
       },
     },
     paper: {
-      padding: theme.spacing(3),
+      padding: theme.spacing(2.5),
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
+      borderRadius: 6,
+      border: 'none',
+      boxShadow: 'none',
+      backgroundColor: theme.palette.background.paper,
     },
     fixedHeight: {
       height: 350,
@@ -47,22 +51,44 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       overflow: 'auto',
       flexDirection: 'column',
+      borderRadius: 6,
     },
     title : {
         color: theme.palette.text.disabled,
         fontWeight: 500,
-        fontSize: 18,
-        borderBottom: "2px solid",
+        fontSize: '0.7rem',
+        letterSpacing: '0.04em',
+        textTransform: 'uppercase',
     },
     prompt: {
       color: theme.palette.text.secondary,
     },
     button: {
       width: "100%",
+      height: 38,
+      borderRadius: 6,
+      fontSize: '0.9rem',
+      fontWeight: 500,
+      letterSpacing: '-0.01em',
+      boxShadow: 'none',
       [theme.breakpoints.down(768)]: {
-        height: 52,
-        fontSize: '1.1rem',
-        borderRadius: 14,
+        height: 44,
+        fontSize: '1rem',
+        borderRadius: 6,
+      },
+    },
+    revealButton: {
+      borderRadius: 4,
+      textTransform: 'none',
+      fontWeight: 500,
+      fontSize: '0.85rem',
+    },
+    usageText: {
+      padding: '20px 0',
+      '& pre': {
+        fontFamily: 'inherit',
+        lineHeight: 1.7,
+        fontSize: '0.825rem',
       },
     },
 }))
@@ -146,71 +172,8 @@ export function CmllTrainerView(props: { state: AppState, dispatch: React.Dispat
     }
     const theme = useTheme()
 
-    const cmllSel = "cmllSelector";
-    const cmllcubemaskSel = "cmllCubeMaskSelector";
-    const cmllaufSel = "cmllAufSelector";
-    const triggerSel = "triggerSelector";
-    const hyperoriSel = "hyperOriSelector";
-    const _2d3dSel = "cmll2D3DSelector";
-    const kataSel = "cmllKataSelector";
-
-
-    const panel = (
-      <Box>
-        <CaseSelectDialog {...{state, dispatch, settings: {
-          selector: "cmllCaseSelector",
-          algs: cmll_algs_raw,
-          groups: ["o", "s", "as", "t", "u", "l", "pi", "h"],
-          visualizeMask: "cmll",
-          cubeOptions: {
-            colorScheme: {
-              0: '#FEFE00', // URFDLB. U = yellow
-              1: '#ffa100', // R = o
-              2: '#00b800', // F = g
-              3: '#404040', // D = w
-              4: '#ee0000', // L = r
-              5: '#0000f2', // B = blue
-            }
-          }
-          },
-          label: X.CONFIG.SELECT_CMLL_CASES
-        } }/>
-
-        <MultiSelect {...{state, dispatch, select: cmllaufSel, options: { label: X.CONFIG.CMLL_AUF, noDialog: true} }} />
-        <Box width={16} display="inline-block"></Box>
-        <MultiSelect {...{state, dispatch, select: triggerSel, options: { label: X.CONFIG.SB_LAST_PAIR_TRIGGER, noDialog: true} } } />
-
-        <Box height={10}/>
-        <Divider />
-        <Box height={20}/>
-
-
-        <SingleSelect {...{state, dispatch, select: cmllcubemaskSel, label: X.CONFIG.VIRTUAL_CUBE}} />
-        <br/>
-
-        <SingleSelect {...{state, dispatch, select: _2d3dSel, label: X.CONFIG.VISUALIZE_AS } } />
-        <Box width={16} display="inline-block"></Box>
-
-        {use3D     && <SingleSelect {...{state, dispatch, select: "cmll3DFaceSelector", label: X.CONFIG.SHOW_L_FACE } } />}
-        {useFlat3D && <SingleSelect {...{state, dispatch, select: "cmllflat3DFaceSelector", label: X.CONFIG.LR_FACES_REVEAL } } />}
-
-        <br/>
-        <SingleSelect {...{state, dispatch, select: kataSel, label: X.CONFIG.RECOG_STICKERS_ONLY } } />
-        <ColorPanel {...{state, dispatch}} />
-
-        <Box height={20}/>
-        <Divider />
-        <Box height={20}/>
-
-        {/* <SingleSelect {...{state, dispatch, select: "cmllBatchModeSelector", label: "Batch Mode" } } /> */}
-        <SingleSelect {...{state, dispatch, select: hyperoriSel, label: X.CONFIG.NMCLL_RECOG_MODE } } />
-        {hyperori !== "off" && <NMCLLSelect {...{state, dispatch}}/>}
-
-      </Box>
-    )
-
     React.useEffect( () =>  {
-      setReveal(false) // todo: drive this from props. now there's a delay which causes the answer to leak for a split second
+      setReveal(false)
     }, [ state ])
     const [reveal, setReveal] = React.useState(false)
     const handleClick = () => {
@@ -229,7 +192,6 @@ export function CmllTrainerView(props: { state: AppState, dispatch: React.Dispat
           (document.activeElement as HTMLElement)?.blur();
         }
         state.keyMapping.handle(event, dispatch);
-        // intercept keyboard event for local control
         if (event.key === "/") {
           setReveal(true)
         }
@@ -306,95 +268,54 @@ export function CmllTrainerView(props: { state: AppState, dispatch: React.Dispat
 
     <Box height = {5}/>
 
-    <Paper className={classes.paper} elevation={2}>
+    <Paper className={classes.paper}>
     <Grid container spacing={2}>
 
-      <Grid item xs={3}>
-
-      <Box display="flex">
-              <Box>
-              <Box className={classes.title} >
-                {X.COMMON.SCRAMBLE}
-              </Box> </Box>
-      </Box>
-      </Grid>
-      <Grid item xs={9}>
-        <Box paddingBottom={1} lineHeight={1} >
-          <Typography style={{whiteSpace: 'pre-line', fontSize: 18, fontWeight: 500}}>
-            { setup }
-          </Typography>
+      <Grid item xs={12}>
+        <Box className={classes.title} style={{marginBottom: 4}}>
+          {X.COMMON.SCRAMBLE}
         </Box>
-
+        <Typography style={{whiteSpace: 'pre-line', fontSize: '1.1rem', fontWeight: 400}}>
+          { setup }
+        </Typography>
       </Grid>
-      <Grid item xs={3}>
-
-      <Box display="flex">
-              <Box>
-              <Box className={classes.title} >
-                {X.COMMON.CASE}
-              </Box> </Box>
-      </Box>
-      </Grid>
+      <Grid item xs={12}>
+        <Box className={classes.title} style={{marginBottom: 4}}>
+          Case
+        </Box>
       { (!reveal) ?
-      <Grid item xs={3}>
-      <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
-      size="medium" variant="outlined" color="primary" onClick={handleClick}> { /* className={classes.margin}>  */ }
-          {X.COMMON.SHOW}
+      <Button onFocus={(evt) => evt.target.blur() } className={classes.revealButton}
+      size="small" variant="outlined" color="primary" onClick={handleClick}>
+          Show
       </Button>
-      </Grid>
       :
-      <Grid item xs={9}>
-        <Box paddingBottom={1} lineHeight={1} >
-          <Typography style={{whiteSpace: 'pre-line', fontSize: 18, fontWeight: 500}}>
-            { alg }
-          </Typography>
-        </Box>
-
-        <Box borderColor="primary.main"
-                style={{transition: "all .3s ease" }}>
-                {/* TODO: make the cube colors match above */}
-                <CaseVisualizer
-                  name=""
-                  size={100}
-                  alg={alg}
-                  mask="cmll"
-                  color={colorSchemeColors}
-                  cubeOptions={{}}
-                />
-        </Box>
-
-      </Grid>
+      <Box>
+        <Typography style={{whiteSpace: 'pre-line', fontSize: '1.1rem', fontWeight: 400, marginBottom: 12}}>
+          { alg }
+        </Typography>
+        <CaseVisualizer
+          name=""
+          size={100}
+          alg={alg}
+          mask="cmll"
+          color={colorSchemeColors}
+          cubeOptions={{}}
+        />
+      </Box>
       }
+      </Grid>
     </Grid>
-    <Box height={30}/>
+    <Box height={24}/>
 
     <Grid container spacing={0}>
         <Grid item xs={12} sm={4} md={3}>
           <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
-          size="medium" variant="contained" color="primary" onClick={handleNext}>
-              {X.COMMON.NEXT}
+          variant="outlined" color="primary" onClick={handleNext}>
+              Next
           </Button>
         </Grid>
     </Grid>
     </Paper>
-
-
-    <Box height={20}/>
-      <Divider />
-    <Box height={20}/>
-    { panel }
-
-    <Box height={20}/>
-      <Divider />
-    <Box height={15}/>
-
-    <Box>
-    <FormControl component="fieldset" className={classes.prompt}>
-      <FormLabel component="legend">
-         {X.CMLL.USAGE}
-      </FormLabel>
-    </FormControl>
-    </Box>
 
     </Box>
     );
@@ -417,54 +338,6 @@ export function OllcpTrainerView(props: { state: AppState, dispatch: React.Dispa
     facelet = FaceletCube.as_kata(facelet)
   }
 
-  const _2d3dSel = "cmll2D3DSelector";
-  const kataSel = "cmllKataSelector";
-
-  const panel = (
-    <Box>
-      <CaseSelectDialog {...{state, dispatch, settings: {
-        selector: "ollcpCaseSelector",
-        algs: ollcp_algs_raw,
-        groups: ["34", "39", "45", "51", "56", "13", "14"],
-        visualizeMask: "coll",
-        cubeOptions: {
-          colorScheme: {
-            0: '#FEFE00', // URFDLB. U = yellow
-            1: '#ffa100', // R = o
-            2: '#00b800', // F = g
-            3: '#404040', // D = w
-            4: '#ee0000', // L = r
-            5: '#0000f2', // B = blue
-          }
-        }
-        },
-        label: X.CONFIG.SELECT_OLLCP_CASES
-      } }/>
-
-      {/* <MultiSelect {...{state, dispatch, select: cmllaufSel, options: { label: "CMLL Auf", noDialog: true} }} />
-      <Box width={16} display="inline-block"></Box>
-      <MultiSelect {...{state, dispatch, select: triggerSel, options: { label: "SB Last Pair Trigger (Uncheck all for pure CMLL)", noDialog: true} } } />
-
-      <Box height={10}/>
-      <Divider />
-      <Box height={20}/>
-
-
-      <SingleSelect {...{state, dispatch, select: cmllcubemaskSel, label: "Virtual Cube"}} />
-      <br/> */}
-
-      <SingleSelect {...{state, dispatch, select: _2d3dSel, label: X.CONFIG.VISUALIZE_AS } } />
-
-      <Box width={16} display="inline-block"></Box>
-      <SingleSelect {...{state, dispatch, select: kataSel, label: X.CONFIG.RECOG_STICKERS_ONLY } } />
-      <ColorPanel {...{state, dispatch}} />
-
-      <Box height={20}/>
-      <Divider />
-      <Box height={20}/>
-
-    </Box>
-  )
 
   React.useEffect( () =>  {
     setReveal(false) // todo: drive this from props. now there's a delay which causes the answer to leak for a split second
@@ -549,95 +422,55 @@ export function OllcpTrainerView(props: { state: AppState, dispatch: React.Dispa
 
   <Box height = {5}/>
 
-  <Paper className={classes.paper} elevation={2}>
+  <Paper className={classes.paper}>
   <Grid container spacing={2}>
 
-    <Grid item xs={3}>
-
-    <Box display="flex">
-            <Box>
-            <Box className={classes.title} >
-              Scramble
-            </Box> </Box>
-    </Box>
-    </Grid>
-    <Grid item xs={9}>
-      <Box paddingBottom={1} lineHeight={1} >
-        <Typography style={{whiteSpace: 'pre-line', fontSize: 18, fontWeight: 500}}>
-          { setup }
-        </Typography>
+    <Grid item xs={12}>
+      <Box className={classes.title} style={{marginBottom: 4}}>
+        Scramble
       </Box>
-
+      <Typography style={{whiteSpace: 'pre-line', fontSize: '1.1rem', fontWeight: 400}}>
+        { setup }
+      </Typography>
     </Grid>
-    <Grid item xs={3}>
-
-    <Box display="flex">
-            <Box>
-            <Box className={classes.title} >
-              Case
-            </Box> </Box>
-    </Box>
-    </Grid>
+    <Grid item xs={12}>
+      <Box className={classes.title} style={{marginBottom: 4}}>
+        Case
+      </Box>
     { (!reveal) ?
-    <Grid item xs={3}>
-    <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
-    size="medium" variant="outlined" color="primary" onClick={handleClick}> { /* className={classes.margin}>  */ }
+    <Button onFocus={(evt) => evt.target.blur() } className={classes.revealButton}
+    size="small" variant="outlined" color="primary" onClick={handleClick}>
         Show
     </Button>
-    </Grid>
     :
-    <Grid item xs={9}>
-      <Box paddingBottom={1} lineHeight={1} >
-        <Typography style={{whiteSpace: 'pre-line', fontSize: 18, fontWeight: 500}}>
-          { alg }
-        </Typography>
-      </Box>
-
-      <Box borderColor="primary.main"
-              style={{transition: "all .3s ease" }}>
-              {/* TODO: make the cube colors match above */}
-              <CaseVisualizer
-                name=""
-                size={100}
-                alg={alg}
-                mask="cmll"
-                color={colorSchemeColors}
-                cubeOptions={{}}
-              />
-      </Box>
-
-    </Grid>
+    <Box>
+      <Typography style={{whiteSpace: 'pre-line', fontSize: '1.1rem', fontWeight: 400, marginBottom: 12}}>
+        { alg }
+      </Typography>
+      <CaseVisualizer
+        name=""
+        size={100}
+        alg={alg}
+        mask="cmll"
+        color={colorSchemeColors}
+        cubeOptions={{}}
+      />
+    </Box>
     }
+    </Grid>
   </Grid>
-  <Box height={30}/>
+  <Box height={24}/>
 
   <Grid container spacing={0}>
       <Grid item xs={12} sm={4} md={3}>
         <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
-        size="medium" variant="contained" color="primary" onClick={handleNext}>
+        variant="outlined" color="primary" onClick={handleNext}>
             Next
         </Button>
       </Grid>
   </Grid>
   </Paper>
 
-
-  <Box height={20}/>
-    <Divider />
-  <Box height={20}/>
-  { panel }
-
-  <Box height={20}/>
-    <Divider />
-  <Box height={15}/>
-
-  <Box>
-  <FormControl component="fieldset" className={classes.prompt}>
-    <FormLabel component="legend">
-       Usage: Press space for next case. Enter to redo. / to reveal.
-    </FormLabel>
-  </FormControl>
-  </Box>
 
   </Box>
   );
