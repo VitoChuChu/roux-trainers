@@ -160,9 +160,9 @@ function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) 
 
   const tabPanelsContent = createTabPanels([
     <BlockTrainerView {...{state, dispatch}} />, // fb
-    <AnalyzerView {...{state, dispatch}} />,
     <BlockTrainerView {...{state, dispatch}} />, // fs
     <BlockTrainerView {...{state, dispatch}} />, // fsdr
+    <AnalyzerView {...{state, dispatch}} />,     // analyzer
     <BlockTrainerView {...{state, dispatch}} />, // fbdr
     <BlockTrainerView {...{state, dispatch}} />, // fbss
     <BlockTrainerView {...{state, dispatch}} />, // ss
