@@ -274,6 +274,7 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
     const showChainButtons = (state.mode === "fs" || state.mode === "fsdr" || state.mode === "fbdr")
       && (state.name === "revealed" || state.name === "revealed_all");
     const handleChainTrain = (alg: string) => {
+      const currentOri = state.cube.ori;
       let targetMode: Mode;
       if (state.mode === "fs" || state.mode === "fsdr") {
         const targetName = state.config.chainTargetSelector.getActiveName();
@@ -289,7 +290,9 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
           let newState = getInitialState(targetMode);
           newState = { ...newState, scrambleInput: [newScramble] };
           const stateM = StateFactory.create(newState);
-          return (stateM as BlockTrainerStateM)._updateCase();
+          let result = (stateM as BlockTrainerStateM)._updateCase();
+          result.cube.ori = currentOri;
+          return result;
         }
       });
     };
