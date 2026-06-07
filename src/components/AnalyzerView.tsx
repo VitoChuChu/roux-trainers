@@ -43,120 +43,99 @@ import { X } from '../Translation';
 
 const useStyles = makeStyles(theme => ({
     container: {
-      paddingTop: theme.spacing(0),
-      paddingBottom: theme.spacing(0),
-      backgroundColor: theme.palette.background.default,
-      transition: "all .5s ease-in-out"
-    },
-    button: {
-      width: "100%",
-    },
-    paper: {
-      padding: theme.spacing(3),
-      display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',
-      marginBottom: 3,
-      borderRadius: 6
-    },
-    paper2: {
-      paddingLeft: theme.spacing(3),
       paddingTop: theme.spacing(2),
+      paddingBottom: theme.spacing(6),
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: theme.spacing(1),
+        paddingBottom: theme.spacing(3),
+      },
+    },
+    mainConsole: {
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: 24,
+      padding: theme.spacing(5),
+      boxShadow: theme.palette.mode === 'dark' ? '0 8px 40px rgba(0,0,0,0.4)' : '0 8px 40px rgba(0,0,0,0.06)',
+      border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(10, 132, 255, 0.2)' : 'rgba(0, 122, 255, 0.1)'}`,
       display: 'flex',
-      overflow: 'auto',
       flexDirection: 'column',
-      marginBottom: 3,
-      borderRadius: 6
+      gap: theme.spacing(4),
+      [theme.breakpoints.down('md')]: {
+        padding: theme.spacing(3),
+        borderRadius: 20,
+        gap: theme.spacing(3),
+      },
     },
-    canvasPaper: {
-      padding: theme.spacing(0),
+    scrambleHeader: {
       display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',
-    },
-    infoColumn: {
-      color: theme.palette.background.paper
-    },
-    scrambleColumn: {
-      paddingLeft: theme.spacing(3)
-    },
-    textColumn: {
-      // color: "black",
-      [theme.breakpoints.up('sm')]: {
-        minHeight: 138
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      borderBottom: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'),
+      paddingBottom: theme.spacing(3),
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        gap: 16,
       },
     },
     setup: {
-      whiteSpace: 'pre-line',
-      fontSize: "1.35rem",
-      fontWeight: 400,
-      letterSpacing: '-0.01em',
-      lineHeight: 1.55,
+      fontFamily: '"SF Mono", "Roboto Mono", monospace',
+      fontSize: "1.85rem",
+      fontWeight: 700,
+      letterSpacing: '-0.03em',
+      lineHeight: 1.2,
       color: theme.palette.text.primary,
-      [theme.breakpoints.down('sm')]: {
-      fontSize: "1.0rem",
-      fontWeight: 400
+      [theme.breakpoints.down('md')]: {
+        fontSize: "1.5rem",
       },
-  },
-    condGap: {
-    },
-    fgap: {
-      flexShrink: 100, flexBasis: "1.5rem", minWidth: "1.5em",
       [theme.breakpoints.down('sm')]: {
-        flexBasis: "1.0rem",
-        minWidth: "0.4rem"
-      }
+        fontSize: "1.3rem",
+      },
     },
-    fixedHeight: {
-      height: 250,
+    contentGrid: {
+      display: 'grid',
+      gridTemplateColumns: '1.2fr 1fr',
+      gap: theme.spacing(5),
+      [theme.breakpoints.down('md')]: {
+        gridTemplateColumns: '1fr',
+        gap: theme.spacing(4),
+      },
+    },
+    solutionArea: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 20,
+    },
+    cubeArea: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.015)',
+      borderRadius: 20,
+      padding: theme.spacing(2),
     },
     title : {
         color: theme.palette.text.disabled,
-        fontWeight: 500,
-        fontSize: '0.7rem',
-        letterSpacing: '0.04em',
+        fontWeight: 800,
+        fontSize: '1rem',
+        letterSpacing: '0.1em',
         textTransform: 'uppercase',
-        paddingBottom: 4,
+        marginBottom: 12,
     },
-    title1 : {
-      fontWeight: 500,
-      marginTop: 7,
-      border: "1px solid",
-      borderRadius: 4,
-      fontSize: "0.8rem"
-   },
-    stage: {
-      paddingTop: 5,
-      paddingLeft: 5,
+    button: {
+      width: "100%",
+      height: 48,
+      borderRadius: 14,
+      fontSize: '1rem',
+      fontWeight: 700,
+      textTransform: 'none',
+      transition: 'all 0.2s',
+      boxShadow: 'none',
     },
     configItem: {
       paddingRight: 15
     },
-    stageText: {
-      color: theme.palette.text.primary,
-      textTransform: "none"
-    },
-    sourceIcon : {
-        color: theme.palette.secondary.main,
-        fontSize: 15,
-        padding: 0
-    },
-    sourceIconWrap : {
-        //border: "1px solid " + theme.palette.text.disabled,
-        //borderRadius: 3
-    },
-    fab: {
-      position: 'absolute',
-      top: theme.spacing(7),
-      left: theme.spacing(2),
-    },
-    prompt: {
-      color: theme.palette.text.secondary,
-    },
     formControl: {
       margin: theme.spacing(0),
-      minWidth: 80,
-      maxWidth: 160,
+      minWidth: 100,
     },
     menu: {
         '& .MuiMenuItem-root': {
@@ -165,6 +144,24 @@ const useStyles = makeStyles(theme => ({
             textOverflow: 'ellipsis',
         },
     },
+    fgap: {
+      flexGrow: 1,
+    },
+    stage: {
+      paddingTop: 5,
+      paddingLeft: 5,
+    },
+    stageText: {
+      color: theme.palette.text.primary,
+      textTransform: "none"
+    },
+    mySolutionPanel: {
+      marginTop: theme.spacing(2),
+      padding: theme.spacing(3),
+      borderRadius: 20,
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+      border: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'),
+    }
   }))
 
 const resetState = (state: AnalyzerState) => {
@@ -205,29 +202,22 @@ function ScrambleView(props: { state: AnalyzerState, setState: (newState: Analyz
     }, [state.scramble])
 
     return (
-    <Box style={{display: "flex"}}>
-      <Box style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-        <Box className={classes.title} style={{}}>
-          {X.COMMON.SCRAMBLE}
-        </Box>
-        <Typography className={classes.setup} style={{marginTop: 4}}>
-          {value || ' '}
-        </Typography>
-      </Box>
-      <Box style={{}} className={classes.fgap} />
+        <Box className={classes.scrambleHeader}>
+      <div style={{ flex: 1 }}>
+        <Box className={classes.title}>{X.COMMON.SCRAMBLE}</Box>
+        <Typography className={classes.setup}>{value || ' '}</Typography>
+      </div>
 
-      <Box style={{display: "flex", flexWrap: "wrap", padding: 0, gap: 8, alignItems: "center"}}>
-        {isSmallScreen ? null :
-          <Button variant="outlined" color="primary" size="small"
-            onClick={() => setEditing(true)}
-            startIcon={<EditIcon />}
-            sx={{ minHeight: 36 }}>
-            {X.COMMON.INPUT}
-          </Button>
-        }
+      <Box style={{display: "flex", flexWrap: "wrap", padding: 0, gap: 12, alignItems: "center", marginTop: isSmallScreen ? 12 : 0}}>
+        <Button variant="outlined" color="primary" className={classes.button}
+          onClick={() => setEditing(true)}
+          sx={{ px: 3, width: 'auto' }}
+          startIcon={<EditIcon />}>
+          {X.COMMON.INPUT}
+        </Button>
         <Button onFocus={(evt) => evt.target.blur()} onClick={handleGen}
-              size="small" variant="outlined" color="primary"
-              sx={{ borderRadius: 1, textTransform: 'none', fontWeight: 500, minHeight: 36 }} >
+              className={classes.button} variant="contained" color="primary"
+              sx={{ px: 3, width: 'auto' }}>
                 {X.ANALYZER.GEN}
         </Button>
       </Box>
@@ -236,8 +226,9 @@ function ScrambleView(props: { state: AnalyzerState, setState: (newState: Analyz
               onClose={() => setEditing(false)}
               onKeyPress={onKeyPress}
               onKeyDown={onKeyPress}
-              onKeyUp={onKeyPress}>
-          <DialogTitle>{X.ANALYZER.INPUT_SCRAMBLE_DIALOG}</DialogTitle>
+              onKeyUp={onKeyPress}
+              PaperProps={{ sx: { borderRadius: 20, p: 2 } }}>
+          <DialogTitle sx={{ fontWeight: 700 }}>{X.ANALYZER.INPUT_SCRAMBLE_DIALOG}</DialogTitle>
           <DialogContent>
                 <TextField
                     inputRef={textField}
@@ -245,167 +236,31 @@ function ScrambleView(props: { state: AnalyzerState, setState: (newState: Analyz
                     size="medium"
                     fullWidth
                     maxRows={10}
-                    rows={3}
+                    rows={4}
                     autoFocus
                     value={value}
                     onChange={onScrambleChange}
-                    variant="outlined">
+                    variant="outlined"
+                    sx={{ mt: 1, '& .MuiOutlinedInput-root': { borderRadius: 12 } }}>
                 </TextField>
           </DialogContent>
-          <DialogActions>
-              <Box padding={1}>
+          <DialogActions sx={{ px: 3, pb: 3 }}>
               <Button onClick={() => {
                 let cube = CubeUtil.get_random_with_mask(Mask.empty_mask)
                 let scramble = CachedSolver.get("min2phase").solve(cube,0,0,0)[0].inv().toString()
                 setValue(scramble)
-              }} color="primary" variant="outlined" fullWidth>
+              }} color="primary" variant="outlined" sx={{ borderRadius: 10, textTransform: 'none' }}>
                   {X.ANALYZER.GEN}
               </Button>
               <Button onClick={() => {
                 setEditing(false)
                 setState({...resetState(state), scramble: value})
-              }} color="primary" variant="outlined" fullWidth>
+              }} color="primary" variant="contained" sx={{ borderRadius: 10, textTransform: 'none' }}>
                   {X.COMMON.OK}
               </Button>
-              </Box>
           </DialogActions>
       </Dialog>
     </Box> )
-}
-
-function ConfigView(props: { state: AnalyzerState, setState: (newState: AnalyzerState) => void}) {
-  let { state, setState } = props
-  let classes = useStyles()
-
-  const menuProps = {
-    PaperProps: {
-        style: {
-            maxWidth: 160,
-        },
-    },
-    className: classes.menu
-  };
-
-  const selectSx = { fontSize: "1.0rem" };
-
-  let fb_ori_str = state.orientation + "," + state.pre_orientation
-  let handleFBOri = (event: SelectChangeEvent<String>) => {
-    let value: string[]= (event.target.value).split(",")
-    setState({...state, orientation: value[0], pre_orientation: value[1]})
-  }
-  let display_mode_str = state.show_mode
-  let handle_display_mode = (event: SelectChangeEvent<String>) =>  {
-    let value = (event.target.value as string)
-    setState({...state, show_mode: value})
-  }
-  let handle_num_solution = (event: SelectChangeEvent<number>) =>  {
-    let value = Number.parseInt(event.target.value as string)
-    setState({...state, num_solution: value || state.num_solution})
-  }
-  let handle_fb_stage = (event: SelectChangeEvent<fbStageT>) =>  {
-    let value = (event.target.value as fbStageT)
-    setState({...state, fb_stage: value})
-  }
-  let handle_hide_solutions = (event: SelectChangeEvent<String>) =>  {
-    let value = (event.target.value as string)
-    setState({...state, hide_solutions: value === "true"})
-  }
-  return (
-  <Box display="flex" flexWrap="wrap" gap={0} sx={{ rowGap: 2}}>
-    <Box className={classes.configItem}>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="demo-simple-select-helper-label">{X.CONFIG.FB_ORIENTATION}</InputLabel>
-        <Select
-          labelId="demo-simple-select-helper-label"
-          id="demo-simple-select-helper"
-          value={fb_ori_str}
-          onChange={handleFBOri}
-          MenuProps={menuProps}
-          sx={selectSx}
-        >
-          <MenuItem value={"x2y,"}>{X.CONFIG.ORI_X2Y_WY}</MenuItem>
-          <MenuItem value={"x2y,x"}>{X.CONFIG.ORI_X2Y_BG}</MenuItem>
-          <MenuItem value={"x2y,z"}>{X.CONFIG.ORI_X2Y_RO}</MenuItem>
-          <MenuItem value={"cn,"}>{X.CONFIG.ORI_CN}</MenuItem>
-        </Select>
-        <FormHelperText></FormHelperText>
-      </FormControl>
-    </Box>
-    <Box className={classes.configItem}>
-      <FormControl className={classes.formControl}>
-      <InputLabel id="demo-simple-select-helper-label">{X.CONFIG.ORGANIZE}</InputLabel>
-      <Select
-        labelId="demo-simple-select-helper-label"
-        id="demo-simple-select-helper"
-        value={display_mode_str}
-        onChange={handle_display_mode}
-        MenuProps={menuProps}
-        sx={selectSx}
-      >
-        <MenuItem value={"foreach"}>{X.CONFIG.ORGANIZE_BY_FB}</MenuItem>
-        <MenuItem value={"combined"}>{X.CONFIG.ORGANIZE_COMBINED}</MenuItem>
-      </Select>
-      <FormHelperText></FormHelperText>
-     </FormControl>
-    </Box>
-    <Box  className={classes.configItem}>
-    <FormControl className={classes.formControl}>
-      <InputLabel id="demo-simple-select-helper-label">{X.CONFIG.NUM_SOLUTIONS}</InputLabel>
-      <Select
-        labelId="demo-simple-select-helper-label"
-        id="demo-simple-select-helper"
-        value={state.num_solution}
-        onChange={handle_num_solution}
-        MenuProps={menuProps}
-        sx={selectSx}
-      >
-        <MenuItem value={1}>1</MenuItem>
-        <MenuItem value={3}>3 </MenuItem>
-        <MenuItem value={5}>5</MenuItem>
-        <MenuItem value={10}>10 </MenuItem>
-        <MenuItem value={25}>25 </MenuItem>
-      </Select>
-      <FormHelperText></FormHelperText>
-    </FormControl>
-    </Box>
-    <Box  className={classes.configItem}>
-    <FormControl className={classes.formControl}>
-      <InputLabel id="demo-simple-select-helper-label">{X.CONFIG.FB_STAGE}</InputLabel>
-      <Select
-        labelId="demo-simple-select-helper-label"
-        id="demo-simple-select-helper"
-        value={state.fb_stage}
-        onChange={handle_fb_stage}
-        MenuProps={menuProps}
-        sx={selectSx}
-      >
-        <MenuItem value={"fb"}>{X.CONFIG.FB_STAGE_FB}</MenuItem>
-        <MenuItem value={"fs"}>{X.CONFIG.FB_STAGE_FS}</MenuItem>
-        <MenuItem value={"pseudo-fs"}>{X.CONFIG.FB_STAGE_PSEUDO_FS}</MenuItem>
-        <MenuItem value={"felinep1"}>{X.CONFIG.FB_STAGE_ELINE}</MenuItem>
-        <MenuItem value={"fs-combo"}>{X.CONFIG.FB_STAGE_FS_LINE}</MenuItem>
-      </Select>
-      <FormHelperText></FormHelperText>
-    </FormControl>
-    </Box>
-    <Box className={classes.configItem}>
-      <FormControl className={classes.formControl}>
-        <InputLabel id="hide-solutions-label">{X.CONFIG.HINTS}</InputLabel>
-        <Select
-          labelId="hide-solutions-label"
-          id="hide-solutions-select"
-          value={state.hide_solutions.toString()}
-          onChange={handle_hide_solutions}
-          MenuProps={menuProps}
-          sx={selectSx}
-        >
-          <MenuItem value={"true"}>{X.COMMON.YES}</MenuItem>
-          <MenuItem value={"false"}>{X.COMMON.NO}</MenuItem>
-        </Select>
-        <FormHelperText></FormHelperText>
-      </FormControl>
-    </Box>
-  </Box>)
 }
 
 
@@ -427,16 +282,14 @@ function SolutionInputView(props: { state: AnalyzerState, setState: (newState: A
       props.setState({...props.state, full_solution})
     }
   }
-  //const onEntered = () => {
-  //    textField.current && textField.current.focus()
-  //}
+
   return <Box>
     <Box >
           <Button variant={editing ? "contained" : "outlined"}
               color="primary"
               size="small"
               onClick={toggleEdit}
-
+              sx={{ borderRadius: 10, textTransform: 'none', px: 2 }}
               startIcon={<EditIcon />}
           >
               {X.ANALYZER.INPUT_YOUR_SOLUTION}
@@ -445,11 +298,11 @@ function SolutionInputView(props: { state: AnalyzerState, setState: (newState: A
 
     <Dialog open={editing}
             onClose={handleClose}
-            /*onEntered={onEntered}*/
             maxWidth="sm"
             fullWidth
+            PaperProps={{ sx: { borderRadius: 20, p: 1 } }}
             >
-          <DialogTitle> {X.ANALYZER.INPUT_SOLUTION_DIALOG} </DialogTitle>
+          <DialogTitle sx={{ fontWeight: 700 }}> {X.ANALYZER.INPUT_SOLUTION_DIALOG} </DialogTitle>
           <DialogContent>
                 <TextField
                     inputRef={textField}
@@ -460,15 +313,14 @@ function SolutionInputView(props: { state: AnalyzerState, setState: (newState: A
                     rows={5}
                     value={value}
                     onChange={onChange}
-                    variant="outlined">
+                    variant="outlined"
+                    sx={{ mt: 1, '& .MuiOutlinedInput-root': { borderRadius: 12 } }}>
                 </TextField>
           </DialogContent>
-          <DialogActions>
-              <Box padding={1}>
-              <Button onClick={handleClose} color="primary" variant="outlined" fullWidth >
+          <DialogActions sx={{ px: 3, pb: 3 }}>
+              <Button onClick={handleClose} color="primary" variant="contained" fullWidth sx={{ borderRadius: 10, py: 1 }} >
                   {X.COMMON.CONFIRM}
               </Button>
-              </Box>
           </DialogActions>
     </Dialog>
   </Box>
@@ -504,14 +356,6 @@ export const get_shortened_rotation = memoize(_shorten_rotation);
 
 // Add this color mapping at the top level
 const colorMap : { [key: string]: string } = ColorScheme.default_colors;
-/*{ [key: string]: string } = {
-  "W": "#FFFFFF",
-  "Y": "#FFD500",
-  "G": "#00B500",
-  "B": "#0000FF",
-  "O": "#FF5800",
-  "R": "#C41E3A"
-};*/
 
 // Add this component for the color squares
 function ColorPair({ colors }: { colors: string[] }) {
@@ -558,22 +402,23 @@ function StageSolutionView(props: { solution: SolutionDesc, shortestLength?: num
   const shortened_rotation = get_shortened_rotation(orientation + " " + premove)
 
   return (
-    <Box style={{display: "flex", marginBottom: "2px", alignItems: "center", minWidth: 0}}>
+    <Box style={{display: "flex", marginBottom: "4px", alignItems: "center", minWidth: 0}}>
       {tags.filter(x=>x).map( (t, i) =>
         <Chip variant="outlined" size="small" color="primary" label={t} key={i}
-          sx={{ '& .MuiChip-label': { fontSize: '0.75rem', fontWeight: 500, padding: '0 6px',
+          sx={{ '& .MuiChip-label': { fontSize: '0.75rem', fontWeight: 600, padding: '0 6px',
                                       minWidth: "5ch", textAlign: "center",
                                       display: "flex",
                                       alignItems: "center", justifyContent: "center" } }} />
       )}
-      <Box style={{width: ".5ch"}} />
-      <Box style={{marginLeft: 4, minWidth: 0}}>
+      <Box style={{width: "1ch"}} />
+      <Box style={{minWidth: 0}}>
         <Typography sx={{
-          fontSize: "1.0rem",
-          fontFamily: '"Roboto Mono", monospace',
+          fontSize: "1.1rem",
+          fontWeight: 500,
+          fontFamily: '"SF Mono", "Roboto Mono", monospace',
           overflowWrap: 'break-word',
           wordBreak: 'break-word',
-          lineHeight: 1.5,
+          lineHeight: 1.4,
         }}>
           {shortened_rotation + " " + solution.moves.map(m => m.name).join(" ")}
           {isShortest && " (*)"}
@@ -586,6 +431,8 @@ function StageSolutionView(props: { solution: SolutionDesc, shortestLength?: num
 
 function StageSolutionListView(props: { solutions: SolutionDesc[], num_to_display: number, state: AnalyzerState, setState: (newState: AnalyzerState) => void} ) {
   let { solutions, num_to_display, state } = props
+  if (solutions.length === 0) return null
+
   const [isRevealed, setIsRevealed] = React.useState(!state.hide_solutions)
 
   // Update isRevealed when hide_solutions changes
@@ -599,18 +446,13 @@ function StageSolutionListView(props: { solutions: SolutionDesc[], num_to_displa
       current.solution.moves.length < shortest.solution.moves.length ? current : shortest
     ) : null
 
-  // For hints, generate a reader friendly text framing it as a quiz:
-  // for each shortest solution, parse the tag into the correspnding DL-edge color (we will build a utility function for this)
-  // then for each fb_tag, have a separate line to describe it in the form of "Can you spot the 3-STM ${fb_tag} solution in Blue-White or Green-Red block?"
-
-  //TODO; ordering in per-orientation FS-combo mode
   const handleClick = () => {
     setIsRevealed(true)
   }
 
   const shortest_length = shortestSolution?.solution.moves.length || 0
   const shortest_solutions = solutions.filter(s => s.solution.moves.length === shortest_length)
-  //console.log("shortest solutions", shortest_solutions)
+
   const tag_full_name : Record<string, string> = {
     "FS": "FS",
     "FB": "FB",
@@ -632,7 +474,7 @@ function StageSolutionListView(props: { solutions: SolutionDesc[], num_to_displa
     return (
       <React.Fragment key={tag}>
         <Box sx={{ width: "100%", mb: 1 }}>
-          <Typography variant="body1" color="text.primary" sx={{ fontSize: "1.1rem", textAlign: "center" }} >
+          <Typography variant="body1" color="text.primary" sx={{ fontSize: "1.05rem", textAlign: "center", fontWeight: 500 }} >
             {X.ANALYZER.EXISTS_STM_SOLUTION(shortest_length, tag || "solution")}
           </Typography>
         </Box>
@@ -644,18 +486,18 @@ function StageSolutionListView(props: { solutions: SolutionDesc[], num_to_displa
   })
 
   return (
-    <Box lineHeight={1}>
+    <div style={{ lineHeight: 1 }}>
       {solutions.length > 0 && (
         <Box onClick={!isRevealed ? handleClick : undefined} sx={{ cursor: !isRevealed ? 'pointer' : 'default' }}>
           {!isRevealed ? (
             <Box sx={{ width: "100%" }}>
               {shortest_tag_names_str}
-              <Typography variant="body1" color="text.secondary" sx={{ mt: 1, fontSize: "1.0rem", textAlign: "center" }}>
+              <Typography variant="body1" color="text.secondary" sx={{ mt: 1, fontSize: "1.0rem", textAlign: "center", fontStyle: 'italic' }}>
                 {X.ANALYZER.CLICK_TO_REVEAL}
               </Typography>
             </Box>
           ) : (
-            <Box>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               {solutions.slice(0, num_to_display).map((s, i) => (
                 <StageSolutionView
                   solution={s}
@@ -667,7 +509,7 @@ function StageSolutionListView(props: { solutions: SolutionDesc[], num_to_displa
           )}
         </Box>
       )}
-    </Box>
+    </div>
   )
 }
 
@@ -690,22 +532,33 @@ function FullSolutionView(props: { state: AnalyzerState, setState: (newState: An
               color="primary"
               size="small"
               onClick={setStage(i)}
-              style={{fontSize: "0.7rem", marginLeft: 5, border: (show === i) ? "1px solid" : "1px solid rgba(0, 0,0,0)"
-            }} >
-        <Typography variant="subtitle1" className={classes.stageText}>{sol.solution.toString()} "//" {sol.stage}
+              sx={{
+                textTransform: 'none',
+                marginLeft: 1,
+                borderRadius: 8,
+                px: 2,
+                border: (show === i) ? "1px solid " + (initialState.orientation ? '#007AFF' : 'rgba(0,0,0,0.1)') : "1px solid transparent"
+              }} >
+        <Typography variant="body2" className={classes.stageText} sx={{ fontFamily: '"SF Mono", monospace', fontWeight: 600 }}>
+          {sol.solution.toString()} <span style={{opacity: 0.4, margin: '0 8px'}}>//</span> {sol.stage}
         </Typography>
-        <SearchIcon fontSize="small"/>
+        <SearchIcon fontSize="small" sx={{ ml: 1, opacity: 0.6 }}/>
         </Button>
 
       </Box>
     )
   }
   return (
-    <Box paddingBottom={2} lineHeight={1} >
-      <Box>
+    <Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
         <SolutionInputView state={state} setState={setState}/>
+        {state.full_solution.length > 0 && (
+          <Typography variant="caption" color="text.disabled" sx={{ fontWeight: 700, letterSpacing: '0.05em' }}>
+            {X.ANALYZER.MY_SOLUTION.toUpperCase()}
+          </Typography>
+        )}
       </Box>
-      <Box style={{fontFamily: "Public Sans"}}>
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
         { props.state.full_solution.map( (desc, i) => stageView(desc, i))}
       </Box>
     </Box>
@@ -746,37 +599,13 @@ function AnalyzerView(props: { state: AppState, dispatch: React.Dispatch<Action>
     let num_solutions_to_display = solutions_to_display.length
 
     if (state.show_mode === "combined") {
-      solutions_to_display = solutions_to_display.sort( (x, y) => x.score - y.score) //.slice(0, state.num_solution)
+      solutions_to_display = solutions_to_display.sort( (x, y) => x.score - y.score)
       num_solutions_to_display = state.num_solution
-    } else {
-     /// solutions_to_display = solutions.slice(0, Math.ceil(config.num_solution / oris.length))
     }
 
     const gt_md = useMediaQuery(theme.breakpoints.up('md'));
     const gt_sm = useMediaQuery(theme.breakpoints.up('sm'));
-    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    console.log("isSmallScreen", isSmallScreen, theme.breakpoints)
-    const canvas_wh = (gt_md) ? [400, 350] : (gt_sm) ? [400, 350] : [320, 280]
-
-    const inputSolutionPanel = (
-      <Paper className={classes.paper2}>
-      <Box display="flex" >
-        {
-          state.full_solution.length >= 1 ? <>
-            <Box style={{display: "flex", flexDirection: "column", alignSelf: "flex-start"}}>
-              <Box className={classes.title} style={{}}>
-                {X.ANALYZER.MY_SOLUTION}
-              </Box>
-            </Box>
-            <Box style={{}} className={classes.fgap} />
-          </>
-        : null
-        }
-
-        <FullSolutionView state={state} setState={setState}/>
-      </Box>
-      </Paper>
-    )
+    const canvas_wh = (gt_md) ? [520, 420] : (gt_sm) ? [440, 360] : [340, 280]
 
     // Sync local state from global analyzer config
     React.useEffect(() => {
@@ -794,53 +623,50 @@ function AnalyzerView(props: { state: AppState, dispatch: React.Dispatch<Action>
 
     return (
     <Box className={classes.container}>
-      <Paper className={classes.paper}>
+      <Box className={classes.mainConsole}>
         <ScrambleView state={state} setState={setState} dispatch={dispatch}/>
-      </Paper>
 
-      {/* {!isSmallScreen && inputSolutionPanel} */}
+        <Box className={classes.contentGrid}>
+          {/* Left Column: Solutions */}
+          <Box className={classes.solutionArea}>
+            {solutions_to_display.length > 0 ? (
+              <div style={{ flexGrow: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+                <Box className={classes.title}>{X.COMMON.SOLUTIONS}</Box>
+                <Box sx={{ overflowWrap: 'break-word', wordBreak: 'break-word' }}>
+                  <StageSolutionListView solutions={solutions_to_display} num_to_display={num_solutions_to_display} state={state} setState={setState}/>
+                </Box>
+              </div>
+            ) : null}
 
-      <Paper className={ classes.paper}>
-      <Grid container>
-        <Grid item md={6} sm={12} xs={12} className={classes.condGap} sx={{ minWidth: 0, overflow: 'hidden' }}>
-          <Box style={{display: "flex", minWidth: 0}}>
-            <Box style={{flexGrow: 1, minWidth: 0, overflowWrap: 'break-word', wordBreak: 'break-word'}}>
-              <StageSolutionListView solutions={solutions_to_display} num_to_display={num_solutions_to_display} state={state} setState={setState}/>
+            {/* My Solution Area (Integrated) */}
+            <Box className={classes.mySolutionPanel}>
+              <FullSolutionView state={state} setState={setState}/>
             </Box>
           </Box>
-        </Grid>
-        {/* colorScheme=appState.colorScheme.getColorsForOri(appState.cube.ori)} */}
-        <Grid item md={6} xs={12} style={{display: "flex", justifyContent: "center", alignItems: "flex-start", maxWidth: '100%', overflow: 'hidden'}}>
-          <Box style={{
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            transform: `scale(${appState.analyzerConfig.cube_scale})`,
-            transformOrigin: 'top center',
-            maxWidth: '100%',
-          }}>
-            <CubeSim
-              width={canvas_wh[0]}
-              height={canvas_wh[1]}
-              cube={faceletCube}
-              colorScheme={appState.colorScheme.getColorsForOri("WG")}
-              hintDistance={ 6 }
-              theme={appState.config.theme.getActiveName()}
 
-              facesToReveal={ [Face.L, Face.B, Face.D]  }
-            />
+          {/* Right Column: Cube View */}
+          <Box className={classes.cubeArea}>
+            <Box style={{
+              backgroundColor: "rgba(0, 0, 0, 0)",
+              transform: `scale(${appState.analyzerConfig.cube_scale})`,
+              transformOrigin: 'top center',
+              maxWidth: '100%',
+            }}>
+              <CubeSim
+                width={canvas_wh[0]}
+                height={canvas_wh[1]}
+                cube={faceletCube}
+                colorScheme={appState.colorScheme.getColorsForOri("WG")}
+                hintDistance={ 6 }
+                theme={appState.config.theme.getActiveName()}
+                facesToReveal={ [Face.L, Face.B, Face.D]  }
+              />
+            </Box>
           </Box>
-        </Grid>
-      </Grid>
-
-      {/* <Box height={20}/>
-      <Divider/>
-      <Box height={20}/> */}
-      </Paper>
-
+        </Box>
+      </Box>
     </Box>
     );
 }
 
-
 export default AnalyzerView
-
-

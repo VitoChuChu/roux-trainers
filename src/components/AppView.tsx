@@ -50,23 +50,53 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     backgroundColor: theme.palette.background.default,
     overflowX: 'hidden',
+    position: 'relative',
   },
   content: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(8),
+    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    [theme.breakpoints.down('sm')]: {
+      paddingTop: theme.spacing(2),
+    },
+  },
+  mainWrapper: {
+    display: 'flex',
+    gap: theme.spacing(4),
+    width: '100%',
+    margin: '0 auto',
+    maxWidth: 1400,
+    [theme.breakpoints.down('md')]: {
+      flexDirection: 'column',
+      gap: theme.spacing(2),
+    },
+  },
+  canvasArea: {
+    flex: 1,
+    minWidth: 0,
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  },
+  sidebarArea: {
+    width: 380,
+    flexShrink: 0,
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+    [theme.breakpoints.down('lg')]: {
+      width: 340,
+    },
+    [theme.breakpoints.down('md')]: {
+      width: '100%',
+    },
   },
   scrollArea: {
-    paddingRight: 4,
     '&::-webkit-scrollbar': {
-      width: 4,
+      width: 6,
     },
     '&::-webkit-scrollbar-thumb': {
       backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-      borderRadius: 2,
+      borderRadius: 10,
     },
-  },
-  container: {
-    display: "flex"
   },
 }))
 
@@ -172,44 +202,32 @@ function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) 
   ]);
 
   const mainContent = (
-    value === -1 ? (
-      <Grid container className={classes.container} spacing={3}>
-        <Grid item md={12} sm={12} xs={12}>
-          <TabPanel value={value} index={4}>
-            <PanoramaView {...{state, dispatch}} />
-          </TabPanel>
-        </Grid>
-      </Grid>
-    ) : (
-      <Grid container className={classes.container} spacing={2}>
-        <Grid item md={sidebarOpen && !isMobile ? 8 : 12} sm={sidebarOpen && !isMobile ? 7 : 12} xs={12}>
-          <Box className={classes.scrollArea}>
-          {tabPanelsContent}
-          </Box>
-        </Grid>
+    <Box className={classes.mainWrapper}>
+      <Box className={classes.canvasArea}>
+        {tabPanelsContent}
+      </Box>
 
-        {!isMobile && (
-          <Grid item hidden={!sidebarOpen} md={4} sm={5} xs={12}>
-            <Box className={classes.scrollArea}>
-              {showFav && <FavListView {...{state, dispatch}} />}
-              {showSettings && <SettingsDrawer {...{state, dispatch}} />}
-            </Box>
-          </Grid>
-        )}
-      </Grid>
-    )
+      {!isMobile && sidebarOpen && (
+        <Box className={classes.sidebarArea}>
+          <Box className={classes.scrollArea} sx={{ position: 'sticky', top: 88 }}>
+            {showFav && <FavListView {...{state, dispatch}} />}
+            {showSettings && <SettingsDrawer {...{state, dispatch}} />}
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 
   return (
     <Box className={classes.root}>
       <Dialog open={open} onClose={handleInfoClose}
-        PaperProps={{sx: {borderRadius: 8, padding: 2, maxWidth: 520}}}>
-      <DialogContent>
+        PaperProps={{sx: {borderRadius: 20, padding: 2, maxWidth: 560}}}>
+      <DialogContent sx={{ px: 4, py: 3 }}>
         <Intro></Intro>
       </DialogContent>
-      <DialogActions>
-        <Button color="primary" onClick={handleInfoClose}
-          sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500}}>
+      <DialogActions sx={{ px: 4, pb: 4 }}>
+        <Button color="primary" variant="contained" onClick={handleInfoClose} fullWidth
+          sx={{borderRadius: 12, py: 1.5, textTransform: 'none', fontWeight: 600, fontSize: '1rem'}}>
           {X.NAV.GOT_IT}
         </Button>
       </DialogActions>
@@ -226,7 +244,7 @@ function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) 
       />
 
       <Box className={classes.content}>
-        <Container maxWidth={sidebarOpen && !isMobile ? "xl" : "lg"}>
+        <Container maxWidth={false} sx={{ maxWidth: '1800px !important' }}>
           {mainContent}
         </Container>
       </Box>

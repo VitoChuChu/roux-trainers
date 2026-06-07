@@ -20,45 +20,63 @@ const nmcll_display_algs = nmcll_to_cmll_mapping.map( ([x, y], i) => {
 
 const useStyles = makeStyles(theme => ({
   drawer: {
-    padding: theme.spacing(1.5, 2, 2, 2),
+    padding: theme.spacing(3),
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 32,
     backgroundColor: theme.palette.background.paper,
-    borderRadius: 6,
+    borderRadius: 24,
+    boxShadow: theme.palette.mode === 'dark' ? '0 4px 30px rgba(0,0,0,0.3)' : '0 4px 30px rgba(0,0,0,0.04)',
+    border: '0.5px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'),
+    [theme.breakpoints.down('md')]: {
+      borderRadius: 20,
+      padding: theme.spacing(2),
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
+      border: 'none',
+    },
   },
   modeSelect: {
-    backgroundColor: 'transparent',
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(118, 118, 128, 0.24)' : 'rgba(118, 118, 128, 0.12)',
     color: theme.palette.text.primary,
-    borderRadius: 6,
-    height: 44,
-    fontWeight: 600,
+    borderRadius: 14,
+    height: 56,
+    fontWeight: 700,
     fontSize: '1rem',
     width: '100%',
+    padding: '0 16px',
+    transition: 'all 0.2s',
     '&:hover': {
-      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(118, 118, 128, 0.32)' : 'rgba(118, 118, 128, 0.18)',
     },
     '& .MuiSelect-icon': {
       color: theme.palette.text.secondary,
+      right: 12,
     },
     '& .MuiSelect-select': {
-      paddingTop: 8,
-      paddingBottom: 8,
+      paddingRight: '40px !important',
+      display: 'flex',
+      alignItems: 'center',
     },
   },
   sectionTitle: {
-    fontSize: '0.85rem',
-    fontWeight: 600,
-    letterSpacing: '0.04em',
+    fontSize: '0.8rem',
+    fontWeight: 700,
+    letterSpacing: '0.1em',
     textTransform: 'uppercase',
     color: theme.palette.text.disabled,
-    marginBottom: 12,
-    marginTop: 24,
+    marginBottom: 0,
+    marginTop: 0,
+    paddingLeft: 4,
   },
   sectionTitleFirst: {
-    fontSize: '0.85rem',
-    fontWeight: 600,
-    letterSpacing: '0.04em',
+    fontSize: '0.8rem',
+    fontWeight: 700,
+    letterSpacing: '0.1em',
     textTransform: 'uppercase',
     color: theme.palette.text.disabled,
-    marginBottom: 12,
+    marginBottom: 0,
+    paddingLeft: 4,
   },
   configPanel: {
     display: 'flex',
@@ -68,19 +86,40 @@ const useStyles = makeStyles(theme => ({
   selectLabel: {
     color: theme.palette.text.disabled,
     fontSize: '0.85rem',
-    fontWeight: 600,
+    fontWeight: 700,
     letterSpacing: '0.04em',
     textTransform: 'uppercase',
-    marginBottom: 6,
+    marginBottom: 8,
   },
   prompt: {
     color: theme.palette.text.secondary,
+    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)',
+    padding: theme.spacing(2.5),
+    borderRadius: 16,
+    border: '0.5px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)'),
     '& pre': {
-      fontFamily: 'inherit',
+      fontFamily: '"SF Mono", "Roboto Mono", monospace',
       lineHeight: 1.6,
-      fontSize: '0.95rem',
+      fontSize: '0.9rem',
+      margin: 0,
+      whiteSpace: 'pre-wrap',
     },
   },
+  selectWrapper: {
+    width: '100%',
+    overflow: 'hidden',
+    '& .MuiSelect-root': {
+      width: '100%',
+    },
+    '& .MuiSelect-select': {
+      paddingLeft: 4,
+      fontSize: '1rem',
+      fontWeight: 600,
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    }
+  }
 }));
 
 function NMCLLSelect(props: { state: AppState, dispatch: React.Dispatch<Action> }) {
@@ -304,7 +343,7 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
 
   return (
     <Box className={classes.configPanel}>
-      <Box>
+      <Box className={classes.selectWrapper}>
         <FormLabel component="legend" className={classes.selectLabel}>{X.CONFIG.FB_ORIENTATION}</FormLabel>
         <Select
           fullWidth size="small" variant="standard" disableUnderline
@@ -313,70 +352,69 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
             const [o, p] = (e.target.value as string).split(",");
             updateAc({ orientation: o, pre_orientation: p || "" });
           }}
-          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
+          sx={{ mt: 0.5 }}
         >
-          <MenuItem value={"x2y,"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_X2Y_WY}</MenuItem>
-          <MenuItem value={"x2y,x"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_X2Y_BG}</MenuItem>
-          <MenuItem value={"x2y,z"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_X2Y_RO}</MenuItem>
-          <MenuItem value={"cn,"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_CN}</MenuItem>
+          <MenuItem value={"x2y,"} dense>{X.CONFIG.ORI_X2Y_WY}</MenuItem>
+          <MenuItem value={"x2y,x"} dense>{X.CONFIG.ORI_X2Y_BG}</MenuItem>
+          <MenuItem value={"x2y,z"} dense>{X.CONFIG.ORI_X2Y_RO}</MenuItem>
+          <MenuItem value={"cn,"} dense>{X.CONFIG.ORI_CN}</MenuItem>
         </Select>
       </Box>
 
-      <Box>
+      <Box className={classes.selectWrapper}>
         <FormLabel component="legend" className={classes.selectLabel}>{X.CONFIG.ORGANIZE}</FormLabel>
         <Select
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.show_mode}
           onChange={(e) => updateAc({ show_mode: e.target.value as string })}
-          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
+          sx={{ mt: 0.5 }}
         >
-          <MenuItem value={"foreach"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORGANIZE_BY_FB}</MenuItem>
-          <MenuItem value={"combined"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORGANIZE_COMBINED}</MenuItem>
+          <MenuItem value={"foreach"} dense>{X.CONFIG.ORGANIZE_BY_FB}</MenuItem>
+          <MenuItem value={"combined"} dense>{X.CONFIG.ORGANIZE_COMBINED}</MenuItem>
         </Select>
       </Box>
 
-      <Box>
+      <Box className={classes.selectWrapper}>
         <FormLabel component="legend" className={classes.selectLabel}>{X.CONFIG.NUM_SOLUTIONS}</FormLabel>
         <Select
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.num_solution}
           onChange={(e) => updateAc({ num_solution: Number(e.target.value) })}
-          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
+          sx={{ mt: 0.5 }}
         >
-          <MenuItem value={1} sx={{ fontSize: '0.95rem' }} dense>1</MenuItem>
-          <MenuItem value={3} sx={{ fontSize: '0.95rem' }} dense>3</MenuItem>
-          <MenuItem value={5} sx={{ fontSize: '0.95rem' }} dense>5</MenuItem>
-          <MenuItem value={10} sx={{ fontSize: '0.95rem' }} dense>10</MenuItem>
-          <MenuItem value={25} sx={{ fontSize: '0.95rem' }} dense>25</MenuItem>
+          <MenuItem value={1} dense>1</MenuItem>
+          <MenuItem value={3} dense>3</MenuItem>
+          <MenuItem value={5} dense>5</MenuItem>
+          <MenuItem value={10} dense>10</MenuItem>
         </Select>
       </Box>
 
-      <Box>
+      <Box className={classes.selectWrapper}>
         <FormLabel component="legend" className={classes.selectLabel}>{X.CONFIG.FB_STAGE}</FormLabel>
         <Select
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.fb_stage}
           onChange={(e) => updateAc({ fb_stage: e.target.value as string })}
-          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
+          sx={{ mt: 0.5 }}
         >
-          <MenuItem value={"fb"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_FB}</MenuItem>
-          <MenuItem value={"fs"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_FS}</MenuItem>
-          <MenuItem value={"pseudo-fs"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_PSEUDO_FS}</MenuItem>
-          <MenuItem value={"felinep1"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_ELINE}</MenuItem>
-          <MenuItem value={"fs-combo"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_FS_LINE}</MenuItem>
+          <MenuItem value={"fb"} dense>{X.CONFIG.FB_STAGE_FB}</MenuItem>
+          <MenuItem value={"fs"} dense>{X.CONFIG.FB_STAGE_FS}</MenuItem>
+          <MenuItem value={"pseudo-fs"} dense>{X.CONFIG.FB_STAGE_PSEUDO_FS}</MenuItem>
+          <MenuItem value={"felinep1"} dense>{X.CONFIG.FB_STAGE_ELINE}</MenuItem>
+          <MenuItem value={"fs-combo"} dense>{X.CONFIG.FB_STAGE_FS_LINE}</MenuItem>
         </Select>
       </Box>
 
-      <Box>
+      <Box className={classes.selectWrapper}>
         <FormLabel component="legend" className={classes.selectLabel}>{X.CONFIG.HINTS}</FormLabel>
         <Select
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.hide_solutions ? "true" : "false"}
           onChange={(e) => updateAc({ hide_solutions: e.target.value === "true" })}
-          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
+          sx={{ mt: 0.5 }}
         >
-          <MenuItem value={"true"} sx={{ fontSize: '0.95rem' }} dense>{X.COMMON.YES}</MenuItem>
-          <MenuItem value={"false"} sx={{ fontSize: '0.95rem' }} dense>{X.COMMON.NO}</MenuItem>
+          <MenuItem value={"true"} dense>{X.COMMON.YES}</MenuItem>
+          <MenuItem value={"false"} dense>{X.COMMON.NO}</MenuItem>
         </Select>
       </Box>
     </Box>

@@ -327,8 +327,8 @@ export function createInitialConfig(): Config {
         }),
         solutionNumSelector: new Selector({
             label: X.CONFIG.NUM_SOLUTIONS,
-            names: ["1", "3", "5", "10", "25", "100"],
-            flags: [0, 0, 1, 0, 0, 0],
+            names: ["1", "3", "5", "10"],
+            flags: [0, 0, 1, 0],
             kind: "solution-num"
         }),
         fbPieceSolvedSelector: new Selector({

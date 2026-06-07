@@ -32,181 +32,120 @@ import { BlockTrainerStateM } from '../reducers/BlockTrainerStateM';
 
 const useStyles = makeStyles(theme => ({
     container: {
-      paddingTop: theme.spacing(0),
+      paddingTop: theme.spacing(2),
       paddingBottom: theme.spacing(6),
-      backgroundColor: theme.palette.background.default,
-      [theme.breakpoints.down(768)]: {
-        paddingTop: theme.spacing(0.5),
+      [theme.breakpoints.down('sm')]: {
+        paddingTop: theme.spacing(1),
         paddingBottom: theme.spacing(3),
-        paddingLeft: 10,
-        paddingRight: 10,
+      },
+    },
+    mainConsole: {
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: 24,
+      padding: theme.spacing(5),
+      boxShadow: theme.palette.mode === 'dark' ? '0 8px 40px rgba(0,0,0,0.4)' : '0 8px 40px rgba(0,0,0,0.06)',
+      border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(10, 132, 255, 0.2)' : 'rgba(0, 122, 255, 0.1)'}`,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: theme.spacing(4),
+      [theme.breakpoints.down('md')]: {
+        padding: theme.spacing(3),
+        borderRadius: 20,
+        gap: theme.spacing(3),
       },
     },
     button: {
       width: "100%",
-      height: 54,
-      borderRadius: 8,
-      fontSize: '1.1rem',
-      fontWeight: 600,
-      letterSpacing: '0.02em',
-      boxShadow: 'none',
-      transition: 'all 0.15s ease',
-      [theme.breakpoints.down(768)]: {
-        height: 50,
-        fontSize: '1.05rem',
-        padding: '12px 24px',
-        borderRadius: 8,
+      height: 64,
+      borderRadius: 18,
+      fontSize: '1.2rem',
+      fontWeight: 700,
+      letterSpacing: '-0.02em',
+      boxShadow: '0 4px 14px rgba(0, 122, 255, 0.3)',
+      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+      backgroundColor: '#007AFF',
+      color: '#FFFFFF',
+      textTransform: 'none',
+      '&:hover': {
+        backgroundColor: '#0062CC',
+        boxShadow: '0 6px 20px rgba(0, 122, 255, 0.4)',
+        transform: 'translateY(-1px)',
+      },
+      '&:active': {
+        transform: 'scale(0.96) translateY(0)',
+      },
+      [theme.breakpoints.down('sm')]: {
+        height: 56,
+        fontSize: '1.1rem',
       },
     },
-    paper: {
-      padding: theme.spacing(2.5),
+    scrambleHeader: {
       display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',
-      marginBottom: 8,
-      borderRadius: 6,
-      border: 'none',
-      boxShadow: 'none',
-      backgroundColor: theme.palette.background.paper,
-      [theme.breakpoints.down(768)]: {
-        padding: 12,
-        marginBottom: 8,
-      },
-    },
-    solutionPaper: {
-      padding: theme.spacing(2.5),
-      marginBottom: 8,
-      borderRadius: 6,
-      border: 'none',
-      boxShadow: 'none',
-      backgroundColor: theme.palette.background.paper,
-      [theme.breakpoints.down(768)]: {
-        padding: 12,
-        marginBottom: 8,
-      },
-    },
-    buttonPaper: {
-      padding: theme.spacing(2, 2.5),
-      marginBottom: 8,
-      borderRadius: 6,
-      border: 'none',
-      boxShadow: 'none',
-      backgroundColor: 'transparent',
-      [theme.breakpoints.down(768)]: {
-        padding: 12,
-      },
-    },
-    canvasPaper: {
-      padding: theme.spacing(0),
-      display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',
-    },
-    infoColumn: {
-      color: theme.palette.background.paper
-    },
-    scrambleColumn: {
-      paddingLeft: theme.spacing(3)
-    },
-    textColumn: {
-      [theme.breakpoints.up('sm')]: {
-        minHeight: 138
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      borderBottom: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'),
+      paddingBottom: theme.spacing(3),
+      [theme.breakpoints.down('sm')]: {
+        flexDirection: 'column',
+        gap: 16,
       },
     },
     setup: {
-      whiteSpace: 'pre-line',
-      fontSize: "1.75rem",
-      fontWeight: 500,
-      letterSpacing: '-0.01em',
-      lineHeight: 1.4,
+      fontFamily: '"SF Mono", "Roboto Mono", monospace',
+      fontSize: "1.85rem",
+      fontWeight: 700,
+      letterSpacing: '-0.03em',
+      lineHeight: 1.2,
       color: theme.palette.text.primary,
+      [theme.breakpoints.down('md')]: {
+        fontSize: "1.5rem",
+      },
       [theme.breakpoints.down('sm')]: {
-        fontSize: "1.4rem",
+        fontSize: "1.3rem",
       },
     },
-    condGap: {
+    contentGrid: {
+      display: 'grid',
+      gridTemplateColumns: '1.2fr 1fr',
+      gap: theme.spacing(5),
+      [theme.breakpoints.down('md')]: {
+        gridTemplateColumns: '1fr',
+        gap: theme.spacing(4),
+      },
     },
-    fgap: {
-      flexShrink: 100, flexBasis: "2.5rem", minWidth: "1.5em",
-      [theme.breakpoints.down('sm')]: {
-        flexBasis: "1.0rem",
-        minWidth: "0.4rem"
-      }
+    solutionArea: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 20,
     },
-    fixedHeight: {
-      height: 250,
+    cubeArea: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.015)',
+      borderRadius: 20,
+      padding: theme.spacing(2),
     },
     title : {
         color: theme.palette.text.disabled,
-        fontWeight: 500,
-        fontSize: '0.7rem',
-        letterSpacing: '0.04em',
+        fontWeight: 800,
+        fontSize: '1rem',
+        letterSpacing: '0.1em',
         textTransform: 'uppercase',
-        paddingBottom: 4,
-    },
-    sourceIcon : {
-        color: theme.palette.text.disabled,
-        fontSize: 15,
-        padding: 0
-    },
-    sourceIconWrap : {
-    },
-    fab: {
-      position: 'absolute',
-      top: theme.spacing(7),
-      left: theme.spacing(2),
-    },
-    prompt: {
-      color: theme.palette.text.secondary,
-    },
-    configPanel: {
-      display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-      gap: '28px 24px',
-      [theme.breakpoints.down(768)]: {
-        gridTemplateColumns: '1fr',
-        gap: '14px',
-      },
+        marginBottom: 12,
     },
     chainButton: {
       textTransform: 'none',
-      fontSize: '0.725rem',
-      fontWeight: 500,
-      padding: '1px 6px',
-      minWidth: 0,
-      lineHeight: 1.5,
-      borderRadius: 4,
+      fontSize: '0.85rem',
+      fontWeight: 600,
+      padding: '4px 12px',
+      borderRadius: 8,
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(10, 132, 255, 0.15)' : 'rgba(0, 122, 255, 0.08)',
       color: theme.palette.primary.main,
+      transition: 'all 0.2s',
       '&:hover': {
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.08)' : 'rgba(85,108,214,0.06)',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(10, 132, 255, 0.25)' : 'rgba(0, 122, 255, 0.15)',
       },
-    },
-    formControlLabel: {
-      [theme.breakpoints.down(768)]: {
-        paddingTop: 4,
-        paddingBottom: 4,
-        '& .MuiFormControlLabel-label': {
-          fontSize: '0.95rem',
-        },
-        '& .MuiRadio-root, & .MuiCheckbox-root': {
-          padding: 12,
-        },
-      },
-    },
-    radioGroup: {
-      [theme.breakpoints.down(768)]: {
-        '& .MuiFormGroup-root': {
-          flexDirection: 'column',
-        },
-      },
-    },
-    sectionLabel: {
-      fontSize: '0.7rem',
-      fontWeight: 500,
-      letterSpacing: '0.05em',
-      textTransform: 'uppercase',
-      color: theme.palette.text.disabled,
-      marginBottom: 2,
     },
   }))
 
@@ -336,7 +275,7 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
       return () => {
         window.removeEventListener('keydown', downHandler);
       };
-    });
+    }, [state.keyMapping, dispatch, spaceButtonText]);
 
     const [favSelected, setFav] = React.useState(false)
     const handleFav = () => {
@@ -389,117 +328,99 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
 
     return (
     <Box className={classes.container}>
-      <Box className={classes.paper}>
-        <Box style={{display: "flex"}}>
-          <Box style={{display: "flex", flexDirection: "column", alignItems: "flex-start"}}>
-            <Box className={classes.title}>
-              {X.COMMON.SCRAMBLE}
-            </Box>
-            <Typography className={classes.setup} style={{marginTop: 4}}>
-                  {setup}
-            </Typography>
+      <Box className={classes.mainConsole}>
+        {/* Header: Scramble and Action Icons */}
+        <Box className={classes.scrambleHeader}>
+          <Box sx={{ flex: 1 }}>
+            <Box className={classes.title}>{X.COMMON.SCRAMBLE}</Box>
+            <Typography className={classes.setup}>{setup}</Typography>
           </Box>
-          <Box style={{}} className={classes.fgap} />
+          <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
+            {gt_sm && scramblePanel}
+          </Box>
+        </Box>
 
-          {gt_sm && scramblePanel}
+        {/* Content: Solutions and Cube */}
+        <Box className={classes.contentGrid}>
+          {/* Left Column: Solutions */}
+          <Box className={classes.solutionArea}>
+            {(state.name === "hiding" || state.name === "revealed" || state.name === "revealed_all") ? (
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <Box className={classes.title}>{X.COMMON.SOLUTIONS}</Box>
+                <Box>
+                  {(state.name === "hiding") ? (
+                    <Typography style={{fontSize: "1.4rem", fontWeight: 500, color: theme.palette.text.secondary, opacity: 0.7}}>
+                      {showMoveCountHint ? describe_hide(desc) : "···"}
+                    </Typography>
+                  ) : (
+                    desc.map((caseDesc, ci) => (
+                      <Box key={ci} sx={{ mb: ci < desc.length - 1 ? 3 : 0 }}>
+                        {desc.length > 1 && (
+                          <Typography style={{fontWeight: 700, fontSize: "0.9rem", color: theme.palette.primary.main, marginBottom: 8}}>
+                            {caseDesc.kind.toUpperCase()}
+                          </Typography>
+                        )}
+                        {caseDesc.algs.map((alg, ai) => (
+                          <Box key={ai} style={{display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8}}>
+                            <Typography style={{flex: 1, fontSize: "1.45rem", fontWeight: 600, letterSpacing: '-0.01em'}}>
+                              {alg}
+                            </Typography>
+                            {showChainButtons && alg && (
+                              <Button size="small" className={classes.chainButton}
+                                onClick={() => handleChainTrain(alg)}>
+                                {X.COMMON.CHAIN_PRACTICE}
+                              </Button>
+                            )}
+                          </Box>
+                        ))}
+                      </Box>
+                    ))
+                  )}
+                </Box>
+              </div>
+            ) : null}
+          </Box>
+
+          {/* Right Column: Cube View */}
+          <Box className={classes.cubeArea}>
+            { props.state.config.showCube.getActiveName() === "Show" ?
+              <CubeSim
+                width={canvas_wh[0]}
+                height={canvas_wh[1]}
+                cube={facelet}
+                colorScheme={state.colorScheme.getColorsForOri(state.cube.ori)}
+                hintDistance={ (state.mode === "4c" || state.mode === "eopair") ? 3 : 7 }
+                theme={state.config.theme.getActiveName()}
+                facesToReveal={ [Face.L, Face.B, Face.D]  }
+                obscureNonLR={state.mode === "ss" && state.config.obscureNonLRSelector.getActiveName() === "On"}
+                obscureStickerWidth={state.mode === "ss" ? state.config.obscureStickerWidthSelector.getActiveName() : undefined}
+                obscureCornerMask={state.mode === "ss" && state.config.obscureCornerMaskSelector.getActiveName() === "On"}
+              /> : null }
+          </Box>
+        </Box>
+
+        {/* Footer: Main Action Button */}
+        <Box sx={{ mt: 2 }}>
+          <Grid container spacing={2} alignItems="center">
+            <Grid item xs={12} sm={6} md={4}>
+              <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
+                variant="contained"
+                onClick={handleSpace}>
+                  {spaceButtonText}
+              </Button>
+            </Grid>
+            {!levelSelectionSuccess && (
+              <Grid item>
+                <CustomTooltip title={levelSelectionWarning}>
+                  <IconButton color="error">
+                    <ErrorOutlineIcon sx={{ fontSize: 32 }}/>
+                  </IconButton>
+                </CustomTooltip>
+              </Grid>
+            )}
+          </Grid>
         </Box>
       </Box>
-
-      <Box className={classes.solutionPaper}>
-      <Grid container>
-
-        <Grid item md={6} sm={12} xs={12} className={classes.condGap}>
-          <Box style={{display: "flex" }}>
-            <Box display="flex">
-                <Box style={{display: "flex", alignSelf: "flex-start"}}> <Box className={classes.title}>
-                  {X.COMMON.SOLUTIONS}
-                </Box> </Box>
-            </Box>
-            <Box style={{}} className={classes.fgap} />
-            <div>
-              <Box paddingBottom={2} lineHeight={1}>
-                {(state.name === "hiding") ? (
-                  <Typography style={{whiteSpace: 'pre-line', fontSize: "1.35rem", fontWeight: 400, lineHeight: 1.6, color: theme.palette.text.secondary}}>
-                    {showMoveCountHint ? describe_hide(desc) : ""}
-                  </Typography>
-                ) : (state.name === "revealed" || state.name === "revealed_all") ? (
-                  desc.map((caseDesc, ci) => (
-                    <Box key={ci}>
-                      {desc.length > 1 && (
-                        <Typography style={{fontWeight: 600, fontSize: "1rem", marginTop: ci > 0 ? 12 : 0, color: theme.palette.text.secondary}}>
-                          [{caseDesc.kind}]:
-                        </Typography>
-                      )}
-                      {caseDesc.algs.map((alg, ai) => (
-                        <Box key={ai} style={{display: 'flex', alignItems: 'center', marginBottom: 4}}>
-                          <Typography style={{flex: 1, fontSize: "1.5rem", fontWeight: 500, lineHeight: 1.4}}>
-                            {alg}
-                          </Typography>
-                          {showChainButtons && alg && (
-                            <Button size="small" className={classes.chainButton}
-                              onClick={() => handleChainTrain(alg)}>
-                              {X.COMMON.CHAIN_PRACTICE}
-                            </Button>
-                          )}
-                        </Box>
-                      ))}
-                    </Box>
-                  ))
-                ) : null}
-              </Box>
-            </div>
-          </Box>
-        </Grid>
-
-
-        <Grid item md={6} sm={12} xs={12} style={{display: "flex", justifyContent: "center"}}>
-          <Box style={{backgroundColor: "rgba(0, 0, 0, 0)"}}>
-            { props.state.config.showCube.getActiveName() === "Show" ?
-            <CubeSim
-              width={canvas_wh[0]}
-              height={canvas_wh[1]}
-              cube={facelet}
-
-              colorScheme={state.colorScheme.getColorsForOri(state.cube.ori)}
-              hintDistance={ (state.mode === "4c" || state.mode === "eopair") ? 3 : 7 }
-              theme={state.config.theme.getActiveName()}
-              facesToReveal={ [Face.L, Face.B, Face.D]  }
-              obscureNonLR={state.mode === "ss" && state.config.obscureNonLRSelector.getActiveName() === "On"}
-              obscureStickerWidth={state.mode === "ss" ? state.config.obscureStickerWidthSelector.getActiveName() : undefined}
-              obscureCornerMask={state.mode === "ss" && state.config.obscureCornerMaskSelector.getActiveName() === "On"}
-            /> : null }
-          </Box>
-        </Grid>
-      </Grid>
-      </Box>
-
-      <Box className={classes.buttonPaper}>
-
-      <Grid container spacing={1}>
-        <Grid item xs={12} sm={4} md={3}>
-          <Button onFocus={(evt) => evt.target.blur() } className={classes.button}
-            variant="outlined" color="primary"
-            onClick={handleSpace}>
-              {spaceButtonText}
-          </Button>
-        </Grid>
-        {
-          !levelSelectionSuccess ?
-          <Grid item xs={1}>
-            <CustomTooltip title={levelSelectionWarning}>
-              <IconButton>
-                <ErrorOutlineIcon sx={{ fontSize: 28 }}/>
-              </IconButton>
-            </CustomTooltip>
-          </Grid> :
-          null
-        }
-
-
-      </Grid>
-
-      </Box>
-
     </Box>
     );
 }

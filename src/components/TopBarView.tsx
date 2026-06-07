@@ -29,50 +29,40 @@ const useStyles = makeStyles(theme => ({
     root: {
       display: "flex"
     },
+    topBarWrapper: {
+      position: 'sticky',
+      top: 0,
+      zIndex: 1100,
+      padding: theme.spacing(2, 2, 0, 2),
+      [theme.breakpoints.down('sm')]: {
+        padding: theme.spacing(1.5, 1.5, 0, 1.5),
+      },
+      pointerEvents: 'none',
+    },
     bar: {
-      backgroundColor: theme.palette.background.paper,
-      borderBottom: '1px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+      backgroundColor: theme.palette.mode === 'dark' ? 'rgba(28, 28, 30, 0.75)' : 'rgba(255, 255, 255, 0.75)',
+      backdropFilter: 'saturate(180%) blur(20px)',
+      WebkitBackdropFilter: 'saturate(180%) blur(20px)',
+      border: '0.5px solid ' + (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'),
+      borderRadius: 20,
       display: "flex",
       flexWrap: "nowrap",
       justifyContent: "space-between",
-      minHeight: 50,
-    },
-    select: {
-      backgroundColor: 'transparent',
-      color: theme.palette.text.primary,
-      borderRadius: 4,
-      paddingLeft: 12,
-      paddingRight: 4,
-      marginLeft: 8,
-      height: 34,
-      fontWeight: 500,
-      fontSize: "0.875rem",
-      lineHeight: '34px',
-      '&:hover': {
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
-      },
-      [theme.breakpoints.down('sm')]: {
-        paddingLeft: 10,
-        marginRight: -5,
-        marginLeft: 4,
-        fontSize: "0.8rem",
-        height: 32,
-      },
-      [theme.breakpoints.down(400)]: {
-        maxWidth: 140,
-      },
-      '& .MuiSelect-icon': {
-        color: theme.palette.text.secondary,
-      },
+      minHeight: 56,
+      boxShadow: '0 4px 30px rgba(0,0,0,0.08)',
+      pointerEvents: 'auto',
+      maxWidth: 1200,
+      margin: '0 auto',
     },
     toolbarBtn: {
       color: theme.palette.text.secondary,
-      borderRadius: 4,
-      width: 34,
-      height: 34,
-      transition: 'all 0.15s ease',
+      borderRadius: 12,
+      width: 40,
+      height: 40,
+      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
       '&:hover': {
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+        color: theme.palette.text.primary,
       },
       [theme.breakpoints.down('md')]: {
         width: 44,
@@ -80,22 +70,22 @@ const useStyles = makeStyles(theme => ({
       },
     },
     langBtn: {
-      fontSize: "0.75rem",
+      fontSize: "0.85rem",
       fontWeight: 600,
       color: theme.palette.text.secondary,
-      borderRadius: 4,
-      minWidth: 30,
-      height: 30,
-      lineHeight: '30px',
+      borderRadius: 12,
+      minWidth: 40,
+      height: 40,
+      lineHeight: '40px',
       textAlign: 'center',
-      padding: '0 8px',
+      padding: '0 10px',
       backgroundColor: 'transparent',
       cursor: 'pointer',
       border: 'none',
-      transition: 'all 0.15s ease',
+      transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
       '&:hover': {
-        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)',
-        color: theme.palette.primary.main,
+        backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.06)',
+        color: theme.palette.text.primary,
       },
       [theme.breakpoints.down('md')]: {
         height: 44,
@@ -116,21 +106,21 @@ function TopBarView(props: { value: number,
     let currentModeName = modes[value] ? (modes[value][2] || modes[value][1]) : ""
     const is_sm = useMediaQuery(theme.breakpoints.down('sm'));
     return (
-        <div>
-            <Box boxShadow={0} >
+        <div className={classes.topBarWrapper}>
             <Toolbar className={classes.bar} disableGutters>
-            <Box paddingX={is_sm ? 1.5 : 2} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Typography style={{fontSize: "0.85rem", fontWeight: 600, color: theme.palette.text.primary,
-                letterSpacing: '-0.01em', whiteSpace: 'nowrap'}} >
+            <Box paddingX={is_sm ? 2.5 : 4} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Typography style={{fontSize: "1.1rem", fontWeight: 800, color: theme.palette.text.primary,
+                letterSpacing: '-0.02em', whiteSpace: 'nowrap'}} >
                 {is_sm ? X.NAV.APP_TITLE_SHORT : X.NAV.APP_TITLE}
               </Typography>
-              <Typography style={{fontSize: "0.8rem", fontWeight: 400, color: theme.palette.text.secondary,
+              {!is_sm && <Box sx={{ width: 1, height: 20, backgroundColor: 'divider', opacity: 0.5 }} />}
+              <Typography style={{fontSize: "0.95rem", fontWeight: 600, color: theme.palette.text.secondary,
                 whiteSpace: 'nowrap'}}>
-                — {currentModeName}
+                {currentModeName}
               </Typography>
             </Box>
-            <Box style={{flexGrow: 10}}> </Box>
-            <Box sx={{display: 'flex', alignItems: 'center', gap: 0.25, paddingRight: 1}}>
+            <Box style={{flexGrow: 1}}> </Box>
+            <Box sx={{display: 'flex', alignItems: 'center', gap: 1, paddingRight: 2}}>
               <IconButton onClick={toggleSettings} size="small" className={classes.toolbarBtn}
                 onFocus={(e) => e.target.blur()}>
                   <TuneIcon fontSize="small" />
@@ -153,9 +143,9 @@ function TopBarView(props: { value: number,
               </button>
             </Box>
             </Toolbar>
-            </Box>
         </div>
     );
 }
+
 
 export default TopBarView;

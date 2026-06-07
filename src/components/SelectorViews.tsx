@@ -246,17 +246,31 @@ function SingleSelect(props: {state: AppState, dispatch: React.Dispatch<Action>,
     dispatch( { type: "config", content: {[select]: sel.setFlags(new_flags) } } )
   }
 
+  // Force filter for solutionNumSelector to bypass localstorage cache
+  const finalFilterNames = new Set(filterNames)
+  if (select === "solutionNumSelector") {
+    finalFilterNames.add("25")
+    finalFilterNames.add("100")
+  }
+
   let label = sel.label || props.label || ""
   return (
-  <FormControl component="fieldset" className={classes.select}>
+  <FormControl component="fieldset" className={classes.select} sx={{ width: '100%' }}>
     <FormLabel component="legend" className={classes.selectLabel} >
       {label}
     </FormLabel>
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0 }}>
+    <Box sx={{ 
+      display: 'flex', 
+      flexWrap: 'wrap', 
+      gap: '4px', 
+      bgcolor: theme.palette.mode === 'dark' ? 'rgba(118, 118, 128, 0.24)' : 'rgba(118, 118, 128, 0.12)',
+      borderRadius: '12px',
+      padding: '4px',
+      width: '100%',
+    }}>
       {sel.names.map((name, i) => {
-        if (filterNames && filterNames.has(name)) return null
+        if (finalFilterNames && finalFilterNames.has(name)) return null
         const active = sel.flags[i] === 1
-        const total = sel.names.filter(n => !filterNames || !filterNames.has(n)).length
         return (
           <Button
             key={name}
@@ -264,25 +278,24 @@ function SingleSelect(props: {state: AppState, dispatch: React.Dispatch<Action>,
             onClick={() => handleChange(name)}
             onFocus={(evt) => evt.target.blur()}
             sx={{
+              flex: 1,
               textTransform: 'none',
-              borderRadius: 0,
-              border: '1px solid',
-              borderColor: active ? 'primary.main' : 'divider',
-              bgcolor: active ? (theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.1)' : 'rgba(85,108,214,0.05)') : 'transparent',
-              color: active ? 'primary.main' : 'text.secondary',
-              fontWeight: active ? 600 : 400,
-              fontSize: '0.9rem',
-              px: 1.5,
-              py: 0.5,
-              minWidth: 0,
+              borderRadius: '7px',
+              border: 'none',
+              bgcolor: active ? (theme.palette.mode === 'dark' ? '#636366' : '#FFFFFF') : 'transparent',
+              boxShadow: active ? '0px 3px 8px rgba(0, 0, 0, 0.12), 0px 3px 1px rgba(0, 0, 0, 0.04)' : 'none',
+              color: active ? theme.palette.text.primary : theme.palette.text.secondary,
+              fontWeight: active ? 600 : 500,
+              fontSize: '0.85rem',
+              px: 2,
+              py: '6px',
+              minWidth: '60px',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
               '&:hover': {
-                bgcolor: active
-                  ? (theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.16)' : 'rgba(85,108,214,0.1)')
-                  : (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)'),
+                bgcolor: active 
+                  ? (theme.palette.mode === 'dark' ? '#636366' : '#FFFFFF') 
+                  : (theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.02)'),
               },
-              '&:first-of-type': { borderTopLeftRadius: 4, borderBottomLeftRadius: 4 },
-              '&:last-of-type': { borderTopRightRadius: 4, borderBottomRightRadius: 4 },
-              '&:not(:first-of-type)': { ml: '-1px' },
             }}
           >
             {sel.getDisplayName(i)}
