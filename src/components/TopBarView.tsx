@@ -149,7 +149,7 @@ function TopBarView(props: { value: number,
               </IconButton>
               <button onClick={toggleLanguage} className={classes.langBtn}
                   onFocus={(e) => e.target.blur()}>
-                  {language === "zh" ? "EN" : "中"}
+                  {language === "zh" ? "简" : language === "tw" ? "繁" : "EN"}
               </button>
             </Box>
             </Toolbar>

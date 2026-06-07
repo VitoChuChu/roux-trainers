@@ -27,10 +27,10 @@ const useStyles = makeStyles(theme => ({
   modeSelect: {
     backgroundColor: 'transparent',
     color: theme.palette.text.primary,
-    borderRadius: 4,
-    height: 32,
-    fontWeight: 500,
-    fontSize: '0.8rem',
+    borderRadius: 6,
+    height: 44,
+    fontWeight: 600,
+    fontSize: '1rem',
     width: '100%',
     '&:hover': {
       backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.03)',
@@ -39,53 +39,46 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.text.secondary,
     },
     '& .MuiSelect-select': {
-      paddingTop: 5,
-      paddingBottom: 5,
-    },
-    [theme.breakpoints.down('md')]: {
-      height: 44,
-      '& .MuiSelect-select': {
-        paddingTop: 10,
-        paddingBottom: 10,
-      },
+      paddingTop: 8,
+      paddingBottom: 8,
     },
   },
   sectionTitle: {
-    fontSize: '0.6rem',
+    fontSize: '0.85rem',
     fontWeight: 600,
-    letterSpacing: '0.07em',
+    letterSpacing: '0.04em',
     textTransform: 'uppercase',
     color: theme.palette.text.disabled,
-    marginBottom: 8,
-    marginTop: 20,
+    marginBottom: 12,
+    marginTop: 24,
   },
   sectionTitleFirst: {
-    fontSize: '0.6rem',
+    fontSize: '0.85rem',
     fontWeight: 600,
-    letterSpacing: '0.07em',
+    letterSpacing: '0.04em',
     textTransform: 'uppercase',
     color: theme.palette.text.disabled,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   configPanel: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 28,
+    gap: 32,
   },
   selectLabel: {
     color: theme.palette.text.disabled,
-    fontSize: '0.6rem',
+    fontSize: '0.85rem',
     fontWeight: 600,
-    letterSpacing: '0.07em',
+    letterSpacing: '0.04em',
     textTransform: 'uppercase',
-    marginBottom: 2,
+    marginBottom: 6,
   },
   prompt: {
     color: theme.palette.text.secondary,
     '& pre': {
       fontFamily: 'inherit',
       lineHeight: 1.6,
-      fontSize: '0.8rem',
+      fontSize: '0.95rem',
     },
   },
 }));
@@ -320,12 +313,12 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
             const [o, p] = (e.target.value as string).split(",");
             updateAc({ orientation: o, pre_orientation: p || "" });
           }}
-          sx={{ fontSize: '0.8rem', mt: 0.5 }}
+          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
         >
-          <MenuItem value={"x2y,"} dense>{X.CONFIG.ORI_X2Y_WY}</MenuItem>
-          <MenuItem value={"x2y,x"} dense>{X.CONFIG.ORI_X2Y_BG}</MenuItem>
-          <MenuItem value={"x2y,z"} dense>{X.CONFIG.ORI_X2Y_RO}</MenuItem>
-          <MenuItem value={"cn,"} dense>{X.CONFIG.ORI_CN}</MenuItem>
+          <MenuItem value={"x2y,"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_X2Y_WY}</MenuItem>
+          <MenuItem value={"x2y,x"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_X2Y_BG}</MenuItem>
+          <MenuItem value={"x2y,z"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_X2Y_RO}</MenuItem>
+          <MenuItem value={"cn,"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORI_CN}</MenuItem>
         </Select>
       </Box>
 
@@ -335,10 +328,10 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.show_mode}
           onChange={(e) => updateAc({ show_mode: e.target.value as string })}
-          sx={{ fontSize: '0.8rem', mt: 0.5 }}
+          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
         >
-          <MenuItem value={"foreach"} dense>{X.CONFIG.ORGANIZE_BY_FB}</MenuItem>
-          <MenuItem value={"combined"} dense>{X.CONFIG.ORGANIZE_COMBINED}</MenuItem>
+          <MenuItem value={"foreach"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORGANIZE_BY_FB}</MenuItem>
+          <MenuItem value={"combined"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.ORGANIZE_COMBINED}</MenuItem>
         </Select>
       </Box>
 
@@ -348,13 +341,13 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.num_solution}
           onChange={(e) => updateAc({ num_solution: Number(e.target.value) })}
-          sx={{ fontSize: '0.8rem', mt: 0.5 }}
+          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
         >
-          <MenuItem value={1} dense>1</MenuItem>
-          <MenuItem value={3} dense>3</MenuItem>
-          <MenuItem value={5} dense>5</MenuItem>
-          <MenuItem value={10} dense>10</MenuItem>
-          <MenuItem value={25} dense>25</MenuItem>
+          <MenuItem value={1} sx={{ fontSize: '0.95rem' }} dense>1</MenuItem>
+          <MenuItem value={3} sx={{ fontSize: '0.95rem' }} dense>3</MenuItem>
+          <MenuItem value={5} sx={{ fontSize: '0.95rem' }} dense>5</MenuItem>
+          <MenuItem value={10} sx={{ fontSize: '0.95rem' }} dense>10</MenuItem>
+          <MenuItem value={25} sx={{ fontSize: '0.95rem' }} dense>25</MenuItem>
         </Select>
       </Box>
 
@@ -364,13 +357,13 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.fb_stage}
           onChange={(e) => updateAc({ fb_stage: e.target.value as string })}
-          sx={{ fontSize: '0.8rem', mt: 0.5 }}
+          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
         >
-          <MenuItem value={"fb"} dense>{X.CONFIG.FB_STAGE_FB}</MenuItem>
-          <MenuItem value={"fs"} dense>{X.CONFIG.FB_STAGE_FS}</MenuItem>
-          <MenuItem value={"pseudo-fs"} dense>{X.CONFIG.FB_STAGE_PSEUDO_FS}</MenuItem>
-          <MenuItem value={"felinep1"} dense>{X.CONFIG.FB_STAGE_ELINE}</MenuItem>
-          <MenuItem value={"fs-combo"} dense>{X.CONFIG.FB_STAGE_FS_LINE}</MenuItem>
+          <MenuItem value={"fb"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_FB}</MenuItem>
+          <MenuItem value={"fs"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_FS}</MenuItem>
+          <MenuItem value={"pseudo-fs"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_PSEUDO_FS}</MenuItem>
+          <MenuItem value={"felinep1"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_ELINE}</MenuItem>
+          <MenuItem value={"fs-combo"} sx={{ fontSize: '0.95rem' }} dense>{X.CONFIG.FB_STAGE_FS_LINE}</MenuItem>
         </Select>
       </Box>
 
@@ -380,10 +373,10 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
           fullWidth size="small" variant="standard" disableUnderline
           value={ac.hide_solutions ? "true" : "false"}
           onChange={(e) => updateAc({ hide_solutions: e.target.value === "true" })}
-          sx={{ fontSize: '0.8rem', mt: 0.5 }}
+          sx={{ fontSize: '0.95rem', mt: 0.8, fontWeight: 500 }}
         >
-          <MenuItem value={"true"} dense>{X.COMMON.YES}</MenuItem>
-          <MenuItem value={"false"} dense>{X.COMMON.NO}</MenuItem>
+          <MenuItem value={"true"} sx={{ fontSize: '0.95rem' }} dense>{X.COMMON.YES}</MenuItem>
+          <MenuItem value={"false"} sx={{ fontSize: '0.95rem' }} dense>{X.COMMON.NO}</MenuItem>
         </Select>
       </Box>
     </Box>
@@ -421,7 +414,7 @@ export default function SettingsDrawer(props: { state: AppState, dispatch: React
         disableUnderline
       >
         {modes.map((s, i) =>
-          <MenuItem key={i} value={s[1]} sx={{ fontSize: '0.85rem', borderRadius: 4, m: '2px 6px', py: 0.75, px: 1.5 }}>
+          <MenuItem key={i} value={s[1]} sx={{ fontSize: '1rem', borderRadius: 6, m: '2px 6px', py: 1, px: 1.5 }}>
             {s[1]}
           </MenuItem>
         )}

@@ -1,5 +1,5 @@
 // ============================================================
-// Roux Trainer - 多语言翻译字典 (zh / en)
+// Roux Trainer - 多語言翻譯字典 (zh / tw / en)
 // ============================================================
 
 type TranslationDict = typeof zh;
@@ -271,6 +271,276 @@ const zh = {
     GW: "绿顶白前（蓝底红桥）", GY: "绿顶黄前（蓝底橙桥）", GO: "绿顶橙前（蓝底白桥）", GR: "绿顶红前（蓝底黄桥）",
     OW: "橙顶白前（红底绿桥）", OY: "橙顶黄前（红底蓝桥）", OB: "橙顶蓝前（红底白桥）", OG: "橙顶绿前（红底黄桥）",
     RW: "红顶白前（橙底蓝桥）", RY: "红顶黄前（橙底绿桥）", RB: "红顶蓝前（橙底黄桥）", RG: "红顶绿前（橙底白桥）",
+  },
+};
+
+// ---- 繁體中文 ----
+const tw: typeof zh = {
+  COMMON: {
+    SHOW: "顯示",
+    HIDE: "隱藏",
+    ON: "開啟",
+    OFF: "關閉",
+    YES: "是",
+    NO: "否",
+    OK: "確定",
+    CLOSE: "關閉",
+    CANCEL: "取消",
+    CONFIRM: "確認",
+    EDIT: "編輯",
+    SELECT: "選擇",
+    NEXT: "下一個",
+    REVEAL: "顯示答案",
+    SCRAMBLE: "打亂",
+    SOLUTIONS: "解法",
+    CASE: "案例",
+    LEVEL: "級別",
+    ANY: "任意",
+    ADD: "添加",
+    INPUT: "輸入",
+    NO_SOLUTION: "按空格獲取新題目",
+    CHAIN_PRACTICE: "連貫練習 →",
+    SETTINGS: "設置",
+  },
+
+  NAV: {
+    APP_TITLE: "Roux 訓練器",
+    APP_TITLE_SHORT: "Roux 訓練器",
+    GOT_IT: "知道了！",
+    LANGUAGE: "語言",
+  },
+
+  MODES: {
+    FB: { full: "左橋 (固定)", short: "FB (固定)" },
+    ANALYZER: { full: "左橋分析器 (x2y | CN)", short: "FB 分析器 (x2y | CN)" },
+    FS: { full: "左橋方塊", short: "FB 方塊" },
+    FSDR: { full: "左橋方塊 + DR 棱塊", short: "FB 方塊 + DR" },
+    FBDR: { full: "左橋最後組對 (+ DR 棱塊)", short: "FB 最後組對 (+DR)" },
+    FBSS: { full: "左橋最後組對 + 第二方塊", short: "FB 最後組對 + SS" },
+    SS: { full: "右橋方塊", short: "SB 方塊" },
+    CMLL: { full: "CMLL", short: "CMLL" },
+    LSE_4C: { full: "LSE 4c", short: "LSE 4c" },
+    EOLR: { full: "EOLR / EOLRb", short: "EOLR(b)" },
+  },
+
+  CONFIG: {
+    VIRTUAL_CUBE: "虛擬魔方",
+    THEME: "主題",
+    THEME_BRIGHT: "亮色",
+    THEME_DARK: "暗色",
+    SOLUTION_SORTING: "解法排序方式",
+    SORT_DEFAULT: "默認",
+    SORT_QTM: "QTM",
+    MOVE_COUNT_HINT: "顯示步數提示",
+    NUM_SOLUTIONS: "解法數量",
+    COLOR_SCHEME_LABEL: "打亂朝向 (U-F)",
+
+    CMLL_AUF: "CMLL AUF",
+    CMLL_AUF_NONE: "無",
+    SB_LAST_PAIR_TRIGGER: "SB 最後組對觸發器（全部取消則為純 CMLL）",
+    CUBE_MASK: "魔方遮罩",
+    CUBE_MASK_SHOW: "顯示",
+    CUBE_MASK_HIDE: "隱藏",
+    CUBE_MASK_HIDE_LSE: "隱藏 LSE",
+    VISUALIZE_AS: "顯示方式",
+    VIS_FLAT3D: "平面 3D",
+    VIS_3D: "3D",
+    VIS_2D: "2D",
+    SHOW_L_FACE: "顯示 L 面",
+    LR_FACES_REVEAL: "顯示的 L/R 面",
+    RECOG_STICKERS_ONLY: "僅顯示識別貼紙",
+    NMCLL_RECOG_MODE: "NMCLL 識別模式",
+    NMCLL_OFF: "關閉",
+    BATCH_MODE: "批量模式",
+
+    SELECT_CMLL_CASES: "選擇 CMLL 案例",
+    SELECT_OLLCP_CASES: "選擇 OLLCP 案例",
+    SELECT_BY_NMCLL: "按 NMCLL 選擇",
+    NMCLL_DIALOG_TITLE: "按 NMCLL 識別選擇案例（這是獨立於上述選擇的篩選，僅在 L/R 或 F/B 模式下生效）",
+
+    FB_ORIENTATION: "FB 朝向",
+    ORI_X2Y_WY: "x2y 白/黃",
+    ORI_X2Y_BG: "x2y 藍/綠",
+    ORI_X2Y_RO: "x2y 紅/橙",
+    ORI_CN: "全色中立",
+    ORGANIZE: "排列方式",
+    ORGANIZE_BY_FB: "按 FB 分組",
+    ORGANIZE_COMBINED: "合併顯示",
+    FB_STAGE: "FB 階段",
+    FB_STAGE_FB: "FB",
+    FB_STAGE_FS: "FS",
+    FB_STAGE_PSEUDO_FS: "偽 FS",
+    FB_STAGE_ELINE: "E-Line+1",
+    FB_STAGE_FS_LINE: "FS/Line",
+    HINTS: "提示？",
+
+    DIFFICULTY: "難度",
+    DIFF_RANDOM: "隨機",
+    DIFF_DL_SOLVED: "DL 已還原",
+    DIFF_BL_SOLVED: "BL 已還原",
+    DIFF_HARD: "困難",
+
+    FB_BASIS: "FB 基準（視為已還原的塊），默認為 L 中心已還原",
+    FB_BASIS_DEFAULT: "默認",
+    POSITION_OF_SQUARE: "方塊位置",
+    FS_AT_BACK: "FS 在後",
+    FS_AT_FRONT: "FS 在前",
+    EITHER: "任意",
+    FRONT_FS: "前 FS",
+    BACK_FS: "後 FS",
+    BOTH: "兩者",
+    FRONT_SS: "前 SS",
+    BACK_SS: "後 SS",
+    FRONT_FBLP: "前 FBLP",
+    BACK_FBLP: "後 FBLP",
+    SS_POSITION: "SS 位置",
+
+    SCRAMBLE_TYPE: "打亂類型",
+    SCRAMBLE_SHORT: "短打亂（僅涉及 FBDR 塊）",
+    SCRAMBLE_RANDOM_STATE: "隨機狀態（整個魔方，適合練習 F2B）",
+    SCRAMBLE_SHORT_LSE: "短打亂",
+    SCRAMBLE_RANDOM_STATE_LSE: "隨機狀態",
+    PIECES_TO_SOLVE: "要還原的塊",
+    FB_LAST_PAIR_DR: "FB 最後組對 + DR",
+    FB_LAST_PAIR_ONLY: "僅 FB 最後組對",
+    LAST_PAIR_PATTERN: "最後組對模式",
+    RANDOM: "隨機",
+    SOLVED: "已還原",
+    POSITION_OF_FB_EDGE: "FB 棱塊位置",
+    POSITION_OF_DR: "DR 位置",
+    ORIENTATION_OF_DR: "DR 朝向",
+    ORIENTED: "已歸位",
+    MISORIENTED: "未歸位",
+    SS_LABEL: "SS",
+    DR_FIXED: "DR 固定",
+
+    LSE_CENTER: "中心",
+    ALIGNED: "對齊",
+    MISALIGNED: "錯位",
+    EO_PAIR: "EO 對",
+    STAGE: "階段",
+    STAGE_4B_MC: "4b (MC，1步 EO對插入)",
+    STAGE_M2_4C: "M2 到 4c",
+    STAGE_4C: "4c",
+    EO: "EO",
+    EO_SOLVED: "已還原",
+    EO_ARROW: "箭頭",
+    CENTER_STRATEGY: "中心策略",
+    EOLR_MC_NONMC_ONLY: "僅顯示非 MC 最優的案例",
+    EOLR_MC_ONLY_OPTIMAL: "僅顯示 MC 最優的案例",
+    EOLR_COMBINED: "合併",
+    EOLR_MC_ONLY: "僅顯示 MC 解法",
+    EOLR_NONMC_ONLY: "僅顯示非 MC 解法",
+    EOLR_EOLRB: "EOLR / EOLRb",
+
+    OBSCURE_NON_LR: "遮擋非 L/R 塊",
+    OBSCURED_STICKER_WIDTH: "遮擋貼紙寬度",
+    WIDTH_THIN: "細",
+    WIDTH_MEDIUM: "中",
+    WIDTH_THICK: "粗",
+    FULL_CORNER_MASKING: "完全遮擋角塊",
+
+    FBDR_LEVEL: "FBDR-級別",
+    FBSS_LEVEL: "FBSS-級別",
+    FS_LEVEL: "FS-級別",
+    FB_LEVEL: "FB-級別",
+    SS_LEVEL: "SS-級別",
+
+    SCRAMBLE_ORI_WG: "白綠",
+    SCRAMBLE_ORI_OTHER: "其他",
+    FILTER_OPTIONS: "篩選選項",
+    CHAIN_TARGET_LABEL: "連貫訓練目標",
+    CHAIN_TARGET_FBLP_DR: "FBLP + DR",
+    CHAIN_TARGET_FBLP_SS: "FBLP + 第二方塊",
+  },
+
+  ANALYZER: {
+    SCRAMBLE_INPUT: "打亂",
+    GEN: "生成",
+    GO: "開始",
+    MY_SOLUTION: "我的解法",
+    INPUT_YOUR_SOLUTION: "輸入你的解法",
+    INPUT_SOLUTION_DIALOG: "輸入你的還原解法",
+    INPUT_SCRAMBLE_DIALOG: "輸入你自己的解法 / 打亂（每行一個）",
+    USE_AS_SOLUTION: "作為解法使用",
+    USE_AS_SCRAMBLE: "作為打亂使用",
+    CLICK_TO_REVEAL: "（點擊顯示）",
+    EXISTS_STM_SOLUTION: (n: number, tag: string) => `存在 ${n}-STM 的 ${tag} 解法，位於：`,
+
+    FB_ORI_DIALOG_TITLE: "設置打亂朝向（橋色）和配色方案",
+    COLOR: "顏色",
+    COLOR_HELPER: "綠,藍,紅,橙,黃,白,灰",
+    SET_COLOR: "設置顏色",
+    ORI_AND_COLOR_SCHEME: "打亂朝向（橋色）和配色方案",
+  },
+
+  CMLL: {
+    USAGE: "操作：按空格獲取下一個案例。按 Enter 重置。/ 顯示答案。",
+  },
+
+  LSE: {
+    USAGE: "操作：按空格獲取下一個案例。按 Enter 重置。\n\n虛擬魔方：I/K (E/D) 對應 M'/M，J/F 對應 U/U'",
+  },
+
+  FAV: {
+    DELETE_TITLE: "從收藏中刪除此算法？",
+    ADD_TITLE: "添加新題目",
+    ADD_INSTRUCTIONS: "在此輸入你的題目（每行一個）\n格式：[類別], [準備算法]。\n類別 := fb | fbdr | ss-front | ss-back",
+    ADD_ALL: "全部添加",
+    SCRAMBLE_HEADER: "打亂",
+  },
+
+  CASE_SELECT: {
+    SELECT_ALL: "全選",
+    DESELECT_ALL: "取消全選",
+  },
+
+  LEVEL_SELECT: {
+    LEVEL: "級別",
+    ANY: "任意",
+    TOGGLE_SELECT_ALL: "切換全選",
+    TOGGLE_ALL_ORIENTED: "切換全部已歸位",
+  },
+
+  TRACKER: {
+    MODE: "模式",
+    WATCH_FS_TRACK_LP: "觀察 FS，追踪最後組對",
+    WATCH_FS_TRACK_LP_DR: "觀察 FS，追踪最後組對 + DR",
+    WATCH_FB_TRACK_DR: "觀察 FB，追踪 DR",
+    WATCH_FB_TRACK_SB: "觀察 FB，追踪 SB 組對",
+    WATCH_FB_TRACK_DR_SB: "觀察 FB，追踪 DR + SB 組對",
+    WATCH_CROSS_TRACK_F2L: "觀察十字，追踪 F2L 組對（當然不會實現）",
+    MOVE_COUNT: "步數",
+    MOVE_GROUP: "移動組",
+  },
+
+  INTRO: {
+    MARKDOWN: "# Roux Trainers (橋式進階訓練器 - aoi優化版)\n一個旨在輔助橋式（Roux）日常訓練的輔助工具 ❤️\n\n## 關於本版本（寫在前面）\n本項目基於原作者 Onionhoney（孫大師）的優秀開源項目進行了一些本土化適配和細節微調。\n\n本人是 polo-aoi，作為一名剛接觸魔方半年多的橋式愛好者，在日常練習中為了讓自己用得更順手，我嘗試對原版進行了一點小小的功能擴充與\"軟裝\"：\n\n- **連貫訓練嘗試**：試著打通了 FS ➡️ FBLP ➡️ SS 的跳轉邏輯，希望能在肌肉記憶和 Lookahead（預判銜接）的實戰練習上提供一點連貫的體驗。\n- **界面與多語言適配**：重新梳理了底層的網格排版，修復了中英文切換的一些細節問題，並將打亂朝向適配為了更直觀的\"頂面/前面（底色/橋色）\"中文字樣。\n- **快捷鍵交互微調**：修復了鼠標點擊後空格鍵容易被焦點劫持的 Bug，並去除了在實戰中容易誤觸的 Enter 鍵重置功能。\n\n## 懇請多多指教\n由於我個人的魔方資歷尚淺，孫大師原版訓練器中許多高階、硬核的強大功能，我至今也還在努力摸索和學習中。\n\n在這次微調代碼的過程中，難免會有理解不到位或者修改出的新 Bug。非常歡迎各位魔友、路過的大佬多多指教！如果你在訓練過程中遇到了任何奇奇怪怪的報錯、體驗不順暢的地方，或者有更好的功能創意，隨時歡迎聯繫我進行修改和討論，我們一起把這個訓練器變得更好用。\n\n## 致謝 (Credits)\n- 本項目最核心的底層算法與框架均出自 Onionhoney 的開源心血。\n- 靈感最初來源於 cubegrass.appspot.com。\n- 原版開源 GitHub 倉庫：https://github.com/onionhoney/roux-trainers",
+  },
+
+  DIFFICULTY_ANNOTATION:
+    "說明：\n" +
+    "這些模式對你的 FB 狀態施加不同的約束。\n" +
+    "[困難] 表示沒有自由的組對，且沒有棱塊連接到 L 中心。",
+
+  LEVEL_FAIL_WARNING:
+    "我們未能在時間限制內生成你的級別。你可以再試一次——某些級別幾次嘗試內就能達到。",
+
+  EOLR_MODE: {
+    NONMC_SHORTER_ONLY: "僅顯示非 MC 最優的案例",
+    MC_SHORTER_ONLY: "僅顯示 MC 最優的案例",
+    COMBINED: "合併",
+    MC_ONLY: "僅顯示 MC 解法",
+    NONMC_ONLY: "僅顯示非 MC 解法",
+  },
+
+  COLOR_SCHEMES: {
+    WG: "白頂綠前（黃底橙橋）", WB: "白頂藍前（黃底紅橋）", WO: "白頂橙前（黃底藍橋）", WR: "白頂紅前（黃底綠橋）",
+    YG: "黃頂綠前（白底紅橋）", YB: "黃頂藍前（白底橙橋）", YO: "黃頂橙前（白底綠橋）", YR: "黃頂紅前（白底藍橋）",
+    BW: "藍頂白前（綠底橙橋）", BY: "藍頂黃前（綠底紅橋）", BO: "藍頂橙前（綠底黃橋）", BR: "藍頂紅前（綠底白橋）",
+    GW: "綠頂白前（藍底紅橋）", GY: "綠頂黃前（藍底橙橋）", GO: "綠頂橙前（藍底白橋）", GR: "綠頂紅前（藍底黃橋）",
+    OW: "橙頂白前（紅底綠橋）", OY: "橙頂黃前（紅底藍橋）", OB: "橙頂藍前（紅底白橋）", OG: "橙頂綠前（紅底黃橋）",
+    RW: "紅頂白前（橙底藍橋）", RY: "紅頂黃前（橙底綠橋）", RB: "紅頂藍前（橙底黃橋）", RG: "紅頂綠前（橙底白橋）",
   },
 };
 
@@ -546,14 +816,14 @@ const en: typeof zh = {
 
 // ---- Reactive language system ----
 const LANG_KEY = "roux_language";
-export type Language = "zh" | "en";
+export type Language = "zh" | "en" | "tw";
 
 let currentLang: Language = (() => {
   try {
     const stored = window.localStorage.getItem(LANG_KEY);
-    if (stored === "en" || stored === "zh") return stored;
+    if (stored === "en" || stored === "zh" || stored === "tw") return stored;
   } catch (_) { /* localStorage unavailable */ }
-  return "zh";
+  return "tw";
 })();
 
 export function getLanguage(): Language {
@@ -568,8 +838,11 @@ export function setLanguage(lang: Language) {
 }
 
 function getDict(): TranslationDict {
-  return currentLang === "en" ? en : zh;
+  if (currentLang === "en") return en;
+  if (currentLang === "tw") return tw;
+  return zh;
 }
+
 
 // Deep-proxy the full translation tree so X.COMMON.SHOW works without per-level proxies
 function deepProxy(path: string[] = []): any {

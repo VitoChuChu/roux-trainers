@@ -91,17 +91,17 @@ const useStyles = makeStyles(theme => ({
     },
     select: {
       color: theme.palette.text.primary,
-      marginBottom: theme.spacing(0.5),
+      marginBottom: theme.spacing(1),
       [theme.breakpoints.down(768)]: {
         '& .MuiFormGroup-root': {
           flexDirection: 'column',
         },
         '& .MuiFormControlLabel-root': {
-          paddingTop: 4,
-          paddingBottom: 4,
+          paddingTop: 6,
+          paddingBottom: 6,
         },
         '& .MuiFormControlLabel-label': {
-          fontSize: '0.95rem',
+          fontSize: '1.05rem',
         },
         '& .MuiRadio-root, & .MuiCheckbox-root': {
           padding: 12,
@@ -110,14 +110,14 @@ const useStyles = makeStyles(theme => ({
     },
     selectLabel: {
       color: theme.palette.text.disabled,
-      fontSize: '0.6rem',
+      fontSize: '0.85rem',
       fontWeight: 600,
-      letterSpacing: '0.07em',
+      letterSpacing: '0.04em',
       textTransform: 'uppercase',
-      marginBottom: 8,
+      marginBottom: 10,
       [theme.breakpoints.down(768)]: {
-        fontSize: '0.7rem',
-        marginBottom: 8,
+        fontSize: '0.9rem',
+        marginBottom: 10,
       },
     },
     multiSelectGrid: {
@@ -142,7 +142,7 @@ function SliderThumbComponent(props: any) {
 
 const LevelSlider = styled(Slider)(({ theme }) => ({
   '& .MuiSlider-markLabel': {
-    fontSize: "0.675rem",
+    fontSize: "0.85rem",
     fontWeight: 500,
     color: theme.palette.text.secondary,
   },
@@ -271,9 +271,9 @@ function SingleSelect(props: {state: AppState, dispatch: React.Dispatch<Action>,
               bgcolor: active ? (theme.palette.mode === 'dark' ? 'rgba(139,158,240,0.1)' : 'rgba(85,108,214,0.05)') : 'transparent',
               color: active ? 'primary.main' : 'text.secondary',
               fontWeight: active ? 600 : 400,
-              fontSize: '0.72rem',
-              px: 1.2,
-              py: 0.3,
+              fontSize: '0.9rem',
+              px: 1.5,
+              py: 0.5,
               minWidth: 0,
               '&:hover': {
                 bgcolor: active
@@ -331,7 +331,7 @@ function MultiSelectContent(props: {state: AppState, dispatch: React.Dispatch<Ac
         label={displayName || name}
         key={name}
         value={name}
-        sx={{ mr: 0, '& .MuiFormControlLabel-label': { fontSize: '0.72rem', fontWeight: 400, color: theme.palette.text.secondary } }}
+        sx={{ mr: 0, '& .MuiFormControlLabel-label': { fontSize: '0.9rem', fontWeight: 400, color: theme.palette.text.secondary } }}
     />)
   }
 
@@ -357,7 +357,7 @@ function MultiSelectContent(props: {state: AppState, dispatch: React.Dispatch<Ac
       label={name}
       key={name}
       value={name}
-      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.72rem' } }}
+      sx={{ '& .MuiFormControlLabel-label': { fontSize: '0.9rem' } }}
       />)
   }
   let manipulator_row = options.manipulators ?
@@ -414,13 +414,13 @@ function MultiSelect(props: {state: AppState, dispatch: React.Dispatch<Action>, 
     <Dialog disableEscapeKeyDown open={open} onClose={handleClose}
       maxWidth="sm" fullWidth
       PaperProps={{sx: {borderRadius: 8, padding: 2, boxSizing: 'border-box'}}}>
-      <DialogTitle sx={{fontSize: '0.95rem', fontWeight: 600, pb: 0.5}}> {label} </DialogTitle>
+      <DialogTitle sx={{fontSize: '1.15rem', fontWeight: 600, pb: 0.5}}> {label} </DialogTitle>
       <DialogContent sx={{pt: 1}}>
         {content}
       </DialogContent>
-      <DialogActions sx={{pt: 0}}>
+      <DialogActions sx={{pt: 0.5, pb: 1, px: 2}}>
           <Button onClick={handleClose} color="primary"
-            sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, fontSize: '0.85rem'}}>
+            sx={{borderRadius: 4, textTransform: 'none', fontWeight: 600, fontSize: '1rem'}}>
             {X.COMMON.OK}
           </Button>
       </DialogActions>

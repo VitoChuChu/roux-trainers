@@ -214,13 +214,13 @@ const theme = createTheme(adaptV4Theme({
       main: red.A400,
     },
     background: {
-      default: '#ffffff',
-      paper: '#fafafa',
+      default: '#e2e5e9', // 更加深厚的灰藍色調，大幅減少白光刺激
+      paper: '#f0f2f5',   // 區塊色同步調深，維持對比
     },
     text: {
-      primary: '#1c1c1e',
-      secondary: '#8e8e93',
-      disabled: '#aeaeb2',
+      primary: '#121212', // 接近純黑但保留一點溫潤感的深炭黑，讓字體更清晰
+      secondary: '#424242',
+      disabled: '#757575',
     },
   },
   ...components,
@@ -239,12 +239,12 @@ const themeDark = createTheme(adaptV4Theme({
       main: red.A400,
     },
     background: {
-      default: '#0a0a0b',
-      paper: '#141415',
+      default: '#121214', // 深炭灰色，比純黑更柔和
+      paper: '#1c1c1e',   // 稍微亮一點的區塊色
     },
     text: {
-      primary: '#f5f5f7',
-      secondary: '#aeaeb2',
+      primary: '#e8eaed', // 柔和白，避免極高對比度造成的視覺殘影
+      secondary: '#969ba1',
       disabled: '#636366',
     },
   },

@@ -63,7 +63,7 @@ export function ColorPanel(props: {state: AppState, dispatch: React.Dispatch<Act
 
     return (
         <div className="color-panel">
-        <FormLabel component="legend" sx={{ color: 'text.disabled', fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.07em', textTransform: 'uppercase' }}>{X.ANALYZER.ORI_AND_COLOR_SCHEME}</FormLabel>
+        <FormLabel component="legend" sx={{ color: 'text.disabled', fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.04em', textTransform: 'uppercase' }}>{X.ANALYZER.ORI_AND_COLOR_SCHEME}</FormLabel>
         <Box height={6}/>
         <Button color="primary" variant="outlined" size="small"
           sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, borderWidth: 1, '&:hover': {borderWidth: 1}}}
@@ -75,7 +75,7 @@ export function ColorPanel(props: {state: AppState, dispatch: React.Dispatch<Act
         <Dialog disableEscapeKeyDown open={open} onClose={handleClose}
           maxWidth="sm" fullWidth
           PaperProps={{sx: {borderRadius: 8, padding: 2, boxSizing: 'border-box'}}}>
-          <DialogTitle sx={{fontSize: '0.95rem', fontWeight: 600, pb: 0.5}}> {X.ANALYZER.FB_ORI_DIALOG_TITLE}  </DialogTitle>
+          <DialogTitle sx={{fontSize: '1.15rem', fontWeight: 600, pb: 0.5}}> {X.ANALYZER.FB_ORI_DIALOG_TITLE}  </DialogTitle>
           <DialogContent sx={{pt: 1}}>
             {content}
             <Box height={12}/>
@@ -84,9 +84,9 @@ export function ColorPanel(props: {state: AppState, dispatch: React.Dispatch<Act
             <ColorSetter {...{state, dispatch}}/>
 
           </DialogContent>
-          <DialogActions sx={{pt: 0}}>
+          <DialogActions sx={{pt: 0.5, pb: 1, px: 2}}>
               <Button onClick={() => setOpen(false)} color="primary"
-                sx={{borderRadius: 4, textTransform: 'none', fontWeight: 500, fontSize: '0.85rem'}}>
+                sx={{borderRadius: 4, textTransform: 'none', fontWeight: 600, fontSize: '1rem'}}>
                   {X.COMMON.CLOSE}
               </Button>
           </DialogActions>

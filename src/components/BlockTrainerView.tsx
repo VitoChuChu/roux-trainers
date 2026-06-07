@@ -44,18 +44,18 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
       width: "100%",
-      height: 40,
-      borderRadius: 6,
-      fontSize: '0.9rem',
-      fontWeight: 500,
-      letterSpacing: '-0.01em',
+      height: 54,
+      borderRadius: 8,
+      fontSize: '1.1rem',
+      fontWeight: 600,
+      letterSpacing: '0.02em',
       boxShadow: 'none',
       transition: 'all 0.15s ease',
       [theme.breakpoints.down(768)]: {
-        height: 46,
-        fontSize: '1rem',
+        height: 50,
+        fontSize: '1.05rem',
         padding: '12px 24px',
-        borderRadius: 6,
+        borderRadius: 8,
       },
     },
     paper: {
@@ -115,13 +115,13 @@ const useStyles = makeStyles(theme => ({
     },
     setup: {
       whiteSpace: 'pre-line',
-      fontSize: "1.35rem",
-      fontWeight: 400,
+      fontSize: "1.75rem",
+      fontWeight: 500,
       letterSpacing: '-0.01em',
-      lineHeight: 1.55,
+      lineHeight: 1.4,
       color: theme.palette.text.primary,
       [theme.breakpoints.down('sm')]: {
-      fontSize: "1.2rem",
+        fontSize: "1.4rem",
       },
     },
     condGap: {
@@ -356,7 +356,8 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
     }
 
     const gt_sm = useMediaQuery(theme.breakpoints.up('sm'));
-    const canvas_wh = (gt_sm) ? [400, 350] : [320, 280]
+    const gt_md = useMediaQuery(theme.breakpoints.up('md'));
+    const canvas_wh = (gt_md) ? [520, 420] : (gt_sm) ? [440, 360] : [340, 280]
     const ADD_STR = (gt_sm) ? X.COMMON.ADD : "";
 
     let levelSelectionWarning = X.LEVEL_FAIL_WARNING
@@ -418,20 +419,20 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
             <div>
               <Box paddingBottom={2} lineHeight={1}>
                 {(state.name === "hiding") ? (
-                  <Typography style={{whiteSpace: 'pre-line', fontSize: "1.15rem", fontWeight: 400, lineHeight: 1.6, color: theme.palette.text.secondary}}>
+                  <Typography style={{whiteSpace: 'pre-line', fontSize: "1.35rem", fontWeight: 400, lineHeight: 1.6, color: theme.palette.text.secondary}}>
                     {showMoveCountHint ? describe_hide(desc) : ""}
                   </Typography>
                 ) : (state.name === "revealed" || state.name === "revealed_all") ? (
                   desc.map((caseDesc, ci) => (
                     <Box key={ci}>
                       {desc.length > 1 && (
-                        <Typography style={{fontWeight: 600, fontSize: "0.85rem", marginTop: ci > 0 ? 8 : 0, color: theme.palette.text.secondary}}>
+                        <Typography style={{fontWeight: 600, fontSize: "1rem", marginTop: ci > 0 ? 12 : 0, color: theme.palette.text.secondary}}>
                           [{caseDesc.kind}]:
                         </Typography>
                       )}
                       {caseDesc.algs.map((alg, ai) => (
-                        <Box key={ai} style={{display: 'flex', alignItems: 'center', marginBottom: 2}}>
-                          <Typography style={{flex: 1, fontSize: "1.15rem", fontWeight: 400, lineHeight: 1.6}}>
+                        <Box key={ai} style={{display: 'flex', alignItems: 'center', marginBottom: 4}}>
+                          <Typography style={{flex: 1, fontSize: "1.5rem", fontWeight: 500, lineHeight: 1.4}}>
                             {alg}
                           </Typography>
                           {showChainButtons && alg && (

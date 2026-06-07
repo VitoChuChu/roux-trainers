@@ -218,12 +218,15 @@ function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) 
       <TopBarView value={value}
         handleInfoOpen={handleInfoOpen} toggleBright={toggleBright}
         toggleFav={toggleFav} toggleSettings={toggleSettings}
-        toggleLanguage={() => dispatch({ type: "language", content: state.language === "zh" ? "en" : "zh" })}
+        toggleLanguage={() => {
+          const nextLang = state.language === "zh" ? "tw" : state.language === "tw" ? "en" : "zh";
+          dispatch({ type: "language", content: nextLang });
+        }}
         language={state.language}
       />
 
       <Box className={classes.content}>
-        <Container maxWidth={sidebarOpen && !isMobile ? "lg" : "md"}>
+        <Container maxWidth={sidebarOpen && !isMobile ? "xl" : "lg"}>
           {mainContent}
         </Container>
       </Box>
