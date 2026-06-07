@@ -421,6 +421,25 @@ function AnalyzerConfigPanel(props: { state: AppState, dispatch: React.Dispatch<
   );
 }
 
+function GeneralConfigPanel(props: { state: AppState, dispatch: React.Dispatch<Action> }) {
+  const { state, dispatch } = props;
+  const classes = useStyles();
+  const conf = state.config;
+
+  return (
+    <Box className={classes.configPanel}>
+      <Divider sx={{ mb: 1 }} />
+      <Typography className={classes.sectionTitle}>{X.CONFIG.ORGANIZE}</Typography>
+      <Box className={classes.selectWrapper}>
+        <SingleSelect {...{ state, dispatch, select: "continuousPracticeSelector" }} />
+        <Typography variant="caption" sx={{ color: 'text.secondary', display: 'block', mt: 1, ml: 0.5, lineHeight: 1.4 }}>
+          {X.CONFIG.CONTINUOUS_PRACTICE_DESC}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
 export default function SettingsDrawer(props: { state: AppState, dispatch: React.Dispatch<Action> }) {
   const { state, dispatch } = props;
   const classes = useStyles();
@@ -464,6 +483,8 @@ export default function SettingsDrawer(props: { state: AppState, dispatch: React
       {mode === "cmll" && <CmllConfigPanel {...{ state, dispatch }} />}
       {mode === "analyzer" && <AnalyzerConfigPanel {...{ state, dispatch }} />}
       {/* ollcp mode not yet added to Mode type */}
+
+      <GeneralConfigPanel {...{ state, dispatch }} />
 
       {/* Usage hints for block modes */}
       {mode === "4c" || mode === "eopair" ? (

@@ -326,14 +326,43 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
             </Box>
           </Box>
 
+    const isContinuous = state.config.continuousPracticeSelector && 
+                         state.config.continuousPracticeSelector.getActiveName() === "on";
+    const scrambleTitle = isContinuous ? X.CONFIG.INCREMENTAL_SCRAMBLE : X.COMMON.SCRAMBLE;
+
     return (
     <Box className={classes.container}>
       <Box className={classes.mainConsole}>
         {/* Header: Scramble and Action Icons */}
         <Box className={classes.scrambleHeader}>
           <Box sx={{ flex: 1 }}>
-            <Box className={classes.title}>{X.COMMON.SCRAMBLE}</Box>
-            <Typography className={classes.setup}>{setup}</Typography>
+            <Box className={classes.title} sx={{ color: isContinuous ? 'primary.main' : 'inherit' }}>
+              {scrambleTitle}
+            </Box>
+            <Typography className={classes.setup} sx={{ color: isContinuous ? 'primary.main' : 'inherit' }}>
+              {isContinuous ? (
+                <>
+                  {setup.includes(' // ') ? (
+                    <>
+                      <Box component="span" sx={{ opacity: 0.6, fontSize: '0.9em' }}>
+                        <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>RETURN:</Box>
+                        {setup.split(' // ')[0]}
+                      </Box>
+                      <Box component="span" sx={{ mx: 1.5, opacity: 0.4 }}>|</Box>
+                      <Box component="span" sx={{ fontWeight: 500 }}>
+                        <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>NEXT:</Box>
+                        {setup.split(' // ')[1]}
+                      </Box>
+                    </>
+                  ) : (
+                    <>
+                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 1, opacity: 0.8, fontWeight: 500 }}>NEXT:</Box>
+                      {setup}
+                    </>
+                  )}
+                </>
+              ) : setup}
+            </Typography>
           </Box>
           <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center' }}>
             {gt_sm && scramblePanel}

@@ -46,6 +46,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start2": "react-app-rewired start",
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "deploy2": "gh-pages -d build;gh-pages -d build -o gitee",
     "publish": "npm run build; npm run deploy"
@@ -65,7 +66,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://polo-aoi.github.io/aoi-roux-trainers",
+  "homepage": "https://VitoChuChu.github.io/roux-trainers",
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "eslint": "^7.32.0",

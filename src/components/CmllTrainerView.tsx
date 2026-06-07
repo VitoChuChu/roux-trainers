@@ -177,29 +177,59 @@ export function CmllTrainerView(props: { state: AppState, dispatch: React.Dispat
     };
   });
 
-  let alg = ""
-  let setup = ""
-  if (state.case.desc.length === 2) {
-    setup = state.case.desc[1].algs[0]
-  }
-  if (reveal && state.case.desc.length >= 1) {
-    alg = state.case.desc[0].algs[0]
-  }
   const colorSchemeColors = state.colorScheme.getColorsForOri(state.cube.ori)
   const gt_md = useMediaQuery(theme.breakpoints.up('md'));
   const gt_sm = useMediaQuery(theme.breakpoints.up('sm'));
   const canvas_wh = (gt_md) ? [520, 420] : (gt_sm) ? [440, 360] : [340, 280]
 
+  const isContinuous = state.config.continuousPracticeSelector && 
+                       state.config.continuousPracticeSelector.getActiveName() === "on";
+  const scrambleTitle = isContinuous ? X.CONFIG.INCREMENTAL_SCRAMBLE : X.COMMON.SCRAMBLE;
+
+  let alg = ""
+  let setup = ""
+  if (state.case.desc.length >= 2) {
+    setup = state.case.desc[state.case.desc.length - 1].algs[0]
+  }
+  if (reveal && state.case.desc.length >= 1) {
+    alg = state.case.desc.slice(0, state.case.desc.length - 1).map(x => x.algs[0]).join(" ")
+  }
+
   return (
-    <Box className={classes.container}>
-      <Box className={classes.mainConsole}>
-        {/* Header: Scramble */}
-        <Box className={classes.scrambleHeader}>
-          <Box sx={{ flex: 1 }}>
-            <Box className={classes.title}>{X.COMMON.SCRAMBLE}</Box>
-            <Typography className={classes.setup}>{setup || ' '}</Typography>
+  <Box className={classes.container}>
+    <Box className={classes.mainConsole}>
+      {/* Header: Scramble */}
+      <Box className={classes.scrambleHeader}>
+        <Box sx={{ flex: 1 }}>
+          <Box className={classes.title} sx={{ color: isContinuous ? 'primary.main' : 'inherit' }}>
+            {scrambleTitle}
           </Box>
+          <Typography className={classes.setup} sx={{ color: isContinuous ? 'primary.main' : 'inherit' }}>
+            {isContinuous ? (
+              <>
+                {setup && setup.includes(' // ') ? (
+                  <>
+                    <Box component="span" sx={{ opacity: 0.6, fontSize: '0.9em' }}>
+                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>RETURN:</Box>
+                      {setup.split(' // ')[0]}
+                    </Box>
+                    <Box component="span" sx={{ mx: 1.5, opacity: 0.4 }}>|</Box>
+                    <Box component="span" sx={{ fontWeight: 500 }}>
+                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>NEXT:</Box>
+                      {setup.split(' // ')[1]}
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 1, opacity: 0.8, fontWeight: 500 }}>NEXT:</Box>
+                    {setup || ' '}
+                  </>
+                )}
+              </>
+            ) : setup || ' '}
+          </Typography>
         </Box>
+      </Box>
 
         {/* Content: Solutions and Cube */}
         <Box className={classes.contentGrid}>
@@ -336,13 +366,24 @@ export function OllcpTrainerView(props: { state: AppState, dispatch: React.Dispa
     };
   });
 
+  const colorSchemeColors = state.colorScheme.getColorsForOri(state.cube.ori)
+  const gt_md = useMediaQuery(theme.breakpoints.up('md'));
+  const gt_sm = useMediaQuery(theme.breakpoints.up('sm'));
+  const canvas_wh = (gt_md) ? [520, 420] : (gt_sm) ? [440, 360] : [340, 280]
+
+  const isContinuous = state.config.continuousPracticeSelector && 
+                       state.config.continuousPracticeSelector.getActiveName() === "on";
+  const scrambleTitle = isContinuous ? X.CONFIG.INCREMENTAL_SCRAMBLE : X.COMMON.SCRAMBLE;
+
   let alg = ""
   let setup = ""
-  if (state.case.desc.length === 4) {
-    setup = state.case.desc[3].algs[0]
+  if (state.case.desc.length >= 2) {
+    setup = state.case.desc[state.case.desc.length - 1].algs[0]
   }
-  if (reveal && state.case.desc.length >= 3) {
-    const moves = new MoveSeq(state.case.desc[1].algs[0] + state.case.desc[2].algs[0] )
+  if (reveal && state.case.desc.length >= 1) {
+    // For OLLCP, join middle parts as solution
+    const solutionDesc = state.case.desc.slice(0, state.case.desc.length - 1);
+    const moves = new MoveSeq(solutionDesc.map(d => d.algs[0]).join(" "))
     let moves_c = moves.collapse()
     if (moves_c.moves.length > 0) {
       if (moves_c.moves[0].name[0] === "U") {
@@ -352,10 +393,6 @@ export function OllcpTrainerView(props: { state: AppState, dispatch: React.Dispa
       alg += moves_c.toString()
     }
   }
-  const colorSchemeColors = state.colorScheme.getColorsForOri(state.cube.ori)
-  const gt_md = useMediaQuery(theme.breakpoints.up('md'));
-  const gt_sm = useMediaQuery(theme.breakpoints.up('sm'));
-  const canvas_wh = (gt_md) ? [520, 420] : (gt_sm) ? [440, 360] : [340, 280]
 
   return (
   <Box className={classes.container}>
@@ -363,8 +400,33 @@ export function OllcpTrainerView(props: { state: AppState, dispatch: React.Dispa
       {/* Header: Scramble */}
       <Box className={classes.scrambleHeader}>
         <Box sx={{ flex: 1 }}>
-          <Box className={classes.title}>SCRAMBLE</Box>
-          <Typography className={classes.setup}>{setup || ' '}</Typography>
+          <Box className={classes.title} sx={{ color: isContinuous ? 'primary.main' : 'inherit' }}>
+            {scrambleTitle}
+          </Box>
+          <Typography className={classes.setup} sx={{ color: isContinuous ? 'primary.main' : 'inherit' }}>
+            {isContinuous ? (
+              <>
+                {setup && setup.includes(' // ') ? (
+                  <>
+                    <Box component="span" sx={{ opacity: 0.6, fontSize: '0.9em' }}>
+                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>RETURN:</Box>
+                      {setup.split(' // ')[0]}
+                    </Box>
+                    <Box component="span" sx={{ mx: 1.5, opacity: 0.4 }}>|</Box>
+                    <Box component="span" sx={{ fontWeight: 500 }}>
+                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>NEXT:</Box>
+                      {setup.split(' // ')[1]}
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 1, opacity: 0.8, fontWeight: 500 }}>NEXT:</Box>
+                    {setup || ' '}
+                  </>
+                )}
+              </>
+            ) : setup || ' '}
+          </Typography>
         </Box>
       </Box>
 

@@ -61,6 +61,7 @@ export type Config = {
     obscureCornerMaskSelector: Selector;
     chainTargetSelector: Selector;
     blockBatchModeSelector: Selector;
+    continuousPracticeSelector: Selector;
 };
 
 const cmll_alg_names = cmll_algs_raw.map(x => x[0])
@@ -434,6 +435,13 @@ export function createInitialConfig(): Config {
             displayNames: [X.COMMON.OFF, X.COMMON.ON],
             flags: [1, 0],
             kind: "block-batch-mode"
+        }),
+        continuousPracticeSelector: new Selector({
+            label: X.CONFIG.CONTINUOUS_PRACTICE,
+            names: ["off", "on"],
+            displayNames: [X.COMMON.OFF, X.COMMON.ON],
+            flags: [1, 0],
+            kind: "continuous-practice"
         }),
         ...initialLevels,
     }

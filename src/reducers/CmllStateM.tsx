@@ -5,6 +5,7 @@ import { CubieCube, Move, CubeUtil, MoveSeq } from '../lib/CubeLib';
 import { AbstractStateM } from "./AbstractStateM";
 import {initialize as min2phase_init, solve as min2phase_solve} from "../lib/min2phase/min2phase-wrapper"
 import { arrayEqual, rand_choice } from "../lib/Math";
+import { CachedSolver } from "../lib/CachedSolver";
 
 export abstract class CmllStateM extends AbstractStateM {
     _get2PhaseSolution(cube: CubieCube): CaseDesc {
@@ -73,23 +74,68 @@ export abstract class CmllStateM extends AbstractStateM {
 
     _generateCase(): AppState {
         let state = this.state;
-        let { orientationSelector } = state.config;
+        let { orientationSelector, continuousPracticeSelector } = state.config;
         let ori_generator = alg_generator_from_group(orientationSelector);
 
         let ori: string = ori_generator().id;
         let case_ = this._generateSingleCmllCase();
 
+        const isContinuous = continuousPracticeSelector && 
+                             continuousPracticeSelector.getActiveName() === "on";
+
+        if (isContinuous) {
+            // Transition = Return(to next basis) + Scramble(next)
+            const currentCubeRotated = state.cube.state;
+            const nextBasis = new CubieCube().changeBasis(new MoveSeq(ori).inv());
+            
+            const diffToBasis = currentCubeRotated.inv().multiply(nextBasis);
+            const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
+            
+            const normalScramble = this._get2PhaseSolution(case_.state).algs[0];
+            
+            let setup = "";
+            if (returnMoves.trim().length > 0) {
+                setup = `${returnMoves} // ${normalScramble}`;
+            } else {
+                setup = normalScramble;
+            }
+            
+            case_.desc[3].algs[0] = setup;
+            console.log(`[Continuous CMLL] Return: "${returnMoves}", Next Scramble: "${normalScramble}", Total: "${setup}"`);
+
+            const targetCubeRotated = nextBasis.apply(normalScramble);
+
+            return ({
+                ...state,
+                name: "solving",
+                cube: {
+                    state: currentCubeRotated.apply(setup),
+                    ori,
+                    history: [],
+                    levelSuccess: true
+                },
+                case: {
+                    ...case_,
+                    state: targetCubeRotated
+                }
+            });
+        }
+
         //console.log("current ori selector's ori ", ori)
+        const targetCubeWithOri = case_.state.changeBasis(new MoveSeq(ori).inv());
         return ({
             ...state,
             name: "solving",
             cube: {
-                state: case_.state,
+                state: targetCubeWithOri,
                 ori,
                 history: [],
                 levelSuccess: true
             },
-            case: case_
+            case: {
+                ...case_,
+                state: targetCubeWithOri
+            }
         });
     }
     _generateBatch(batchSize: number = 6): BatchState {
@@ -117,24 +163,34 @@ export abstract class CmllStateM extends AbstractStateM {
         let state = this.state;
         let batchMode = state.config.cmllBatchModeSelector.getActiveName() === "on";
         let getBatchStateAtIndex = (state: AppState, nextIndex: number) : AppState => {
-            // Advance to next case in batch
-            //let { orientationSelector } = state.config;
-            //let ori_generator = alg_generator_from_group(orientationSelector);
-            //let ori: string = ori_generator().id;
             if (!state.batch) {
                 return state;
             } else {
+                const isContinuous = state.config.continuousPracticeSelector && 
+                                     state.config.continuousPracticeSelector.getActiveName() === "on";
+                let nextCase = state.batch.cases[nextIndex];
+                let nextCube = nextCase.state;
+                if (isContinuous) {
+                    const diff = state.cube.state.inv().multiply(nextCase.state);
+                    const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
+                    const setup = scramble ? scramble.toString() : "";
+                    nextCube = state.cube.state.apply(scramble);
+                    // Update the setup for the next case
+                    // In CMLL batch mode, we put the scramble moves in desc[3]
+                    nextCase.desc[3] = createAlg("none", setup + ` (${nextIndex+1} / ${state.batch.cases.length})`, "scramble");
+                }
+
                 return ({
                     ...state,
                     batch: { ...state.batch, index: nextIndex },
                     name: "solving",
                     cube: {
-                        state: state.batch?.cases[nextIndex].state,
+                        state: nextCube,
                         ori: state.cube.ori,
                         history: [],
                         levelSuccess: true
                     },
-                    case: state.batch?.cases[nextIndex]
+                    case: nextCase
                 });
             }
         }
@@ -145,23 +201,37 @@ export abstract class CmllStateM extends AbstractStateM {
                 if (!state.batch || state.batch.index >= state.batch.cases.length - 1) {
                     // Generate new batch
                     let batch = this._generateBatch();
-                    let { orientationSelector } = state.config;
+                    let { orientationSelector, continuousPracticeSelector } = state.config;
                     let ori_generator = alg_generator_from_group(orientationSelector);
                     let ori: string = ori_generator().id;
+
+                    const isContinuous = continuousPracticeSelector && 
+                                         continuousPracticeSelector.getActiveName() === "on";
+                    let nextCube = batch.cases[0].state;
+                    if (isContinuous) {
+                        const diff = state.cube.state.inv().multiply(batch.cases[0].state);
+                        const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
+                        nextCube = state.cube.state.apply(scramble);
+                        // In CMLL batch mode, desc[3] is progress.
+                        // But maybe we should show the incremental scramble moves in the first case's setup field?
+                        // However, CMLL setup is usually desc[desc.length-1].algs[0].
+                        // Wait, _generateBatch sets desc[3] to progress.
+                    }
 
                     return ({
                         ...state,
                         batch,
                         name: "solving",
                         cube: {
-                            state: batch.cases[0].state,
+                            state: nextCube,
                             ori,
                             history: [],
                             levelSuccess: true
                         },
                         case: batch.cases[0]
                     });
-                } else {
+                }
+ else {
                     let nextIndex = state.batch.index + 1;
                     return getBatchStateAtIndex(state, nextIndex);
                 }
@@ -275,20 +345,63 @@ export abstract class OllcpStateM extends AbstractStateM {
             }
         }
         let solution = this._get2PhaseSolution(lse_cube);
+
+        const isContinuous = config.continuousPracticeSelector && 
+                             config.continuousPracticeSelector.getActiveName() === "on";
+
+        if (isContinuous) {
+            // Transition = Return(to next basis) + Scramble(next)
+            const currentCubeRotated = state.cube.state;
+            const nextBasis = new CubieCube().changeBasis(new MoveSeq(ori).inv());
+            
+            const diffToBasis = currentCubeRotated.inv().multiply(nextBasis);
+            const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
+            
+            const normalScramble = solution.algs[0];
+            
+            let setup = "";
+            if (returnMoves.trim().length > 0) {
+                setup = `${returnMoves} // ${normalScramble}`;
+            } else {
+                setup = normalScramble;
+            }
+            
+            solution.algs[0] = setup;
+            console.log(`[Continuous OLLCP] Return: "${returnMoves}", Next Scramble: "${normalScramble}", Total: "${setup}"`);
+
+            const targetCubeRotated = nextBasis.apply(normalScramble);
+
+            return ({
+                ...state,
+                name: "solving",
+                cube: {
+                    state: currentCubeRotated.apply(setup),
+                    ori,
+                    history: [],
+                    levelSuccess: true
+                },
+                case: {
+                    state: targetCubeRotated,
+                    desc: [trigger_alg, u_auf_alg, cmll_alg, solution]
+                },
+            });
+        }
+
         // ori based on ...?
         let ori: string = ori_generator().id;
+        const targetCubeWithOri = lse_cube.changeBasis(new MoveSeq(ori).inv());
         //console.log("current ori selector's ori ", ori)
         return ({
             ...state,
             name: "solving",
             cube: {
-                state: lse_cube,
+                state: targetCubeWithOri,
                 ori,
                 history: [],
                 levelSuccess: true
             },
             case: {
-                state: lse_cube,
+                state: targetCubeWithOri,
                 desc: [trigger_alg, u_auf_alg, cmll_alg, solution]
             },
         });

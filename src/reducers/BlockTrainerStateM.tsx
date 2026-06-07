@@ -117,28 +117,50 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
         options = options || {}
         let algDescs = this._solve_with_solvers(cube, solverNames);
         let setup : string
+        const isContinuous = state.config.continuousPracticeSelector && 
+                             state.config.continuousPracticeSelector.getActiveName() === "on";
+
+        const ori = (options.updateSolutionOnly) ? this.state.cube.ori : alg_generator_from_group(state.config.orientationSelector)().id;
+        const name = options.updateSolutionOnly ? this.state.name : "hiding";
+
         if (options.scramble) {
             setup = options.scramble
         } else if (options.updateSolutionOnly) {
             setup = this.state.case.desc[0]!.setup!
         } else {
-            const scramble = options.scrambleSolver === "min2phase"?
-            CachedSolver.get("min2phase").solve(cube,0,0,0)[0].inv() :
-            (()=>{
+            // Calculate normal scramble (from solved to target cube)
+            let scrambleToTarget: string;
+            if (options.scrambleSolver === "min2phase") {
+                const sol = CachedSolver.get("min2phase").solve(cube, 0, 20, 1)[0];
+                scrambleToTarget = sol ? sol.inv().toString() : "";
+            } else {
                 const solutionLength = new MoveSeq(algDescs[0].algs[0]).remove_setup().moves.length;
-                //console.log(options)
-                //console.log("SOLVING CUBE ", cube)
                 let result = rand_choice(
                     CachedSolver.get(options.scrambleSolver || solverNames[0])
                     .solve(cube, Math.min(this.solverR, Math.max(this.solverL, solutionLength + this.scrambleMargin)),
                         this.solverR, this.scrambleCount || 1))?.inv()
-                //if (result === undefined) {
-                //    result = rand_choice(CachedSolver.get(options.scrambleSolver || solverNames[0])
-                //    .solve(cube, 0, this.solverR, this.scrambleCount || 1)).inv()
-                //}
-                return result
-            })()
-            setup = scramble.toString()
+                scrambleToTarget = result ? result.toString() : "";
+            }
+
+            if (isContinuous) {
+                // Transition = Return(to next basis) + Scramble(next)
+                const currentCubeRotated = state.cube.state;
+                const nextBasis = new CubieCube().changeBasis(new MoveSeq(ori).inv());
+                
+                // Return moves to take current simulator state to the next case's solved basis
+                const diffToBasis = currentCubeRotated.inv().multiply(nextBasis);
+                const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
+                
+                if (returnMoves.trim().length > 0) {
+                    setup = `${returnMoves} // ${scrambleToTarget}`;
+                } else {
+                    setup = scrambleToTarget;
+                }
+                
+                console.log(`[Continuous] Return: "${returnMoves}", Next Scramble: "${scrambleToTarget}", Total: "${setup}"`);
+            } else {
+                setup = scrambleToTarget;
+            }
         }
         if (algDescs.length === 0) {
             algDescs = [{
@@ -152,19 +174,23 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
             algDescs.forEach(algDesc => algDesc.setup = setup);
         }
 
-        const ori = (options.updateSolutionOnly) ? this.state.cube.ori : alg_generator_from_group(state.config.orientationSelector)().id;
-        const name = options.updateSolutionOnly ? this.state.name : "hiding";
-        // console.log("algdesc", algdesc)
+        // Update the simulator state to the target cube
+        // In continuous mode, we apply the transition to the current state.
+        // In normal mode, we just jump to the rotated target state.
+        const targetCubeRotated = cube.changeBasis(new MoveSeq(ori).inv());
+        const nextCube = (options.updateSolutionOnly) ? state.cube.state : 
+                         (isContinuous ? state.cube.state.apply(setup) : targetCubeRotated);
+
         return {
             ...state,
             name: name,
             cube: {
                 ...state.cube,
-                state: cube,
+                state: nextCube,
                 ori
             },
             case: {
-                state: new CubieCube().apply(setup),
+                state: targetCubeRotated,
                 desc: algDescs
             }
         };
@@ -220,24 +246,51 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
         let state = this.state;
         let batchMode = state.config.blockBatchModeSelector.getActiveName() === "on";
         if (s === "#space") {
+            const isContinuous = state.config.continuousPracticeSelector && 
+                                 state.config.continuousPracticeSelector.getActiveName() === "on";
             if (batchMode) {
                 if (!state.batch || state.batch.index >= state.batch.cases.length - 1) {
                     let batch = this._generateBatch();
+                    let setup = batch.cases[0].desc[0].setup || "";
+                    let nextCube = batch.cases[0].state;
+                    
+                    if (isContinuous) {
+                        const diff = state.cube.state.inv().multiply(batch.cases[0].state);
+                        const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
+                        setup = scramble ? scramble.toString() : "";
+                        nextCube = state.cube.state.apply(setup);
+                        // Update the setup in the first case of the batch
+                        batch.cases[0].desc.forEach(d => d.setup = setup);
+                    }
+
                     return {
                         ...state,
                         name: "revealed",
                         batch,
-                        cube: { ...state.cube, state: batch.cases[0].state, levelSuccess: true },
+                        cube: { ...state.cube, state: nextCube, levelSuccess: true },
                         case: batch.cases[0]
                     };
                 } else {
                     let nextIndex = state.batch.index + 1;
+                    let nextCase = state.batch.cases[nextIndex];
+                    let setup = nextCase.desc[0].setup || "";
+                    let nextCube = nextCase.state;
+
+                    if (isContinuous) {
+                        const diff = state.cube.state.inv().multiply(nextCase.state);
+                        const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
+                        setup = scramble ? scramble.toString() : "";
+                        nextCube = state.cube.state.apply(setup);
+                        // Update the setup for the next case
+                        nextCase.desc.forEach(d => d.setup = setup);
+                    }
+
                     return {
                         ...state,
                         name: "revealed",
                         batch: { ...state.batch, index: nextIndex },
-                        cube: { ...state.cube, state: state.batch.cases[nextIndex].state, levelSuccess: true },
-                        case: state.batch.cases[nextIndex]
+                        cube: { ...state.cube, state: nextCube, levelSuccess: true },
+                        case: nextCase
                     };
                 }
             }

@@ -70,6 +70,7 @@ export class CubieCube {
     _apply_partial(o: Array<number>, p: Array<number>, oc: Array<OriChg>, pc: Array<PermChg>, mod: number) {
         let o_new = [...o];
         let p_new = [...p];
+        if (!oc || !pc) return [o_new, p_new];
 
         for (let i = 0; i < oc.length; i++) {
             //let [src, dst] = pc[i];
@@ -81,6 +82,7 @@ export class CubieCube {
     }
     _apply_partial_perm(p: Array<number>, pc: Array<PermChg>, mod: number) {
         let p_new = [...p];
+        if (!pc) return p_new;
 
         for (let i = 0; i < pc.length; i++) {
             //let [src, dst] = pc[i];
@@ -254,6 +256,47 @@ export class CubieCube {
         return cube
     }
 
+    inv(): CubieCube {
+        let cp = Array(8).fill(0), co = Array(8).fill(0)
+        let ep = Array(12).fill(0), eo = Array(12).fill(0)
+        let tp = Array(6).fill(0)
+        for (let i = 0; i < 8; i++) {
+            cp[this.cp[i]] = i
+        }
+        for (let i = 0; i < 8; i++) {
+            co[i] = (3 - this.co[cp[i]]) % 3
+        }
+        for (let i = 0; i < 12; i++) {
+            ep[this.ep[i]] = i
+        }
+        for (let i = 0; i < 12; i++) {
+            eo[i] = this.eo[ep[i]]
+        }
+        for (let i = 0; i < 6; i++) {
+            tp[this.tp[i]] = i
+        }
+        return new CubieCube({ cp, co, ep, eo, tp })
+    }
+
+    multiply(other: CubieCube): CubieCube {
+        let cp = Array(8).fill(0), co = Array(8).fill(0)
+        let ep = Array(12).fill(0), eo = Array(12).fill(0)
+        let tp = Array(6).fill(0)
+
+        for (let i = 0; i < 8; i++) {
+            cp[i] = this.cp[other.cp[i]]
+            co[i] = (this.co[other.cp[i]] + other.co[i]) % 3
+        }
+        for (let i = 0; i < 12; i++) {
+            ep[i] = this.ep[other.ep[i]]
+            eo[i] = (this.eo[other.ep[i]] + other.eo[i]) % 2
+        }
+        for (let i = 0; i < 6; i++) {
+            tp[i] = this.tp[other.tp[i]]
+        }
+        return new CubieCube({ cp, co, ep, eo, tp })
+    }
+
     is_solveable() {
         if (this.tp[0] !== 0) {
             this.apply(new MoveSeq("M2")) // assuming lse
@@ -312,12 +355,12 @@ export class Move {
         }
     }
     set(move: Move | MoveT) {
-        this.cpc = move.cpc
-        this.coc = move.coc
-        this.epc = move.epc
-        this.eoc = move.eoc
-        this.tpc = move.tpc
-        this.name = move.name
+        this.cpc = move.cpc || []
+        this.coc = move.coc || []
+        this.epc = move.epc || []
+        this.eoc = move.eoc || []
+        this.tpc = move.tpc || []
+        this.name = move.name || ""
     }
     from_cube(cube: CubieCube, name: string) {
         let get_change = (p: Array<number>, o: Array<number>, acc_p: Array<PermChg>, acc_o: Array<OriChg>) => {
@@ -384,20 +427,21 @@ export class Move {
             xs, ys, zs,
             rws, lws, uws, fws
         ].flat()
-        let moves_dict: { [key: string]: Move } = Object.create({})
+        let moves_dict: { [key: string]: Move } = Object.create(null)
         moves.forEach(m => moves_dict[m.name] = m)
         return moves_dict
     }
     static all: {[key: string]: Move} = Move.generate_base_moves();
 
     inv(): Move {
+        if (this.name === "id" || this.name === "") return this;
         let name: string
         switch (this.name[this.name.length - 1]) {
             case "'": name = this.name.slice(0, this.name.length - 1); break
             case "2": name = this.name; break
             default: name = this.name + "'"
         }
-        return Move.all[name]
+        return Move.all[name] || this
     }
 
     toString() {
