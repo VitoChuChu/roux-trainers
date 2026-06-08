@@ -253,15 +253,15 @@ let CenterSolver = () => solverFactory(centerPrunerConfig)
 
 let Min2PhaseSolver : () => SolverT = function() {
     // polyfill for min2phase
-
-    min2phase_init();
-    function solve(cube : CubieCube, l : number, r : number, c : number) {
-        // console.warn(arrayEqual(cube.tp, new CubieCube().tp), "Cube center is not solved: " + cube.tp)
-        const transformed_cube = cube.to_cstimer_cube()
-        console.assert( transformed_cube.is_solveable(), "Cube must be solveable")
-        let solution = min2phase_solve(transformed_cube);
-        return [ new MoveSeq(solution).inv() ]
-    }
+min2phase_init();
+function solve(cube : CubieCube, l : number, r : number, c : number) {
+    // console.warn(arrayEqual(cube.tp, new CubieCube().tp), "Cube center is not solved: " + cube.tp)
+    const transformed_cube = cube.to_cstimer_cube()
+    // console.assert( transformed_cube.is_solveable(), "Cube must be solveable")
+    let solution = min2phase_solve(transformed_cube);
+    let moves = new MoveSeq(solution);
+    return [moves];
+}
     function is_solved(cube: CubieCube) {
         return true
     }

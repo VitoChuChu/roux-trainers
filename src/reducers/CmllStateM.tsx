@@ -86,10 +86,10 @@ export abstract class CmllStateM extends AbstractStateM {
         const oriMoves = CubieCube.getOriMoves(ori);
         if (isContinuous) {
             // Transition = Return(to next basis) + Scramble(next)
-            const currentCubeRotated = state.cube.state;
-            const nextBasis = new CubieCube().changeBasis(new MoveSeq(oriMoves).inv());
+            const currentCube = state.cube.state;
+            const nextBasis = new CubieCube(); // Internal target is always standard basis
             
-            const diffToBasis = currentCubeRotated.inv().multiply(nextBasis);
+            const diffToBasis = currentCube.inv().multiply(nextBasis);
             const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
             
             const normalScramble = this._get2PhaseSolution(case_.state).algs[0];
@@ -104,26 +104,26 @@ export abstract class CmllStateM extends AbstractStateM {
             case_.desc[3].algs[0] = setup;
             console.log(`[Continuous CMLL] Ori: "${ori}", Return: "${returnMoves}", Next Scramble: "${normalScramble}", Total: "${setup}"`);
 
-            const targetCubeRotated = nextBasis.apply(normalScramble);
+            const targetCube = nextBasis.apply(normalScramble);
 
             return ({
                 ...state,
                 name: "solving",
                 cube: {
-                    state: currentCubeRotated.apply(setup.replace(" // ", " ")),
+                    state: currentCube.apply(setup.replace(" // ", " ")),
                     ori,
                     history: [],
                     levelSuccess: true
                 },
                 case: {
                     ...case_,
-                    state: targetCubeRotated
+                    state: targetCube
                 }
             });
         }
 
         //console.log("current ori selector's ori ", ori)
-        const targetCubeWithOri = case_.state.changeBasis(new MoveSeq(oriMoves).inv());
+        const targetCube = case_.state;
         return ({
             ...state,
             name: "solving",
@@ -354,10 +354,10 @@ export abstract class OllcpStateM extends AbstractStateM {
 
         if (isContinuous) {
             // Transition = Return(to next basis) + Scramble(next)
-            const currentCubeRotated = state.cube.state;
-            const nextBasis = new CubieCube().changeBasis(new MoveSeq(oriMoves).inv());
+            const currentCube = state.cube.state;
+            const nextBasis = new CubieCube(); // Internal target is always standard basis
             
-            const diffToBasis = currentCubeRotated.inv().multiply(nextBasis);
+            const diffToBasis = currentCube.inv().multiply(nextBasis);
             const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
             
             const normalScramble = solution.algs[0];
@@ -372,38 +372,38 @@ export abstract class OllcpStateM extends AbstractStateM {
             solution.algs[0] = setup;
             console.log(`[Continuous OLLCP] Ori: "${ori}", Return: "${returnMoves}", Next Scramble: "${normalScramble}", Total: "${setup}"`);
 
-            const targetCubeRotated = nextBasis.apply(normalScramble);
+            const targetCube = nextBasis.apply(normalScramble);
 
             return ({
                 ...state,
                 name: "solving",
                 cube: {
-                    state: currentCubeRotated.apply(setup.replace(" // ", " ")),
+                    state: currentCube.apply(setup.replace(" // ", " ")),
                     ori,
                     history: [],
                     levelSuccess: true
                 },
                 case: {
-                    state: targetCubeRotated,
+                    state: targetCube,
                     desc: [trigger_alg, u_auf_alg, cmll_alg, solution]
                 },
             });
         }
 
         // ori based on ...?
-        const targetCubeWithOri = lse_cube.changeBasis(new MoveSeq(oriMoves).inv());
+        const targetCube = lse_cube;
         //console.log("current ori selector's ori ", ori)
         return ({
             ...state,
             name: "solving",
             cube: {
-                state: targetCubeWithOri,
+                state: targetCube,
                 ori,
                 history: [],
                 levelSuccess: true
             },
             case: {
-                state: targetCubeWithOri,
+                state: targetCube,
                 desc: [trigger_alg, u_auf_alg, cmll_alg, solution]
             },
         });

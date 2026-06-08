@@ -115,13 +115,15 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
     }) {
         const state = this.state;
         options = options || {}
+        if (cube.tp[0] !== 0 && cube.tp[0] === 1 && cube.tp[1] === 0) {
+            cube = cube.apply("M2");
+        }
         let algDescs = this._solve_with_solvers(cube, solverNames);
         let setup : string
         const isContinuous = state.config.continuousPracticeSelector && 
                              state.config.continuousPracticeSelector.getActiveName() === "on";
 
         const ori = (options.updateSolutionOnly) ? this.state.cube.ori : alg_generator_from_group(state.config.orientationSelector)().id;
-        const oriMoves = CubieCube.getOriMoves(ori);
         const name = options.updateSolutionOnly ? this.state.name : "hiding";
 
         if (options.scramble) {
@@ -144,12 +146,12 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
             }
 
             if (isContinuous) {
-                // Transition = Return(to next basis) + Scramble(next)
-                const currentCubeRotated = state.cube.state;
-                const nextBasis = new CubieCube().changeBasis(new MoveSeq(oriMoves).inv());
+                // Transition = Return(to solved) + Scramble(next)
+                const currentCube = state.cube.state;
+                const nextBasis = new CubieCube(); // Internal target is always standard basis
                 
-                // Return moves to take current simulator state to the next case's solved basis
-                const diffToBasis = currentCubeRotated.inv().multiply(nextBasis);
+                // Return moves to take current simulator state to the solved state
+                const diffToBasis = currentCube.inv().multiply(nextBasis);
                 const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
                 
                 if (returnMoves.trim().length > 0) {
@@ -176,15 +178,15 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
         }
 
         // Update the simulator state to the target cube
-        const targetCubeRotated = cube.changeBasis(new MoveSeq(oriMoves).inv());
+        let targetCube = cube;
         let nextCube = (options.updateSolutionOnly) ? state.cube.state : 
-                         (isContinuous ? state.cube.state.apply(setup.replace(" // ", " ")) : targetCubeRotated);
+                         (isContinuous ? state.cube.state.apply(setup.replace(" // ", " ")) : targetCube);
 
         // Heuristic: If centers are swapped in a way that Roux solvers hate (M2 swap), fix it.
-        // This is a partial fix for the center-solved assertion in some solvers.
         if (nextCube.tp[0] !== 0 && nextCube.tp[0] === 1 && nextCube.tp[1] === 0) {
             setup += " M2";
             nextCube = nextCube.apply("M2");
+            targetCube = targetCube.apply("M2");
             algDescs.forEach(algDesc => algDesc.setup = setup);
         }
 
@@ -197,7 +199,7 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
                 ori
             },
             case: {
-                state: nextCube, // Sync case goal state with the reached state
+                state: targetCube,
                 desc: algDescs
             }
         };
