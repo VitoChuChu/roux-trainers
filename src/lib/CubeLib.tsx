@@ -870,6 +870,18 @@ const fs_front_mask: Mask = {
     tp: [0, 0, 0, 0, 1, 1]
 }
 
+const fsdr_back_mask: Mask = {
+    cp: [0, 0, 0, 0, 0, 1, 0, 0],
+    ep: [0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0],
+    tp: [0, 0, 0, 0, 1, 1]
+}
+
+const fsdr_front_mask: Mask = {
+    cp: [0, 0, 0, 0, 1, 0, 0, 0],
+    ep: [0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0],
+    tp: [0, 0, 0, 0, 1, 1]
+}
+
 const fb_mask: Mask = {
     cp: [0, 0, 0, 0, 1, 1, 0, 0],
     ep: [0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0],
@@ -1237,7 +1249,7 @@ export class ColorScheme extends Storage {
 }
 
 let Mask = {
-    lse_mask, fs_back_mask, fs_front_mask, fbdr_mask, fb_mask, f2b_mask, sb_mask, cmll_mask, ss_front_mask, ss_back_mask,
+    lse_mask, fs_back_mask, fs_front_mask, fsdr_back_mask, fsdr_front_mask, fbdr_mask, fb_mask, f2b_mask, sb_mask, cmll_mask, ss_front_mask, ss_back_mask,
     ssdp_front_mask, ssdp_back_mask, ssdp_both_mask, empty_mask, dl_solved_mask, bl_solved_mask, solved_mask, zhouheng_mask, lse_4c_mask,
     copy: mask_copy
 }

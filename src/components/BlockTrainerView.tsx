@@ -168,6 +168,18 @@ function getMask(state: AppState) : Mask {
         "Both": Mask.fs_front_mask // fallback
       } as any)[name]
     }
+    else if (state.mode === "fsdr") {
+      let name = state.config.fsDrPosSelector.getActiveName()
+      if (name === "Both" && state.case.desc.length > 0) {
+        let kind = state.case.desc[0].kind;
+        return (kind === "fsdr-back") ? Mask.fsdr_back_mask : Mask.fsdr_front_mask;
+      }
+      return ({
+        "Front FS": Mask.fsdr_front_mask,
+        "Back FS": Mask.fsdr_back_mask,
+        "Both": Mask.fsdr_front_mask // fallback
+      } as any)[name]
+    }
     else if (state.mode === "ss") {
       if (state.case.desc.length === 0) return Mask.sb_mask
       let name = state.config.ssSelector.getActiveName()
