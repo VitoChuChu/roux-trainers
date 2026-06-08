@@ -1,3 +1,3 @@
-const version = "2.4"
+const version = "20260608_v1"
 
 export {version}

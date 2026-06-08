@@ -1,6 +1,7 @@
 import React from 'react'
 import { AppState, Mode, Action } from "../Types";
 import { X } from "../Translation";
+import { version } from "../Version";
 
 import { Box, Typography, Button, Drawer } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
@@ -300,6 +301,17 @@ function AppView(props: { state: AppState, dispatch: React.Dispatch<Action> } ) 
           <FavListView {...{state, dispatch}} />
         </Drawer>
       )}
+
+      {/* Footer / Version Number */}
+      <Box sx={{
+        py: 3,
+        textAlign: 'center',
+        opacity: 0.6
+      }}>
+        <Typography variant="caption" color="text.disabled" sx={{ fontFamily: 'monospace', letterSpacing: '0.05em' }}>
+          v{version}
+        </Typography>
+      </Box>
     </Box>
   )
 }
