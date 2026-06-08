@@ -128,14 +128,14 @@ export abstract class CmllStateM extends AbstractStateM {
             ...state,
             name: "solving",
             cube: {
-                state: targetCubeWithOri,
+                state: targetCube,
                 ori,
                 history: [],
                 levelSuccess: true
             },
             case: {
                 ...case_,
-                state: targetCubeWithOri
+                state: targetCube
             }
         });
     }
