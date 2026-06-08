@@ -158,10 +158,14 @@ function getMask(state: AppState) : Mask {
     }
     else if (state.mode === "fs") {
       let name = state.config.fsSelector.getActiveName()
+      if (name === "Both" && state.case.desc.length > 0) {
+        let kind = state.case.desc[0].kind;
+        return (kind === "fs-back") ? Mask.fs_back_mask : Mask.fs_front_mask;
+      }
       return ({
         "Front FS": Mask.fs_front_mask,
         "Back FS": Mask.fs_back_mask,
-        "Both": Mask.fb_mask
+        "Both": Mask.fs_front_mask // fallback
       } as any)[name]
     }
     else if (state.mode === "ss") {
