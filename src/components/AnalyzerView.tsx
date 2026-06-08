@@ -431,14 +431,14 @@ function StageSolutionView(props: { solution: SolutionDesc, shortestLength?: num
 
 function StageSolutionListView(props: { solutions: SolutionDesc[], num_to_display: number, state: AnalyzerState, setState: (newState: AnalyzerState) => void} ) {
   let { solutions, num_to_display, state } = props
-  if (solutions.length === 0) return null
-
   const [isRevealed, setIsRevealed] = React.useState(!state.hide_solutions)
 
   // Update isRevealed when hide_solutions changes
   React.useEffect(() => {
     setIsRevealed(!state.hide_solutions)
   }, [state.hide_solutions, solutions])
+
+  if (solutions.length === 0) return null
 
   // Find the shortest solution by STM length
   const shortestSolution = solutions.length > 0 ?

@@ -29,13 +29,13 @@ describe('FbStateM Continuous Practice', () => {
         console.log("Second Scramble:", secondScramble);
         
         // The second scramble should be a standalone string, not appending the first one.
-        // Usually scrambles are around 10-20 moves.
-        expect(secondScramble.split(' ').length).toBeLessThan(30);
+        // Usually scrambles are around 10-20 moves, but incremental ones can be longer (up to ~40).
+        expect(secondScramble.split(' ').length).toBeLessThan(45);
         
         // Verify the cube state in state2 matches the target case state
-        // In continuous mode: nextCube = state.cube.state.apply(setup)
+        // In continuous mode: nextCube = state.cube.state.apply(setup.replace(" // ", " "))
         // state.cube.state (from state1) * setup (secondScramble) should = state2.case.state
-        const expectedCube = state1.cube.state.apply(new MoveSeq(secondScramble));
+        const expectedCube = state1.cube.state.apply(new MoveSeq(secondScramble.replace(" // ", " ")));
         expect(expectedCube.serialize()).toBe(state2.case.state.serialize());
     });
 

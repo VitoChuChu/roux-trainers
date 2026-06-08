@@ -345,18 +345,18 @@ function BlockTrainerView(props: { state: AppState, dispatch: React.Dispatch<Act
                   {setup.includes(' // ') ? (
                     <>
                       <Box component="span" sx={{ opacity: 0.6, fontSize: '0.9em' }}>
-                        <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>RETURN:</Box>
+                        <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>{X.COMMON.RETURN_LABEL}</Box>
                         {setup.split(' // ')[0]}
                       </Box>
                       <Box component="span" sx={{ mx: 1.5, opacity: 0.4 }}>|</Box>
                       <Box component="span" sx={{ fontWeight: 500 }}>
-                        <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>NEXT:</Box>
+                        <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 0.5, fontWeight: 700 }}>{X.COMMON.NEXT_LABEL}</Box>
                         {setup.split(' // ')[1]}
                       </Box>
                     </>
                   ) : (
                     <>
-                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 1, opacity: 0.8, fontWeight: 500 }}>NEXT:</Box>
+                      <Box component="span" sx={{ fontSize: '0.8rem', verticalAlign: 'middle', mr: 1, opacity: 0.8, fontWeight: 500 }}>{X.COMMON.NEXT_LABEL}</Box>
                       {setup}
                     </>
                   )}

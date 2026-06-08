@@ -31,6 +31,8 @@ const zh = {
     NO_SOLUTION: "按空格获取新题目",
     CHAIN_PRACTICE: "连贯练习 →",
     SETTINGS: "设置",
+    RETURN_LABEL: "回归:",
+    NEXT_LABEL: "打乱:",
   },
 
   NAV: {
@@ -304,6 +306,8 @@ const tw: typeof zh = {
     NO_SOLUTION: "按空格獲取新題目",
     CHAIN_PRACTICE: "連貫練習 →",
     SETTINGS: "設置",
+    RETURN_LABEL: "回歸:",
+    NEXT_LABEL: "打亂:",
   },
 
   NAV: {
@@ -577,6 +581,8 @@ const en: typeof zh = {
     NO_SOLUTION: "Press space for new case",
     CHAIN_PRACTICE: "Chain →",
     SETTINGS: "Settings",
+    RETURN_LABEL: "RETURN:",
+    NEXT_LABEL: "NEXT:",
   },
 
   NAV: {

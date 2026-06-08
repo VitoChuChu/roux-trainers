@@ -297,6 +297,19 @@ export class CubieCube {
         return new CubieCube({ cp, co, ep, eo, tp })
     }
 
+    static oriMoves: {[key: string]: string} = {
+        "WG": "", "WB": "y2", "WO": "y'", "WR": "y",
+        "YG": "x2", "YB": "x2 y2", "YO": "x2 y", "YR": "x2 y'",
+        "GW": "x", "GY": "x y2", "GO": "x y'", "GR": "x y",
+        "BW": "x'", "BY": "x' y2", "BO": "x' y", "BR": "x' y'",
+        "OG": "z'", "OB": "z' y2", "OW": "z' y", "OY": "z' y'",
+        "RG": "z", "RB": "z y2", "RW": "z y'", "RY": "z y"
+    };
+
+    static getOriMoves(ori: string): string {
+        return CubieCube.oriMoves[ori] || "";
+    }
+
     is_solveable() {
         if (this.tp[0] !== 0) {
             this.apply(new MoveSeq("M2")) // assuming lse

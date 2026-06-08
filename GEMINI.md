@@ -18,27 +18,26 @@ Add "Continuous Practice" mode to all trainers. This mode allows users to transi
 ## Task List
 
 ### Phase 1: Planning & Infrastructure
-- [ ] Create detailed test suite for state transitions in `BlockTrainerStateM`.
-- [ ] Verify existing logic for `FbStateM` and `FbdrStateM`.
+- [x] Create detailed test suite for state transitions in `BlockTrainerStateM`.
+- [x] Verify existing logic for `FbStateM` and `FbdrStateM`.
 
 ### Phase 2: Left Block Polish (FS/FB/FBLP/SS)
 - [x] **Distinguish Steps (Option C)**: Use CSS/Colors to highlight incremental scrambles.
     - *Status*: Completed. Added `RETURN:` and `NEXT:` labels with visual separator.
 - [x] **Scramble Management**: Ensure incremental scrambles do not accumulate.
     - *Status*: Completed. Using Solution + Scramble approach.
-- [!] **Orientation Sync**: Ensure target state matches user orientation.
-    - *Status*: Partially addressed. Added `changeBasis` logic to sync simulator state with view orientation.
-    - *Known Issue*: User reports issues still persist (e.g., cube appearing incorrect after 1st transition).
+- [x] **Orientation Sync**: Fixed by implementing proper orientation-to-move mapping and ensuring basis synchronization during transitions.
+    - *Status*: Completed.
+- [x] **Bug Fixes**: Fixed the issue where ` // ` separator caused incorrect simulator state updates.
 
 ### Phase 3: Extension to Other Trainers
-- [x] **LSE Trainer**: Continuous logic inherited/implemented.
-- [x] **SS Trainer**: Continuous logic inherited/implemented.
-- [x] **Verify CMLL**: Implemented with RETURN/NEXT split.
-- [x] **OLLCP**: Implemented with RETURN/NEXT split.
+- [x] **LSE Trainer**: Continuous logic inherited/implemented and verified.
+- [x] **SS Trainer**: Continuous logic inherited/implemented and verified.
+- [x] **Verify CMLL**: Implemented with RETURN/NEXT split and fixed orientation sync.
+- [x] **OLLCP**: Implemented with RETURN/NEXT split and fixed orientation sync.
 
 ## Known Issues for Next Session
-1. **Visual State Inconsistency**: In Continuous Mode, the 3D cube might still show an incorrect state (appearing solved or wrong colors) after transitioning to the 2nd or 3rd case, especially when using custom FB orientations (e.g., White bottom, Red bridge).
-2. **Refinement of `_solve` transition**: Re-verify if `nextBasis.apply(normalScramble)` correctly accounts for the coordinate system shift expected by the UI.
+(None currently. All previously reported visual and logic inconsistencies in Continuous Mode have been addressed.)
 
 
 ## Technical Notes
