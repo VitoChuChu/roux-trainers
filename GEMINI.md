@@ -9,6 +9,11 @@ Add "Continuous Practice" mode to all trainers. This mode allows users to transi
 - `Translation.tsx` and `Config.tsx` have UI/Config entries.
 - Basic math tests exist in `Continuous.test.tsx`.
 
+## Engineering Standards
+1. **Versioning**: **ALWAYS** update the version string in `src/Version.tsx` after any functional code change or bug fix. Use the format `YYYYMMDD_vX`.
+2. **TDD Driven**: Every change must have a test case.
+3. **Contextual Precedence**: Adhere to existing architectural patterns and styles.
+
 ## Strategic Goals
 1. **TDD Driven**: Every change must have a test case.
 2. **Left Block First**: Polish the experience for FS/FB/FBLP/SS.

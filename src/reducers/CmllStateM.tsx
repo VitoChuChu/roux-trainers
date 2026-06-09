@@ -172,10 +172,23 @@ export abstract class CmllStateM extends AbstractStateM {
                 let nextCase = state.batch.cases[nextIndex];
                 let nextCube = nextCase.state;
                 if (isContinuous) {
-                    const diff = state.cube.state.inv().multiply(nextCase.state);
-                    const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
-                    const setup = scramble ? scramble.toString() : "";
-                    nextCube = state.cube.state.apply(scramble);
+                    const currentCube = state.cube.state;
+                    const targetCube = nextCase.state;
+                    const nextBasis = new CubieCube();
+                    
+                    const diffToBasis = currentCube.inv().multiply(nextBasis);
+                    const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
+                    
+                    const normalScramble = this._get2PhaseSolution(targetCube).algs[0];
+                    
+                    let setup = "";
+                    if (returnMoves.trim().length > 0) {
+                        setup = `${returnMoves} // ${normalScramble}`;
+                    } else {
+                        setup = normalScramble;
+                    }
+                    
+                    nextCube = currentCube.apply(setup.replace(" // ", " "));
                     // Update the setup for the next case
                     // In CMLL batch mode, we put the scramble moves in desc[3]
                     nextCase.desc[3] = createAlg("none", setup + ` (${nextIndex+1} / ${state.batch.cases.length})`, "scramble");

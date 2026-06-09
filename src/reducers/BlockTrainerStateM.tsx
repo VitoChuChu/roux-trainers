@@ -264,10 +264,25 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
                     let nextCube = batch.cases[0].state;
                     
                     if (isContinuous) {
-                        const diff = state.cube.state.inv().multiply(batch.cases[0].state);
-                        const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
-                        setup = scramble ? scramble.toString() : "";
-                        nextCube = state.cube.state.apply(setup);
+                        const currentCube = state.cube.state;
+                        const targetCube = batch.cases[0].state;
+                        const nextBasis = new CubieCube(); // Internal target is always standard basis
+                        
+                        // Return moves to take current simulator state to the solved state
+                        const diffToBasis = currentCube.inv().multiply(nextBasis);
+                        const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
+                        
+                        // Calculate normal scramble (from solved to target cube)
+                        const sol = CachedSolver.get("min2phase").solve(targetCube, 0, 20, 1)[0];
+                        const scrambleToTarget = sol ? sol.inv().toString() : "";
+                        
+                        if (returnMoves.trim().length > 0) {
+                            setup = `${returnMoves} // ${scrambleToTarget}`;
+                        } else {
+                            setup = scrambleToTarget;
+                        }
+
+                        nextCube = state.cube.state.apply(setup.replace(" // ", " "));
                         // Update the setup in the first case of the batch
                         batch.cases[0].desc.forEach(d => d.setup = setup);
                     }
@@ -286,10 +301,23 @@ export abstract class BlockTrainerStateM extends AbstractStateM {
                     let nextCube = nextCase.state;
 
                     if (isContinuous) {
-                        const diff = state.cube.state.inv().multiply(nextCase.state);
-                        const scramble = CachedSolver.get("min2phase").solve(diff, 0, 20, 1)[0]?.inv();
-                        setup = scramble ? scramble.toString() : "";
-                        nextCube = state.cube.state.apply(setup);
+                        const currentCube = state.cube.state;
+                        const targetCube = nextCase.state;
+                        const nextBasis = new CubieCube();
+                        
+                        const diffToBasis = currentCube.inv().multiply(nextBasis);
+                        const returnMoves = CachedSolver.get("min2phase").solve(diffToBasis, 0, 20, 1)[0]?.inv().toString() || "";
+                        
+                        const sol = CachedSolver.get("min2phase").solve(targetCube, 0, 20, 1)[0];
+                        const scrambleToTarget = sol ? sol.inv().toString() : "";
+
+                        if (returnMoves.trim().length > 0) {
+                            setup = `${returnMoves} // ${scrambleToTarget}`;
+                        } else {
+                            setup = scrambleToTarget;
+                        }
+
+                        nextCube = state.cube.state.apply(setup.replace(" // ", " "));
                         // Update the setup for the next case
                         nextCase.desc.forEach(d => d.setup = setup);
                     }
