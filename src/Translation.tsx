@@ -88,7 +88,8 @@ const zh = {
     SELECT_CMLL_CASES: "选择 CMLL 案例",
     SELECT_OLLCP_CASES: "选择 OLLCP 案例",
     SELECT_BY_NMCLL: "按 NMCLL 选择",
-    NMCLL_DIALOG_TITLE: "按 NMCLL 识别选择案例（这是独立于上述选择的筛选，仅在 L/R 或 F/B 模式下生效）",
+    NMCLL_DIALOG_TITLE:
+      "按 NMCLL 识别选择案例（这是独立于上述选择的筛选，仅在 L/R 或 F/B 模式下生效）",
 
     FB_ORIENTATION: "FB 朝向",
     ORI_X2Y_WY: "x2y 白/黄",
@@ -101,7 +102,8 @@ const zh = {
     FB_STAGE: "FB 阶段",
     FB_STAGE_FB: "FB",
     CONTINUOUS_PRACTICE: "连续练习模式",
-    CONTINUOUS_PRACTICE_DESC: "开启后，按 Next 不需复原方块，直接显示「增量打乱」公式到下一个案例",
+    CONTINUOUS_PRACTICE_DESC:
+      "开启后，按 Next 不需复原方块，直接显示「增量打乱」公式到下一个案例",
     INCREMENTAL_SCRAMBLE: "增量打乱 (续)",
     FB_STAGE_FS: "FS",
     FB_STAGE_PSEUDO_FS: "伪 FS",
@@ -200,7 +202,8 @@ const zh = {
     USE_AS_SOLUTION: "作为解法使用",
     USE_AS_SCRAMBLE: "作为打乱使用",
     CLICK_TO_REVEAL: "（点击显示）",
-    EXISTS_STM_SOLUTION: (n: number, tag: string) => `存在 ${n}-STM 的 ${tag} 解法，位于：`,
+    EXISTS_STM_SOLUTION: (n: number, tag: string) =>
+      `存在 ${n}-STM 的 ${tag} 解法，位于：`,
 
     FB_ORI_DIALOG_TITLE: "设置打乱朝向（桥色）和配色方案",
     COLOR: "颜色",
@@ -214,13 +217,15 @@ const zh = {
   },
 
   LSE: {
-    USAGE: "操作：按空格获取下一个案例。按 Enter 重置。\n\n虚拟魔方：I/K (E/D) 对应 M'/M，J/F 对应 U/U'",
+    USAGE:
+      "操作：按空格获取下一个案例。按 Enter 重置。\n\n虚拟魔方：I/K (E/D) 对应 M'/M，J/F 对应 U/U'",
   },
 
   FAV: {
     DELETE_TITLE: "从收藏中删除此算法？",
     ADD_TITLE: "添加新题目",
-    ADD_INSTRUCTIONS: "在此输入你的题目（每行一个）\n格式：[类别], [准备算法]。\n类别 := fb | fbdr | ss-front | ss-back",
+    ADD_INSTRUCTIONS:
+      "在此输入你的题目（每行一个）\n格式：[类别], [准备算法]。\n类别 := fb | fbdr | ss-front | ss-back",
     ADD_ALL: "全部添加",
     SCRAMBLE_HEADER: "打乱",
   },
@@ -250,7 +255,8 @@ const zh = {
   },
 
   INTRO: {
-    MARKDOWN: "# Roux Trainers (桥式进阶训练器 - aoi优化版)\n一个旨在辅助桥式（Roux）日常训练的辅助工具 ❤️\n\n## 关于本版本（写在前面）\n本项目基于原作者 Onionhoney（孙大师）的优秀开源项目进行了一些本土化适配和细节微调。\n\n本人是 polo-aoi，作为一名刚接触魔方半年多的桥式爱好者，在日常练习中为了让自己用得更顺手，我尝试对原版进行了一点小小的功能扩充与\"软装\"：\n\n- **连贯训练尝试**：试着打通了 FS ➡️ FBLP ➡️ SS 的跳转逻辑，希望能在肌肉记忆和 Lookahead（预判衔接）的实战练习上提供一点连贯的体验。\n- **界面与多语言适配**：重新梳理了底层的网格排版，修复了中英文切换的一些细节问题，并将打乱朝向适配为了更直观的\"顶面/前面（底色/桥色）\"中文字样。\n- **快捷键交互微调**：修复了鼠标点击后空格键容易被焦点劫持的 Bug，并去除了在实战中容易误触的 Enter 键重置功能。\n\n## 恳请多多指教\n由于我个人的魔方资历尚浅，孙大师原版训练器中许多高阶、硬核的强大功能，我至今也还在努力摸索和学习中。\n\n在这次微调代码的过程中，难免会有理解不到位或者修改出的新 Bug。非常欢迎各位魔友、路过的大佬多多指教！如果你在训练过程中遇到了任何奇奇怪怪的报错、体验不顺畅的地方，或者有更好的功能创意，随时欢迎联系我进行修改和讨论，我们一起把这个训练器变得更好用。\n\n## 致谢 (Credits)\n- 本项目最核心的底层算法与框架均出自 Onionhoney 的开源心血。\n- 灵感最初来源于 cubegrass.appspot.com。\n- 原版开源 GitHub 仓库：https://github.com/onionhoney/roux-trainers",
+    MARKDOWN:
+      '# Roux Trainers (桥式进阶训练器 - aoi优化版)\n一个旨在辅助桥式（Roux）日常训练的辅助工具 ❤️\n\n## 关于本版本（写在前面）\n本项目基于原作者 Onionhoney（孙大师）的优秀开源项目进行了一些本土化适配和细节微调。\n\n本人是 polo-aoi，作为一名刚接触魔方半年多的桥式爱好者，在日常练习中为了让自己用得更顺手，我尝试对原版进行了一点小小的功能扩充与"软装"：\n\n- **连贯训练尝试**：试着打通了 FS ➡️ FBLP ➡️ SS 的跳转逻辑，希望能在肌肉记忆和 Lookahead（预判衔接）的实战练习上提供一点连贯的体验。\n- **界面与多语言适配**：重新梳理了底层的网格排版，修复了中英文切换的一些细节问题，并将打乱朝向适配为了更直观的"顶面/前面（底色/桥色）"中文字样。\n- **快捷键交互微调**：修复了鼠标点击后空格键容易被焦点劫持的 Bug，并去除了在实战中容易误触的 Enter 键重置功能。\n\n## 恳请多多指教\n由于我个人的魔方资历尚浅，孙大师原版训练器中许多高阶、硬核的强大功能，我至今也还在努力摸索和学习中。\n\n在这次微调代码的过程中，难免会有理解不到位或者修改出的新 Bug。非常欢迎各位魔友、路过的大佬多多指教！如果你在训练过程中遇到了任何奇奇怪怪的报错、体验不顺畅的地方，或者有更好的功能创意，随时欢迎联系我进行修改和讨论，我们一起把这个训练器变得更好用。\n\n## 致谢 (Credits)\n- 本项目最核心的底层算法与框架均出自 Onionhoney 的开源心血。\n- 灵感最初来源于 cubegrass.appspot.com。\n- 原版开源 GitHub 仓库：https://github.com/onionhoney/roux-trainers',
   },
 
   DIFFICULTY_ANNOTATION:
@@ -270,12 +276,30 @@ const zh = {
   },
 
   COLOR_SCHEMES: {
-    WG: "白顶绿前（黄底橙桥）", WB: "白顶蓝前（黄底红桥）", WO: "白顶橙前（黄底蓝桥）", WR: "白顶红前（黄底绿桥）",
-    YG: "黄顶绿前（白底红桥）", YB: "黄顶蓝前（白底橙桥）", YO: "黄顶橙前（白底绿桥）", YR: "黄顶红前（白底蓝桥）",
-    BW: "蓝顶白前（绿底橙桥）", BY: "蓝顶黄前（绿底红桥）", BO: "蓝顶橙前（绿底黄桥）", BR: "蓝顶红前（绿底白桥）",
-    GW: "绿顶白前（蓝底红桥）", GY: "绿顶黄前（蓝底橙桥）", GO: "绿顶橙前（蓝底白桥）", GR: "绿顶红前（蓝底黄桥）",
-    OW: "橙顶白前（红底绿桥）", OY: "橙顶黄前（红底蓝桥）", OB: "橙顶蓝前（红底白桥）", OG: "橙顶绿前（红底黄桥）",
-    RW: "红顶白前（橙底蓝桥）", RY: "红顶黄前（橙底绿桥）", RB: "红顶蓝前（橙底黄桥）", RG: "红顶绿前（橙底白桥）",
+    WG: "白顶绿前（黄底橙桥）",
+    WB: "白顶蓝前（黄底红桥）",
+    WO: "白顶橙前（黄底蓝桥）",
+    WR: "白顶红前（黄底绿桥）",
+    YG: "黄顶绿前（白底红桥）",
+    YB: "黄顶蓝前（白底橙桥）",
+    YO: "黄顶橙前（白底绿桥）",
+    YR: "黄顶红前（白底蓝桥）",
+    BW: "蓝顶白前（绿底橙桥）",
+    BY: "蓝顶黄前（绿底红桥）",
+    BO: "蓝顶橙前（绿底黄桥）",
+    BR: "蓝顶红前（绿底白桥）",
+    GW: "绿顶白前（蓝底红桥）",
+    GY: "绿顶黄前（蓝底橙桥）",
+    GO: "绿顶橙前（蓝底白桥）",
+    GR: "绿顶红前（蓝底黄桥）",
+    OW: "橙顶白前（红底绿桥）",
+    OY: "橙顶黄前（红底蓝桥）",
+    OB: "橙顶蓝前（红底白桥）",
+    OG: "橙顶绿前（红底黄桥）",
+    RW: "红顶白前（橙底蓝桥）",
+    RY: "红顶黄前（橙底绿桥）",
+    RB: "红顶蓝前（橙底黄桥）",
+    RG: "红顶绿前（橙底白桥）",
   },
 };
 
@@ -363,7 +387,8 @@ const tw: typeof zh = {
     SELECT_CMLL_CASES: "選擇 CMLL 案例",
     SELECT_OLLCP_CASES: "選擇 OLLCP 案例",
     SELECT_BY_NMCLL: "按 NMCLL 選擇",
-    NMCLL_DIALOG_TITLE: "按 NMCLL 識別選擇案例（這是獨立於上述選擇的篩選，僅在 L/R 或 F/B 模式下生效）",
+    NMCLL_DIALOG_TITLE:
+      "按 NMCLL 識別選擇案例（這是獨立於上述選擇的篩選，僅在 L/R 或 F/B 模式下生效）",
 
     FB_ORIENTATION: "FB 朝向",
     ORI_X2Y_WY: "x2y 白/黃",
@@ -376,7 +401,8 @@ const tw: typeof zh = {
     FB_STAGE: "FB 階段",
     FB_STAGE_FB: "FB",
     CONTINUOUS_PRACTICE: "連續練習模式",
-    CONTINUOUS_PRACTICE_DESC: "開啟後，按 Next 不需復原方塊，直接顯示「增量打亂」公式到下一個案例",
+    CONTINUOUS_PRACTICE_DESC:
+      "開啟後，按 Next 不需復原方塊，直接顯示「增量打亂」公式到下一個案例",
     INCREMENTAL_SCRAMBLE: "增量打亂 (續)",
     FB_STAGE_FS: "FS",
     FB_STAGE_PSEUDO_FS: "偽 FS",
@@ -475,7 +501,8 @@ const tw: typeof zh = {
     USE_AS_SOLUTION: "作為解法使用",
     USE_AS_SCRAMBLE: "作為打亂使用",
     CLICK_TO_REVEAL: "（點擊顯示）",
-    EXISTS_STM_SOLUTION: (n: number, tag: string) => `存在 ${n}-STM 的 ${tag} 解法，位於：`,
+    EXISTS_STM_SOLUTION: (n: number, tag: string) =>
+      `存在 ${n}-STM 的 ${tag} 解法，位於：`,
 
     FB_ORI_DIALOG_TITLE: "設置打亂朝向（橋色）和配色方案",
     COLOR: "顏色",
@@ -489,13 +516,15 @@ const tw: typeof zh = {
   },
 
   LSE: {
-    USAGE: "操作：按空格獲取下一個案例。按 Enter 重置。\n\n虛擬魔方：I/K (E/D) 對應 M'/M，J/F 對應 U/U'",
+    USAGE:
+      "操作：按空格獲取下一個案例。按 Enter 重置。\n\n虛擬魔方：I/K (E/D) 對應 M'/M，J/F 對應 U/U'",
   },
 
   FAV: {
     DELETE_TITLE: "從收藏中刪除此算法？",
     ADD_TITLE: "添加新題目",
-    ADD_INSTRUCTIONS: "在此輸入你的題目（每行一個）\n格式：[類別], [準備算法]。\n類別 := fb | fbdr | ss-front | ss-back",
+    ADD_INSTRUCTIONS:
+      "在此輸入你的題目（每行一個）\n格式：[類別], [準備算法]。\n類別 := fb | fbdr | ss-front | ss-back",
     ADD_ALL: "全部添加",
     SCRAMBLE_HEADER: "打亂",
   },
@@ -525,7 +554,8 @@ const tw: typeof zh = {
   },
 
   INTRO: {
-    MARKDOWN: "# Roux Trainers (橋式進階訓練器 - aoi優化版)\n一個旨在輔助橋式（Roux）日常訓練的輔助工具 ❤️\n\n## 關於本版本（寫在前面）\n本項目基於原作者 Onionhoney（孫大師）的優秀開源項目進行了一些本土化適配和細節微調。\n\n本人是 polo-aoi，作為一名剛接觸魔方半年多的橋式愛好者，在日常練習中為了讓自己用得更順手，我嘗試對原版進行了一點小小的功能擴充與\"軟裝\"：\n\n- **連貫訓練嘗試**：試著打通了 FS ➡️ FBLP ➡️ SS 的跳轉邏輯，希望能在肌肉記憶和 Lookahead（預判銜接）的實戰練習上提供一點連貫的體驗。\n- **界面與多語言適配**：重新梳理了底層的網格排版，修復了中英文切換的一些細節問題，並將打亂朝向適配為了更直觀的\"頂面/前面（底色/橋色）\"中文字樣。\n- **快捷鍵交互微調**：修復了鼠標點擊後空格鍵容易被焦點劫持的 Bug，並去除了在實戰中容易誤觸的 Enter 鍵重置功能。\n\n## 懇請多多指教\n由於我個人的魔方資歷尚淺，孫大師原版訓練器中許多高階、硬核的強大功能，我至今也還在努力摸索和學習中。\n\n在這次微調代碼的過程中，難免會有理解不到位或者修改出的新 Bug。非常歡迎各位魔友、路過的大佬多多指教！如果你在訓練過程中遇到了任何奇奇怪怪的報錯、體驗不順暢的地方，或者有更好的功能創意，隨時歡迎聯繫我進行修改和討論，我們一起把這個訓練器變得更好用。\n\n## 致謝 (Credits)\n- 本項目最核心的底層算法與框架均出自 Onionhoney 的開源心血。\n- 靈感最初來源於 cubegrass.appspot.com。\n- 原版開源 GitHub 倉庫：https://github.com/onionhoney/roux-trainers",
+    MARKDOWN:
+      '# Roux Trainers (橋式進階訓練器 - aoi優化版)\n一個旨在輔助橋式（Roux）日常訓練的輔助工具 ❤️\n\n## 關於本版本（寫在前面）\n本項目基於原作者 Onionhoney（孫大師）的優秀開源項目進行了一些本土化適配和細節微調。\n\n本人是 polo-aoi，作為一名剛接觸魔方半年多的橋式愛好者，在日常練習中為了讓自己用得更順手，我嘗試對原版進行了一點小小的功能擴充與"軟裝"：\n\n- **連貫訓練嘗試**：試著打通了 FS ➡️ FBLP ➡️ SS 的跳轉邏輯，希望能在肌肉記憶和 Lookahead（預判銜接）的實戰練習上提供一點連貫的體驗。\n- **界面與多語言適配**：重新梳理了底層的網格排版，修復了中英文切換的一些細節問題，並將打亂朝向適配為了更直觀的"頂面/前面（底色/橋色）"中文字樣。\n- **快捷鍵交互微調**：修復了鼠標點擊後空格鍵容易被焦點劫持的 Bug，並去除了在實戰中容易誤觸的 Enter 鍵重置功能。\n\n## 懇請多多指教\n由於我個人的魔方資歷尚淺，孫大師原版訓練器中許多高階、硬核的強大功能，我至今也還在努力摸索和學習中。\n\n在這次微調代碼的過程中，難免會有理解不到位或者修改出的新 Bug。非常歡迎各位魔友、路過的大佬多多指教！如果你在訓練過程中遇到了任何奇奇怪怪的報錯、體驗不順暢的地方，或者有更好的功能創意，隨時歡迎聯繫我進行修改和討論，我們一起把這個訓練器變得更好用。\n\n## 致謝 (Credits)\n- 本項目最核心的底層算法與框架均出自 Onionhoney 的開源心血。\n- 靈感最初來源於 cubegrass.appspot.com。\n- 原版開源 GitHub 倉庫：https://github.com/onionhoney/roux-trainers',
   },
 
   DIFFICULTY_ANNOTATION:
@@ -545,12 +575,30 @@ const tw: typeof zh = {
   },
 
   COLOR_SCHEMES: {
-    WG: "白頂綠前（黃底橙橋）", WB: "白頂藍前（黃底紅橋）", WO: "白頂橙前（黃底藍橋）", WR: "白頂紅前（黃底綠橋）",
-    YG: "黃頂綠前（白底紅橋）", YB: "黃頂藍前（白底橙橋）", YO: "黃頂橙前（白底綠橋）", YR: "黃頂紅前（白底藍橋）",
-    BW: "藍頂白前（綠底橙橋）", BY: "藍頂黃前（綠底紅橋）", BO: "藍頂橙前（綠底黃橋）", BR: "藍頂紅前（綠底白橋）",
-    GW: "綠頂白前（藍底紅橋）", GY: "綠頂黃前（藍底橙橋）", GO: "綠頂橙前（藍底白橋）", GR: "綠頂紅前（藍底黃橋）",
-    OW: "橙頂白前（紅底綠橋）", OY: "橙頂黃前（紅底藍橋）", OB: "橙頂藍前（紅底白橋）", OG: "橙頂綠前（紅底黃橋）",
-    RW: "紅頂白前（橙底藍橋）", RY: "紅頂黃前（橙底綠橋）", RB: "紅頂藍前（橙底黃橋）", RG: "紅頂綠前（橙底白橋）",
+    WG: "白頂綠前（黃底橙橋）",
+    WB: "白頂藍前（黃底紅橋）",
+    WO: "白頂橙前（黃底藍橋）",
+    WR: "白頂紅前（黃底綠橋）",
+    YG: "黃頂綠前（白底紅橋）",
+    YB: "黃頂藍前（白底橙橋）",
+    YO: "黃頂橙前（白底綠橋）",
+    YR: "黃頂紅前（白底藍橋）",
+    BW: "藍頂白前（綠底橙橋）",
+    BY: "藍頂黃前（綠底紅橋）",
+    BO: "藍頂橙前（綠底黃橋）",
+    BR: "藍頂紅前（綠底白橋）",
+    GW: "綠頂白前（藍底紅橋）",
+    GY: "綠頂黃前（藍底橙橋）",
+    GO: "綠頂橙前（藍底白橋）",
+    GR: "綠頂紅前（藍底黃橋）",
+    OW: "橙頂白前（紅底綠橋）",
+    OY: "橙頂黃前（紅底藍橋）",
+    OB: "橙頂藍前（紅底白橋）",
+    OG: "橙頂綠前（紅底黃橋）",
+    RW: "紅頂白前（橙底藍橋）",
+    RY: "紅頂黃前（橙底綠橋）",
+    RB: "紅頂藍前（橙底黃橋）",
+    RG: "紅頂綠前（橙底白橋）",
   },
 };
 
@@ -594,11 +642,20 @@ const en: typeof zh = {
 
   MODES: {
     FB: { full: "First Block (Fixed)", short: "FB (fixed)" },
-    ANALYZER: { full: "First Block Analyzer (x2y | CN)", short: "FB analyzer (x2y | CN)" },
+    ANALYZER: {
+      full: "First Block Analyzer (x2y | CN)",
+      short: "FB analyzer (x2y | CN)",
+    },
     FS: { full: "First Block Square", short: "FB square" },
     FSDR: { full: "First Block Square + DR edge", short: "FB square + DR" },
-    FBDR: { full: "First Block Last Pair (+ DR edge)", short: "FB last pair (+DR)" },
-    FBSS: { full: "First Block Last Pair + Second Square", short: "FB last pair + SS" },
+    FBDR: {
+      full: "First Block Last Pair (+ DR edge)",
+      short: "FB last pair (+DR)",
+    },
+    FBSS: {
+      full: "First Block Last Pair + Second Square",
+      short: "FB last pair + SS",
+    },
     SS: { full: "Second Block Square", short: "SB square" },
     CMLL: { full: "CMLL", short: "CMLL" },
     LSE_4C: { full: "LSE 4c", short: "LSE 4c" },
@@ -638,7 +695,8 @@ const en: typeof zh = {
     SELECT_CMLL_CASES: "Select CMLL Cases",
     SELECT_OLLCP_CASES: "Select OLLCP Cases",
     SELECT_BY_NMCLL: "Select by NMCLL",
-    NMCLL_DIALOG_TITLE: "Select cases by NMCLL recog (this is a separate selection from above, only activated when you're in L/R or F/B mode)",
+    NMCLL_DIALOG_TITLE:
+      "Select cases by NMCLL recog (this is a separate selection from above, only activated when you're in L/R or F/B mode)",
 
     FB_ORIENTATION: "FB Orientation",
     ORI_X2Y_WY: "x2y on W/Y",
@@ -651,7 +709,8 @@ const en: typeof zh = {
     FB_STAGE: "FB Stage",
     FB_STAGE_FB: "FB",
     CONTINUOUS_PRACTICE: "Continuous Practice",
-    CONTINUOUS_PRACTICE_DESC: "When enabled, pressing Next doesn't require resetting the cube. It shows 'Incremental Scramble' to the next case.",
+    CONTINUOUS_PRACTICE_DESC:
+      "When enabled, pressing Next doesn't require resetting the cube. It shows 'Incremental Scramble' to the next case.",
     INCREMENTAL_SCRAMBLE: "Incremental Scramble (cont.)",
     FB_STAGE_FS: "FS",
     FB_STAGE_PSEUDO_FS: "Pseudo FS",
@@ -665,7 +724,8 @@ const en: typeof zh = {
     DIFF_BL_SOLVED: "BL Solved",
     DIFF_HARD: "Hard",
 
-    FB_BASIS: "Basis (piece considered solved) for FB. Default is L-center solved.",
+    FB_BASIS:
+      "Basis (piece considered solved) for FB. Default is L-center solved.",
     FB_BASIS_DEFAULT: "Default",
     POSITION_OF_SQUARE: "Position of square",
     FS_AT_BACK: "FS at back",
@@ -682,7 +742,8 @@ const en: typeof zh = {
 
     SCRAMBLE_TYPE: "Type of scramble",
     SCRAMBLE_SHORT: "Short (Concerning FBDR Pieces only)",
-    SCRAMBLE_RANDOM_STATE: "Random State (Entire cube, useful for practicing F2B)",
+    SCRAMBLE_RANDOM_STATE:
+      "Random State (Entire cube, useful for practicing F2B)",
     SCRAMBLE_SHORT_LSE: "Short",
     SCRAMBLE_RANDOM_STATE_LSE: "Random State",
     PIECES_TO_SOLVE: "Pieces to solve",
@@ -750,7 +811,8 @@ const en: typeof zh = {
     USE_AS_SOLUTION: "Use as solution",
     USE_AS_SCRAMBLE: "Use as scramble",
     CLICK_TO_REVEAL: "(Click to reveal)",
-    EXISTS_STM_SOLUTION: (n: number, tag: string) => `There exists ${n}-STM ${tag || "solution"} in: `,
+    EXISTS_STM_SOLUTION: (n: number, tag: string) =>
+      `There exists ${n}-STM ${tag || "solution"} in: `,
 
     FB_ORI_DIALOG_TITLE: "Scramble Orientation (Bridge) & Color Scheme",
     COLOR: "Color",
@@ -764,13 +826,15 @@ const en: typeof zh = {
   },
 
   LSE: {
-    USAGE: "Usage: Press space for next case. Enter to redo.\n\nVirtual Cube: I/K (E/D) for M'/M, J/F for U/U'",
+    USAGE:
+      "Usage: Press space for next case. Enter to redo.\n\nVirtual Cube: I/K (E/D) for M'/M, J/F for U/U'",
   },
 
   FAV: {
     DELETE_TITLE: "Delete this alg from favorites?",
     ADD_TITLE: "Add New Cases",
-    ADD_INSTRUCTIONS: "Input your cases here. (one per line)\nFormat: [category], [setup algorithm].\ncategory := fb | fbdr | ss-front | ss-back",
+    ADD_INSTRUCTIONS:
+      "Input your cases here. (one per line)\nFormat: [category], [setup algorithm].\ncategory := fb | fbdr | ss-front | ss-back",
     ADD_ALL: "Add All",
     SCRAMBLE_HEADER: "Scramble",
   },
@@ -794,13 +858,15 @@ const en: typeof zh = {
     WATCH_FB_TRACK_DR: "Watch FB, Track DR",
     WATCH_FB_TRACK_SB: "Watch FB, Track SB Pair",
     WATCH_FB_TRACK_DR_SB: "Watch FB, Track DR + SB Pair",
-    WATCH_CROSS_TRACK_F2L: "Watch Cross, Track F2L Pair (will not be implemented, of course)",
+    WATCH_CROSS_TRACK_F2L:
+      "Watch Cross, Track F2L Pair (will not be implemented, of course)",
     MOVE_COUNT: "MoveCount",
     MOVE_GROUP: "MoveGroup",
   },
 
   INTRO: {
-    MARKDOWN: "# Roux Trainers (aoi's Optimized Edition)\nA tool designed to assist with daily Roux method training ❤️\n\n## About This Version\nThis project is built upon the excellent open-source work by the original author, Onionhoney, with some localization and fine-tuning.\n\nI am polo-aoi. As a Roux enthusiast who has only been cubing for about half a year, I tried to add a few small features and UI facelifts to the original version to make it handier for my daily practice:\n\n- **Seamless Training Flow**: Bridged the transition logic from FS ➡️ FBLP ➡️ SS, hoping to provide a more coherent experience for building muscle memory and practicing Lookahead in real solves.\n- **UI & Localization**: Reworked the underlying grid layout, fixed minor issues with the EN/ZH toggle, and localized the scramble orientations into a more intuitive \"Top/Front (Bottom/Bridge color)\" format.\n- **Shortcut Tweaks**: Fixed the bug where the Spacebar was easily hijacked by element focus after a mouse click, and removed the Enter key reset function to prevent accidental presses during intensive training.\n\n## Feedback Welcome\nGiven my limited cubing experience, I am still exploring and learning many of the advanced, hardcore features of Onionhoney's original trainer.\n\nDuring these code tweaks, there might inevitably be some misunderstandings or new bugs introduced. Feedback and guidance from fellow cubers and experts are highly appreciated! If you encounter any weird errors, clunky experiences, or have brilliant ideas for new features, please feel free to reach out for discussion. Let's make this trainer better together.\n\n## Credits\n- The core underlying algorithms and framework of this project are entirely the open-source efforts of Onionhoney.\n- Originally inspired by cubegrass.appspot.com.\n- Original Open-Source GitHub Repository: https://github.com/onionhoney/roux-trainers",
+    MARKDOWN:
+      "# Roux Trainers (VITO's Optimized Edition)\nA tool designed to assist with daily Roux method training ❤️\n\n## About This Version\nThis project is built upon the excellent open-source work by the original author, Onionhoney, with some localization and fine-tuning.\n\nI am polo-aoi. As a Roux enthusiast who has only been cubing for about half a year, I tried to add a few small features and UI facelifts to the original version to make it handier for my daily practice:\n\n- **Seamless Training Flow**: Bridged the transition logic from FS ➡️ FBLP ➡️ SS, hoping to provide a more coherent experience for building muscle memory and practicing Lookahead in real solves.\n- **UI & Localization**: Reworked the underlying grid layout, fixed minor issues with the EN/ZH toggle, and localized the scramble orientations into a more intuitive \"Top/Front (Bottom/Bridge color)\" format.\n- **Shortcut Tweaks**: Fixed the bug where the Spacebar was easily hijacked by element focus after a mouse click, and removed the Enter key reset function to prevent accidental presses during intensive training.\n\n## Feedback Welcome\nGiven my limited cubing experience, I am still exploring and learning many of the advanced, hardcore features of Onionhoney's original trainer.\n\nDuring these code tweaks, there might inevitably be some misunderstandings or new bugs introduced. Feedback and guidance from fellow cubers and experts are highly appreciated! If you encounter any weird errors, clunky experiences, or have brilliant ideas for new features, please feel free to reach out for discussion. Let's make this trainer better together.\n\n## Credits\n- The core underlying algorithms and framework of this project are entirely the open-source efforts of Onionhoney.\n- Originally inspired by cubegrass.appspot.com.\n- Original Open-Source GitHub Repository: https://github.com/onionhoney/roux-trainers",
   },
 
   DIFFICULTY_ANNOTATION:
@@ -820,12 +886,30 @@ const en: typeof zh = {
   },
 
   COLOR_SCHEMES: {
-    WG: "WG", WB: "WB", WO: "WO", WR: "WR",
-    YG: "YG", YB: "YB", YO: "YO", YR: "YR",
-    BW: "BW", BY: "BY", BO: "BO", BR: "BR",
-    GW: "GW", GY: "GY", GO: "GO", GR: "GR",
-    OW: "OW", OY: "OY", OB: "OB", OG: "OG",
-    RW: "RW", RY: "RY", RB: "RB", RG: "RG",
+    WG: "WG",
+    WB: "WB",
+    WO: "WO",
+    WR: "WR",
+    YG: "YG",
+    YB: "YB",
+    YO: "YO",
+    YR: "YR",
+    BW: "BW",
+    BY: "BY",
+    BO: "BO",
+    BR: "BR",
+    GW: "GW",
+    GY: "GY",
+    GO: "GO",
+    GR: "GR",
+    OW: "OW",
+    OY: "OY",
+    OB: "OB",
+    OG: "OG",
+    RW: "RW",
+    RY: "RY",
+    RB: "RB",
+    RG: "RG",
   },
 };
 
@@ -837,7 +921,9 @@ let currentLang: Language = (() => {
   try {
     const stored = window.localStorage.getItem(LANG_KEY);
     if (stored === "en" || stored === "zh" || stored === "tw") return stored;
-  } catch (_) { /* localStorage unavailable */ }
+  } catch (_) {
+    /* localStorage unavailable */
+  }
   return "tw";
 })();
 
@@ -849,7 +935,9 @@ export function setLanguage(lang: Language) {
   currentLang = lang;
   try {
     window.localStorage.setItem(LANG_KEY, lang);
-  } catch (_) { /* ignore */ }
+  } catch (_) {
+    /* ignore */
+  }
 }
 
 function getDict(): TranslationDict {
@@ -858,30 +946,32 @@ function getDict(): TranslationDict {
   return zh;
 }
 
-
 // Deep-proxy the full translation tree so X.COMMON.SHOW works without per-level proxies
 function deepProxy(path: string[] = []): any {
-  return new Proxy({}, {
-    get(_target, prop: string) {
-      const dict = getDict();
-      let current: any = dict;
-      for (const key of path) {
-        current = current?.[key];
-      }
-      const val = current?.[prop];
-      if (val === undefined) {
-        let zhCurrent: any = zh;
+  return new Proxy(
+    {},
+    {
+      get(_target, prop: string) {
+        const dict = getDict();
+        let current: any = dict;
         for (const key of path) {
-          zhCurrent = zhCurrent?.[key];
+          current = current?.[key];
         }
-        return zhCurrent?.[prop];
-      }
-      if (typeof val === "object" && val !== null && !Array.isArray(val)) {
-        return deepProxy([...path, prop]);
-      }
-      return val;
-    }
-  });
+        const val = current?.[prop];
+        if (val === undefined) {
+          let zhCurrent: any = zh;
+          for (const key of path) {
+            zhCurrent = zhCurrent?.[key];
+          }
+          return zhCurrent?.[prop];
+        }
+        if (typeof val === "object" && val !== null && !Array.isArray(val)) {
+          return deepProxy([...path, prop]);
+        }
+        return val;
+      },
+    },
+  );
 }
 
 export const X: TranslationDict = deepProxy() as any;
